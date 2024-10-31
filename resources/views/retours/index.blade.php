@@ -5,16 +5,15 @@
             <th>id</th>
             <th>RESPONSABLE</th>
             <th>MOTIF</th>
-            <th>DEBUT</th>
-            <th>FIN</th>
+            <th>Date Retour</th>
         </tr>
         @foreach ($commande->retours as $retour)
         <tr>
             <th>{{$retour->id}}</th>
             <td>{{$retour->RESPONSABLE}}</td>
-            <td>{{$retour->MOTIF}}</td>
-            <td>{{$retour->DEBUT}}</td>
-            <td>{{$retour->FIN}}</td>
+            <td>{{$retour->motif}}</td>
+            <td>{{$retour->date_retour}}</td>
+       
         </tr>
         @endforeach
     </table>

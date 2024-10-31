@@ -21,18 +21,16 @@ class RetourController extends Controller
     {
         $request->validate([
             "RESPONSABLE" => ['required'],
-            "MOTIF" => ['required'],
-            "DEBUT" => ['required'],
-            "FIN" => ['required'],
+            "motif" => ['required'],
+            "date_retour" => ['required'],
         ],[
             "*.required" => 'Ce champ est obligatoire',
         ]);
         Retour::create([
             "NUM_COMMANDE" => $commande->NUM_COMMANDE,
             "RESPONSABLE" => $request->RESPONSABLE,
-            "MOTIF" => $request->MOTIF,
-            "DEBUT" => $request->DEBUT,
-            "FIN" => $request->FIN,
+            "motif" => $request->motif,
+            "date_retour" => $request->date_retour,
         ]);
         return redirect()->back()->with("success", 'retour A été ajouté avec succès');
     }

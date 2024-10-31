@@ -17,12 +17,12 @@
             $("#search").on("input", request);
 
             function request() {
-                var input = $("#search").val();
+                
                 $.ajax({
                     method: 'get',
                     url: "{{ route('list') }}",
                     data: {
-                        search: input
+                        search: $("#search").val()
                     },
                     success: function(data) {
                         $("#serchResult").html(data);

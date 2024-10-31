@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\isNull;
+
 class AjaxController extends Controller
 {
     public function search(Request $request)
@@ -65,7 +67,7 @@ class AjaxController extends Controller
                             <td>' . $row->FOURNISSEUR . '</td>
                             <td>' . $row->DELAI_LIVRAISON . '</td>
                             <td>' . $row->GARANTIE . '</td>
-                            <td>' . $row->RETENUE_GARANTIE . '</td>
+                            <td>' . ($row->RETENUE_GARANTIE ? "$row->RETENUE_GARANTIE%" : "") .' </td>
                             <td>' . $row->NUM_MARCHE . '</td>
                             <td>' . $row->EXERCICE . '</td>
                             <td>' . $row->DATE_COMMANDE . '</td>
@@ -228,7 +230,11 @@ class AjaxController extends Controller
             $commandes = Commande::where('NUM_COMMANDE', 'not like', '__________/____')
                 ->where(function ($query) use ($request) {
                     $query->where('NUM_COMMANDE', 'like', '%' . $request->search . '%')
-                        ->orWhere('FOURNISSEUR', 'like', '%' . $request->search . '%');
+                        ->orWhere('DATE_COMMANDE', 'like', '%' . $request->search . '%')
+                        ->orWhere('STATUT_COMMANDE', 'like', '%' . $request->search . '%')
+                        ->orWhere('STATUT_LIVRAISON', 'like', '%' . $request->search . '%')
+                        ->orWhere('STATUT_RECEPTION', 'like', '%' . $request->search . '%')
+                        ->orWhere('STATUT_PAIEMENT', 'like', '%' . $request->search . '%');
                 })
                 ->orderBy('updated_at', 'desc')
                 ->get();
@@ -275,71 +281,6 @@ class AjaxController extends Controller
                 <td>' . $commande["commande"]->STATUT_RECEPTION . '</td>
                 <td>' . $commande["commande"]->STATUT_PAIEMENT . '</td>
                 <td>' . $commande["days_left"] . '</td>
-                <td>' . $commande["deadline"] . '</td>
-            </tr>';
-                }
-                $output .= '</table>';
-            } else {
-                $output = '<h3>Aucune donnée trouvée</h3>';
-            }
-            echo $output;
-        }
-    }
-    public function engagement(Request $request)
-    {
-        if ($request->ajax()) {
-            $currentYear = Carbon::now()->format('Y');
-            $commandes = Commande::where('DATE_COMMANDE', 'like', $currentYear . '%')
-                ->where('NUM_COMMANDE', 'not like', '__________/____')
-                ->where(function ($query) use ($request) {
-                    $query->where('NUM_COMMANDE', 'like', '%' . $request->search . '%')
-                        ->orWhere('FOURNISSEUR', 'like', '%' . $request->search . '%');
-                })
-                ->orderBy('updated_at', 'desc')
-                ->get();
-            $commandesWithIntervals = $commandes->map(function ($commande) {
-                $daysLeft = null;
-                $deadline = null;
-
-                if ($commande->STATUT_LIVRAISON === 'livree' && $commande->STATUT_RECEPTION === 'receptionnee' && $commande->STATUT_PAIEMENT !== 'payee') {
-                    $dateCommande = Carbon::parse($commande->DATE_FACTURE);
-                    $deadline = $dateCommande->addDays(60)->format("Y-m-d");
-                    $today = Carbon::now();
-                    $daysLeft = 0;
-                    if ($today < $deadline) {
-                        $daysLeft = (int) $today->diffInDays($deadline, false) . "jrs";
-                    }
-                }
-
-                return [
-                    'commande' => $commande,
-                    'days_left' => $daysLeft,
-                    'deadline' => $deadline,
-                ];
-            });
-            $output = "";
-            if ($commandesWithIntervals->count() > 0) {
-                $output .= '
-                <table class="afftable">
-                    <tr>
-                        <th>numéro de commande</th>
-                        <th>DATE COMMANDE</th>
-                        <th>STATUT COMMANDE</th>
-                        <th>STATUT LIVRAISON</th>
-                        <th>STATUT RECEPTION</th>
-                        <th>STATUT PAIEMENT</th>
-                        <th>DELAI RESTANT</th>
-                        <th>DATE LIMITE DE PAIEMENT</th>
-                    </tr>';
-                foreach ($commandesWithIntervals as $commande) {
-                    $output .= '<tr>
-                <td>' . $commande["commande"]->NUM_COMMANDE . '</td>
-                <td>' . $commande["commande"]->DATE_COMMANDE . '</td>
-                <td>' . $commande["commande"]->STATUT_COMMANDE . '</td>
-                <td>' . $commande["commande"]->STATUT_LIVRAISON . '</td>
-                <td>' . $commande["commande"]->STATUT_RECEPTION . '</td>
-                <td>' . $commande["commande"]->STATUT_PAIEMENT . '</td>
-                <td>' . $commande["days_left"] . ' </td>
                 <td>' . $commande["deadline"] . '</td>
             </tr>';
                 }
@@ -531,7 +472,7 @@ class AjaxController extends Controller
                 <table class="afftable">
                     <tr>
                         <th>NUM_COMMANDE </th>
-                        <th>numero de retours </th>
+                        <th>nombre de retours </th>
                         <th>actions</th>
                     </tr>';
                     foreach ($commandes as $commande) {

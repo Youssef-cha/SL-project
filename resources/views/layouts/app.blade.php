@@ -27,7 +27,6 @@
                 <li class="groupe"><i class="fas fa-chart-line"></i> ETATS</li>
                 <li class="space"><i class="fas fa-search"></i><a href="{{ route('commandes.index') }}"> Rechercher</a></li>
                 <li class="space"><i class="fas fa-clipboard-list"></i><a href="{{ route('commandesList.index') }}"> Suivi des Commandes</a></li>
-                <li class="space"><i class="fas fa-tasks"></i><a href="{{ route('engagements.index') }}"> Suivi des engagements</a></li>
                 <li class="space"><i class="fas fa-list-alt"></i><a href="{{ route('rubriques.index') }}"> Suivi des rubriques</a></li>
                 <li class="space"><i class="fas fa-money-bill-wave"></i><a href="{{ route('raps.index') }}"> Suivi des RAP</a></li>
                 <li class="space"><i class="fas fa-money-check-alt"></i><a href="{{ route('restes.index') }}"> Total Reste à Payer</a></li>

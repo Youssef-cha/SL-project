@@ -14,9 +14,9 @@ class Retour extends Model
     protected $fillable = [
         "NUM_COMMANDE",
         "RESPONSABLE",
-        "MOTIF",
-        "DEBUT",
-        "FIN",
+        "motif",
+        "date_retour",
+    
     ];
     public function commandes(){
         return $this->belongsTo(Commande::class,"NUM_COMMANDE");

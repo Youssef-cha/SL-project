@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('retours', function (Blueprint $table) {
             $table->id();
             $table->string("RESPONSABLE", 100);
-            $table->text("MOTIF");
-            $table->date("DEBUT");
-            $table->date("FIN");
+            $table->date("date_retour");
+            $table->text("motif");
             $table->string('NUM_COMMANDE', length: 50);
 
             $table->foreign("NUM_COMMANDE")->references("NUM_COMMANDE")->on("commandes");

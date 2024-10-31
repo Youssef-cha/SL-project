@@ -16,24 +16,17 @@
             </div>
 
             <div class="inputBx">
-                <textarea name="MOTIF" id="MOTIF" placeholder=" ">{{ old('MOTIF') }}</textarea>
+                <textarea name="motif" id="MOTIF" placeholder=" ">{{ old('MOTIF') }}</textarea>
                 <label for="MOTIF" class="label-title">MOTIF</label>
                 @error('MOTIF')
                     <p style="color: red"> {{ $message }} </p>
                 @enderror
             </div>
 
-            <div class="inputBx">
-                <input value="{{ old('DEBUT') }}" id="DEBUT" name="DEBUT" type="date" placeholder=" ">
-                <label for="DEBUT" class="label-title unique-label" id="autre_label_unique">Date DEBUT</label>
-                @error('DEBUT')
-                    <p style="color: red"> {{ $message }} </p>
-                @enderror
-            </div>
 
             <div class="inputBx">
-                <input value=" {{ old("FIN") }}" id="FIN" name="FIN" type="date" placeholder=" ">
-                <label for="FIN" class="label-title unique-label" id="autre_label_unique">Date FIN</label>
+                <input value=" {{ old("date_retour") }}" id="date_retour" name="date_retour" type="date" placeholder=" ">
+                <label for="date_retour" class="label-title unique-label" id="autre_label_unique">Date retour</label>
                 @error('FIN')
                     <p style="color: red"> {{ $message }} </p>
                 @enderror

@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/search',                          [AjaxController::class, "search"])->name("search");
 Route::get('commande/edit',                    [AjaxController::class, "editCommande"])->name("editCommande");
 Route::get('commande/list',                    [AjaxController::class, "list"])->name("list");
-Route::get('/engagement/list',                 [AjaxController::class, "engagement"])->name("engagement");
 Route::get('/rap/list',                        [AjaxController::class, "rap"])->name("rap");
 Route::get('/reste/list',                      [AjaxController::class, "reste"])->name("reste");
 Route::get('/rubrique/list',                   [AjaxController::class, "rubrique"])->name("rubrique");
@@ -69,6 +68,5 @@ Route::view('/commandes/edit', "commandesUpdate.index")->name('commandesUpdate.i
 Route::view('/status', 'commandesList.index')->name("commandesList.index");
 Route::view('/recherche', "commandes.index")->name("commandes.index");
 Route::view('/rubriques/edit', "rubriquesUpdate.index")->name("rubriquesUpdate.index");
-Route::view('/engagements', "engagements.index")->name("engagements.index");
 Route::view('/raps', "raps.index")->name("raps.index");
 Route::view('/restes', "restes.index")->name("restes.index");
