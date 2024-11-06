@@ -4,7 +4,7 @@
     <div class="search-box">
         <input type="text" name="" id="search" placeholder="tapez numéro de commande" >
     </div>
-    <a href="{{ route('responsables.create') }}">ajouter</a>
+    <a href="{{ route('complexes.create') }}">ajouter</a>
     <div id="serchResult">
     </div>
     <script>
@@ -21,7 +21,7 @@
                 
                 $.ajax({
                     method: 'get',
-                    url: "{{ route('responsables.list') }}",
+                    url: "{{ route('complexes.list') }}",
                     data: {
                         search: $("#search").val()
                     },

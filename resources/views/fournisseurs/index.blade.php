@@ -4,6 +4,7 @@
     <div class="search-box">
         <input type="text" name="" id="search" placeholder="tapez numéro de commande" >
     </div>
+    <a href="{{ route('fournisseurs.create') }}">ajouter</a>
     <div id="serchResult">
     </div>
     <script>

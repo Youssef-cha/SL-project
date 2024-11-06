@@ -45,10 +45,9 @@
     
                 
                 <li class="groupe"><i class="fas fa-list-alt"></i> add</li>
-                <li class="space"><i class="fas fa-plus"></i><a href="{{ route('fournisseurs.create') }}"> fournisseur</a></li>
                 <li class="space"><i class="fas fa-plus"></i><a href="{{ route('fournisseurs.index') }}"> list des fournisseur</a></li>
-                <li class="space"><i class="fas fa-edit"></i><a href="{{ route('responsables.create') }}"> responsable</a></li>
                 <li class="space"><i class="fas fa-edit"></i><a href="{{ route('responsables.index') }}">list des responsable</a></li>
+                <li class="space"><i class="fas fa-edit"></i><a href="{{ route('complexes.index') }}">list des complexes</a></li>
     
             </ul>
         </div>

@@ -21,6 +21,8 @@
             </div>
 
             <button type="submit" class="btn">Enregistrer</button>
+            <a href="{{route("fournisseurs.index")}}" class="btn2">retour</a>
+
 
 
         </form>

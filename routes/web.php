@@ -3,7 +3,9 @@
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\BonCommandeController;
 use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\ComplexeController;
 use App\Http\Controllers\DepotController;
+use App\Http\Controllers\EfpController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\LivraisonController;
 use App\Http\Controllers\PaiementController;
@@ -15,7 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 // ajax_controller
 
-Route::get('/responsables/list',                          [AjaxController::class, "responsableList"])->name("responsables.list");
+Route::get('/complexes/list',                          [AjaxController::class, "complexesList"])->name("complexes.list");
+Route::get('/responsables/list',                          [AjaxController::class, "responsablesList"])->name("responsables.list");
 Route::get('/fournisseurs/list',                          [AjaxController::class, "fournisseursList"])->name("fournisseurs.list");
 Route::get('/search',                          [AjaxController::class, "search"])->name("search");
 Route::get('commande/edit',                    [AjaxController::class, "editCommande"])->name("editCommande");
@@ -77,6 +80,18 @@ Route::get('/responsables/create',                [ResponsableController::class,
 Route::post('/responsables',                [ResponsableController::class, "store"])->name("responsables.store");
 Route::get('/responsables',                [ResponsableController::class, "index"])->name("responsables.index");
 Route::get('/responsables/{responsable}',                [ResponsableController::class, "destroy"])->name("responsables.destroy");
+
+// complexes
+Route::get('/complexes/create',                [ComplexeController::class, "create"])->name("complexes.create");
+Route::post('/complexes',                [ComplexeController::class, "store"])->name("complexes.store");
+Route::get('/complexes',                [ComplexeController::class, "index"])->name("complexes.index");
+Route::get('/complexes/{complexe}',                [ComplexeController::class, "destroy"])->name("complexes.destroy");
+
+// complexes efps
+Route::get('/complexes/{complexe}/efps/create',                [EfpController::class, "create"])->name("complexes.efps.create");
+Route::get('/complexes/{complexe}/efps',                [EfpController::class, "index"])->name("complexes.efps.index");
+Route::post('/complexes/{complexe}/efps',                [EfpController::class, "store"])->name("complexes.efps.store");
+
 
 //views
 Route::view('/', "home");

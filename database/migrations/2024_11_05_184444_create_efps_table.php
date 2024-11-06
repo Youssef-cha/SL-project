@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('efps', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_complexe');
             $table->string('nom_efp',50);
             $table->timestamps();
+            $table->foreign('id_complexe')->references('id')->on('complexes')->onDelete('cascade');
         });
     }
 
