@@ -43,14 +43,15 @@ return new class extends Migration
             $table->float('MONTANT_TVA');
 
             $table->date('DATE_DEPOT_SC');
+            $table->string('oz');
             $table->enum('STATUT_PAIEMENT', ['payee', 'non payee', 'deposee'])->default('non payee');
             $table->date('DATE_PAIEMENT');
             $table->float('MONTANT_PAYE')->nullable();
 
             $table->primary('NUM_COMMANDE');
             $table->foreign('REFERENCE_RUBRIQUE')->references('REFERENCE_RUBRIQUE')->on('rubriques');
-            $table->foreign('FOURNISSEUR')->references('id')->on('fournisseurs');  // Corrected foreign key definition
-            $table->foreign('RESPONSABLE_DOSSIER')->references('id')->on('responsables');  // Corrected foreign key definition
+            $table->foreign('FOURNISSEUR')->references('id')->on('fournisseurs')->onDelete('cascade');  // Corrected foreign key definition
+            $table->foreign('RESPONSABLE_DOSSIER')->references('id')->on('responsables')->onDelete('cascade');  // Corrected foreign key definition
 
             $table->timestamps();
         });

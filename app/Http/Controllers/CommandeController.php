@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Commande;
+use App\Models\Fournisseur;
+use App\Models\Responsable;
 use App\Models\Rubrique;
 use Illuminate\Support\Facades\DB;
 
@@ -15,11 +17,15 @@ class CommandeController extends Controller
         $achatTypes = $this->getEnumValues("commandes", "TYPE_ACHAT");
         $budgetTypes = $this->getEnumValues("commandes", "TYPE_BUDGET");
         $rubriques = Rubrique::all();
+        $fournisseurs = Fournisseur::orderBy('nom_fournisseur')->get();
+        $responsables = Responsable::orderBy('nom_responsable')->get();
 
         return view("commandes.create", [
             "achatTypes" => $achatTypes,
             "budgetTypes" => $budgetTypes,
             "rubriques" => $rubriques,
+            "fournisseurs" => $fournisseurs,
+            "responsables" => $responsables,
         ]);
     }
     public function store(Request $request)
@@ -70,12 +76,16 @@ class CommandeController extends Controller
         $achatTypes = $this->getEnumValues("commandes", "TYPE_ACHAT");
         $budgetTypes = $this->getEnumValues("commandes", "TYPE_BUDGET");
         $rubriques = Rubrique::all();
+        $fournisseurs = Fournisseur::orderBy('nom_fournisseur')->get();
+        $responsables = Responsable::orderBy('nom_responsable')->get();
         return view('commandes.edit', [
             "commande" => $commande,
             "statutCommandes" => $statutCommandes,
             "achatTypes" => $achatTypes,
             "budgetTypes" => $budgetTypes,
             "rubriques" => $rubriques,
+            "fournisseurs" => $fournisseurs,
+            "responsables" => $responsables,
         ]);
     }
     public function update(Request $request, Commande $commande){

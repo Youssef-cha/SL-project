@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Fournisseur;
+use App\Models\Responsable;
 use App\Models\Rubrique;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,17 +26,18 @@ class CommandeFactory extends Factory
             'TYPE_BUDGET'    => 'Fonctionnement',
             'OBJET_ACHAT'    => fake()->name(),
             'REFERENCE_RUBRIQUE'    => Rubrique::factory()->create(),
-            'FOURNISSEUR'    => fake()->name(),
+            'FOURNISSEUR'    => Fournisseur::factory()->create(),
             'DELAI_LIVRAISON'  => fake()->randomNumber(),
             'GARANTIE'  => 'non',
             'NUM_MARCHE'  => fake()->name(),
             'EXERCICE'  => fake()->randomNumber,
             'DATE_COMMANDE'  => fake()->date(),
-            'RESPONSABLE_DOSSIER'  => fake()->name(),
+            'RESPONSABLE_DOSSIER'  => Responsable::factory()->create(),
             'STATUT_COMMANDE'  => 'attribuee',
 
             'DATE_LIVRAISON'  => fake()->date(),
             'STATUT_LIVRAISON'  => 'non livree',
+            'oz'  => fake()->randomNumber,
             'LIEU_LIVRAISON'  => fake()->name(),
 
             'DATE_VERIFICATION_RECEPTION'  => fake()->date(),

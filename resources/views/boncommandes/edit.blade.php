@@ -55,8 +55,14 @@
             </div>
             <!-- Fournisseur -->
             <div class="inputBx">
-                <input value="{{ old('FOURNISSEUR') ?? $commande->FOURNISSEUR }}" id="fornisseur" name="FOURNISSEUR" type="text" placeholder=" ">
-                <label for="fornisseur">Fournisseur</label>
+                <select name="FOURNISSEUR" id="FOURNISSEUR">
+                    <option value="" hidden></option>
+                    @foreach ($fournisseurs as $fournisseur)
+                        <option @selected($fournisseur->id == old('FOURNISSEUR') ? old('FOURNISSEUR') : $commande->FOURNISSEUR) value="{{ $fournisseur->id }}">
+                            {{ $fournisseur->nom_fournisseur }}</option>
+                    @endforeach
+                </select>
+                <label for="rubrique">fournisseur</label>
                 @error('FOURNISSEUR')
                     <p style="color: red;">{{ $message }}</p>
                 @enderror
@@ -116,13 +122,19 @@
             </div>
             <!-- Responsable dossier -->
             <div class="inputBx">
-                <input value="{{ old('RESPONSABLE_DOSSIER') ?? $commande->RESPONSABLE_DOSSIER }}" id="Responsable dossier" name="RESPONSABLE_DOSSIER"
-                    type="text" placeholder=" ">
-                <label for="Responsable dossier">Responsable dossier</label>
+                <select name="RESPONSABLE_DOSSIER" id="RESPONSABLE_DOSSIER">
+                    <option value="" hidden></option>
+                    @foreach ($responsables as $responsable)
+                        <option @selected($responsable->id == old('RESPONSABLE_DOSSIER') ? old('RESPONSABLE_DOSSIER') : $commande->RESPONSABLE_DOSSIER ) value="{{ $responsable->id }}">
+                            {{ $responsable->nom_responsable }}</option>
+                    @endforeach
+                </select>
+                <label for="rubrique">responsable dossier</label>
                 @error('RESPONSABLE_DOSSIER')
                     <p style="color: red;">{{ $message }}</p>
                 @enderror
             </div>
+            
             <!-- Enregistrer btn -->
             <button type="submit" class="btn">Enregistrer</button>
             <a href="{{route("commandesUpdate.index")}}" class="btn2">retour</a>

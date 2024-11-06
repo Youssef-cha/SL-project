@@ -11,7 +11,15 @@
             @csrf
             @method("PUT")
             <div class="inputBx">
-                <input id="dateLI" value="{{old('DATE_PAIEMENT') ? old('DATE_PAIEMENT') : $commande->DATE_PAIEMENT}}" name="DATE_PAIEMENT" type="date"
+                <input id="dateLI" value="{{old('oz') ? old('oz') : $commande->oz}}" name="oz" type="text"
+                    placeholder=" ">
+                <label for="dateLI" class="label-title unique-label" id="autre_label_unique">numero oz</label>
+                @error('oz')
+                    <p style="color: red;">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="inputBx">
+                <input id="dateLI" value="{{old('oz') ? old('DATE_PAIEMENT') : $commande->DATE_PAIEMENT}}" name="DATE_PAIEMENT" type="date"
                     placeholder=" ">
                 <label for="dateLI" class="label-title unique-label" id="autre_label_unique">DATE PAIEMENT</label>
                 @error('DATE_PAIEMENT')

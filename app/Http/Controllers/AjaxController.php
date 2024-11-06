@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Commande;
+use App\Models\Fournisseur;
+use App\Models\Responsable;
 use App\Models\Rubrique;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,6 +16,7 @@ class AjaxController extends Controller
 {
     public function search(Request $request)
     {
+
         if ($request->ajax()) {
             $data = Commande::where('NUM_COMMANDE', 'like', '%' . $request->search . '%')
                 ->orWhere('OBJET_ACHAT', 'like', '%' . $request->search . '%')
@@ -64,14 +67,14 @@ class AjaxController extends Controller
                             <td>' . $row->TYPE_BUDGET . '</td>
                             <td>' . $row->OBJET_ACHAT . '</td>
                             <td>' . $row->REFERENCE_RUBRIQUE . '</td>
-                            <td>' . $row->FOURNISSEUR . '</td>
+                            <td>' . $row->fournisseur->nom_fournisseur . '</td>
                             <td>' . $row->DELAI_LIVRAISON . '</td>
                             <td>' . $row->GARANTIE . '</td>
-                            <td>' . ($row->RETENUE_GARANTIE ? "$row->RETENUE_GARANTIE%" : "") .' </td>
+                            <td>' . ($row->RETENUE_GARANTIE ? "$row->RETENUE_GARANTIE%" : "") . ' </td>
                             <td>' . $row->NUM_MARCHE . '</td>
                             <td>' . $row->EXERCICE . '</td>
                             <td>' . $row->DATE_COMMANDE . '</td>
-                            <td>' . $row->RESPONSABLE_DOSSIER . '</td>
+                            <td>' . $row->responsable->nom_responsable . '</td>
                             <td>' . $row->STATUT_COMMANDE . '</td>
                             <td>' . $row->DATE_LIVRAISON . '</td>
                             <td>' . $row->STATUT_LIVRAISON . '</td>
@@ -135,19 +138,19 @@ class AjaxController extends Controller
                             <td>
                             <ul>
                                 <li class="Link" >
-                                    <a class="tableLink" href=' . route('commandes.edit',$row->NUM_COMMANDE) . '>commande</a>
+                                    <a class="tableLink" href=' . route('commandes.edit', $row->NUM_COMMANDE) . '>commande</a>
                                 </li>
                                 <li class="Link" >
-                                    <a class="tableLink" href=' . route('livraisons.edit',$row->NUM_COMMANDE) . '>livraison</a>
+                                    <a class="tableLink" href=' . route('livraisons.edit', $row->NUM_COMMANDE) . '>livraison</a>
                                 </li>
                                 <li class="Link" >
-                                    <a class="tableLink" href=' . route('receptions.edit',$row->NUM_COMMANDE) . '>reception</a>
+                                    <a class="tableLink" href=' . route('receptions.edit', $row->NUM_COMMANDE) . '>reception</a>
                                 </li>
                                 <li class="Link" >
-                                    <a class="tableLink" href=' . route('depots.edit',$row->NUM_COMMANDE) . '>depot</a>
+                                    <a class="tableLink" href=' . route('depots.edit', $row->NUM_COMMANDE) . '>depot</a>
                                 </li>
                                 <li class="Link" >
-                                    <a class="tableLink" href=' . route('paiements.edit',$row->NUM_COMMANDE) . '>paiement</a>
+                                    <a class="tableLink" href=' . route('paiements.edit', $row->NUM_COMMANDE) . '>paiement</a>
                                 </li>
                             </ul>
                             </td>
@@ -167,8 +170,8 @@ class AjaxController extends Controller
                         <th>MIS À JOUR À</th>
                         <th>Mettre à jour</th>
                     </tr>';
-                    foreach ($boncommandes as $row) {
-                        $output .= "<tr>
+                foreach ($boncommandes as $row) {
+                    $output .= "<tr>
                                 <td>" . $row->NUM_COMMANDE . "</td>
                                 <td>" . $row->created_at->format('Y-m-d') . "</td>
                                 <td>" . $row->updated_at->format('Y-m-d') . "</td>
@@ -176,8 +179,8 @@ class AjaxController extends Controller
                                     <a href='" . route('boncommandes.edit', base64_encode($row->NUM_COMMANDE)) . "' class='link'>modifier bon commande</a>
                                 </td>
                             </tr>";
-                    }
-                    
+                }
+
                 $output .= '</table>';
             } else {
                 $output .= '<h3 >Aucune donnée trouvée</h3>';
@@ -189,10 +192,10 @@ class AjaxController extends Controller
     {
         if ($request->ajax()) {
             $rubriques = Rubrique::where("REFERENCE_RUBRIQUE", 'like', '%' . $request->search . '%')
-            ->orWhere("ANNEE_BUDGETAIRE", 'like', '%' . $request->search . '%')
-            ->orderBy('updated_at', 'desc')
-            ->get();
-            
+                ->orWhere("ANNEE_BUDGETAIRE", 'like', '%' . $request->search . '%')
+                ->orderBy('updated_at', 'desc')
+                ->get();
+
             $output = "";
             if ($rubriques->count() > 0) {
                 $output .= '
@@ -212,7 +215,7 @@ class AjaxController extends Controller
                             <td>' . $row->created_at->format('Y-m-d') . '</td>
                             <td>' . $row->updated_at->format('Y-m-d') . '</td>
                             <td>
-                                    <a class="tableLink" href=' . route('rubriques.edit',$row->REFERENCE_RUBRIQUE) . '>rubrique</a>
+                                    <a class="tableLink" href=' . route('rubriques.edit', $row->REFERENCE_RUBRIQUE) . '>rubrique</a>
                             </td>
                         </tr>';
                 }
@@ -220,7 +223,7 @@ class AjaxController extends Controller
             } else {
                 $output .= '<h3>Aucune donnée trouvée</h3>';
             }
-            
+
             echo $output;
         }
     }
@@ -301,7 +304,7 @@ class AjaxController extends Controller
             $commandes = $commandes->map(function ($commande) {
                 $taux = null;
                 if ($commande->TTC != null && $commande->MONTANT_PAYE != null) {
-                    $taux = round($commande->MONTANT_PAYE / $commande->TTC * 100,2) . "%";
+                    $taux = round($commande->MONTANT_PAYE / $commande->TTC * 100, 2) . "%";
                 }
                 return [
                     'commande' => $commande,
@@ -404,9 +407,6 @@ class AjaxController extends Controller
                 $output .= '<hr style="border: 1px solid #000; margin: 20px 0;">
                 <h3><strong style="font-weight: 700;">Total reste à payer :</strong> ' . $resteP . '</h3>
                 <h3><strong style="font-weight: 700;">Total reste du budget :</strong> ' . $resteB . '</h3>';
-    
-    
-            
             } else {
                 $output = '<hr><h3>Aucune donnée trouvée</h3>';
             }
@@ -453,7 +453,79 @@ class AjaxController extends Controller
                 $output .= '</table>';
                 $output .= '<h3><strong style="font-weight: 700;">Total reste à payer :</strong> ' . $resteP . '</h3>
             <h3><strong style="font-weight: 700;">Total reste du budget :</strong> ' . $resteB . '</h3>';
+            } else {
+                $output = '<h3>Aucune donnée trouvée</h3>';
+            }
+            echo $output;
+        }
+    }
+    public function responsableList(Request $request)
+    {
+        
+        if ($request->ajax()) {
+            $responsables = Responsable::where('nom_responsable', 'like', '%' . $request->search . '%')
+                ->orWhere('id', 'like', '%' . $request->search . '%')->get();
+            $output = "";
+            if ($responsables->count() > 0) {
+                $output .= '
+                <table class="afftable">
+                    <tr>
+                        <th>id </th>
+                        <th>nom responsable </th>
+                        <th>nombre des commande </th>
+                        <th>creer a </th>
+                        <th>supprimer</th>
+                    </tr>';
+                foreach ($responsables as $responsable) {
+                    $link = '
+                     <a href="' . route("responsables.destroy", ["responsable" => $responsable->id]) . '" class="link">supprimer</a>';
 
+                    $output .= '<tr>
+                                        <td>' . $responsable->id . '</td>
+                                        <td>' . $responsable->nom_responsable . '</td>
+                                        <td>' . $responsable->commandes->count() . '</td>
+                                        <td>' . $responsable->created_at . '</td>
+                                        <td>' . $link . '</td>
+                                </tr>';
+                }
+
+                $output .= '</table>';
+            } else {
+                $output = '<h3>Aucune donnée trouvée</h3>';
+            }
+            echo $output;
+        }
+    }
+    public function fournisseursList(Request $request)
+    {
+        if ($request->ajax()) {
+            $fournisseurs = Fournisseur::where('nom_fournisseur', 'like', '%' . $request->search . '%')
+                ->orWhere('id', 'like', '%' . $request->search . '%')->get();
+            $output = "";
+            if ($fournisseurs->count() > 0) {
+                $output .= '
+                <table class="afftable">
+                    <tr>
+                        <th>id </th>
+                        <th>nom fournisseur </th>
+                        <th>nombre des commande </th>
+                        <th>creer a </th>
+                        <th>supprimer</th>
+                    </tr>';
+                foreach ($fournisseurs as $fournisseur) {
+                    $link = '
+                     <a href="' . route("fournisseurs.destroy", ["fournisseur" => $fournisseur->id]) . '" class="link">supprimer</a>';
+
+                    $output .= '<tr>
+                                        <td>' . $fournisseur->id . '</td>
+                                        <td>' . $fournisseur->nom_fournisseur . '</td>
+                                        <td>' . $fournisseur->commandes->count() . '</td>
+                                        <td>' . $fournisseur->created_at . '</td>
+                                        <td>' . $link . '</td>
+                                </tr>';
+                }
+
+                $output .= '</table>';
             } else {
                 $output = '<h3>Aucune donnée trouvée</h3>';
             }
@@ -464,8 +536,8 @@ class AjaxController extends Controller
     {
         if ($request->ajax()) {
             $commandes = Commande::where('NUM_COMMANDE', 'not like', '__________/____')
-            ->where('NUM_COMMANDE', 'like', '%' . $request->search . '%')
-            ->get();
+                ->where('NUM_COMMANDE', 'like', '%' . $request->search . '%')
+                ->get();
             $output = "";
             if ($commandes->count() > 0) {
                 $output .= '
@@ -475,21 +547,21 @@ class AjaxController extends Controller
                         <th>nombre de retours </th>
                         <th>actions</th>
                     </tr>';
-                    foreach ($commandes as $commande) {
-                        $link = $commande->retours->count() != 0 
-                            ? '<br> <a href="' . route("commandes.retours.index", ["commande" => $commande->NUM_COMMANDE]) . '" class="link">voir tous les retours</a>' 
-                            : "";
-                        
-                        $output .= '<tr>
+                foreach ($commandes as $commande) {
+                    $link = $commande->retours->count() != 0
+                        ? '<br> <a href="' . route("commandes.retours.index", ["commande" => $commande->NUM_COMMANDE]) . '" class="link">voir tous les retours</a>'
+                        : "";
+
+                    $output .= '<tr>
                                         <td>' . $commande->NUM_COMMANDE . '</td>
                                         <td>' . $commande->retours->count() . '</td>
                                         <td>
                                             <a href="' . route("commandes.retours.create", $commande->NUM_COMMANDE) . '" class="link">créer un retour</a>'
-                                            . $link . 
-                                        '</td>
+                        . $link .
+                        '</td>
                                     </tr>';
-                    }
-                    
+                }
+
                 $output .= '</table>';
             } else {
                 $output = '<h3>Aucune donnée trouvée</h3>';

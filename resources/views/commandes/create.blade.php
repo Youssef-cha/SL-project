@@ -33,7 +33,7 @@
                         <option @selected($achatType == old('TYPE_ACHAT')) value="{{ $achatType }}">{{ $achatType }}</option>
                     @endforeach
                 </select>
-                <label for="typeAchat">Type Commande</label>
+                <label for="typeAchat">Type Achat</label>
                 @error('TYPE_ACHAT')
                     <p style="color: red;">{{ $message }}</p>
                 @enderror
@@ -75,12 +75,19 @@
             </div>
             <!-- Fournisseur -->
             <div class="inputBx">
-                <input value="{{ old('FOURNISSEUR') }}" id="fornisseur" name="FOURNISSEUR" type="text" placeholder=" ">
-                <label for="fornisseur">Fournisseur</label>
+                <select name="FOURNISSEUR" id="FOURNISSEUR">
+                    <option value="" hidden></option>
+                    @foreach ($fournisseurs as $fournisseur)
+                        <option @selected($fournisseur->id == old('FOURNISSEUR')) value="{{ $fournisseur->id }}">
+                            {{ $fournisseur->nom_fournisseur }}</option>
+                    @endforeach
+                </select>
+                <label for="rubrique">fournisseur</label>
                 @error('FOURNISSEUR')
                     <p style="color: red;">{{ $message }}</p>
                 @enderror
             </div>
+            
             <!-- Délai de livraison -->
             <div class="inputBx">
                 <input value="{{ old('DELAI_LIVRAISON') }}" id="DELAI_LIVRAISON" name="DELAI_LIVRAISON" type="number"
@@ -144,13 +151,20 @@
             </div>
             <!-- Responsable dossier -->
             <div class="inputBx">
-                <input value="{{ old('RESPONSABLE_DOSSIER') }}" id="Responsable dossier" name="RESPONSABLE_DOSSIER"
-                    type="text" placeholder=" ">
-                <label for="Responsable dossier">Responsable dossier</label>
+                <select name="RESPONSABLE_DOSSIER" id="RESPONSABLE_DOSSIER">
+                    <option value="" hidden></option>
+                    @foreach ($responsables as $responsable)
+                        <option @selected($responsable->id == old('RESPONSABLE_DOSSIER')) value="{{ $responsable->id }}">
+                            {{ $responsable->nom_responsable }}</option>
+                    @endforeach
+                </select>
+                <label for="RESPONSABLE_DOSSIER">responsable</label>
                 @error('RESPONSABLE_DOSSIER')
                     <p style="color: red;">{{ $message }}</p>
                 @enderror
             </div>
+            
+           
             <!-- Enregistrer btn -->
             <button type="submit" class="btn">Enregistrer</button>
         </form>

@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\Responsable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Commande extends Model
 {
@@ -26,6 +27,7 @@ class Commande extends Model
         "STATUT_COMMANDE",
         "DATE_LIVRAISON",
         "STATUT_LIVRAISON",
+        "oz",
         "LIEU_LIVRAISON",
         "DATE_VERIFICATION_RECEPTION",
         "STATUT_RECEPTION",
@@ -47,6 +49,14 @@ class Commande extends Model
     public function rubrique(){
         return $this->belongsTo(Rubrique::class, "REFERENCE_RUBRIQUE");
     }
+
+    public function responsable(){
+        return $this->BelongsTo(Responsable::class,"RESPONSABLE_DOSSIER","id");
+    }
+    public function fournisseur(){
+        return $this->belongsTo(Fournisseur::class,'FOURNISSEUR');
+    }
+
     public function retours(){
         return $this->hasMany(Retour::class,"NUM_COMMANDE");
     }

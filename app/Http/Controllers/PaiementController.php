@@ -24,6 +24,7 @@ class PaiementController extends Controller
             "STATUT_PAIEMENT" => ['required','in:deposee,payee'],
             "DATE_PAIEMENT" => ['required'],
             "MONTANT_PAYE" => ['required'],
+            "oz" => ['required'],
         ], [
             '*.required' => 'Ce champ est obligatoire'
         ]);

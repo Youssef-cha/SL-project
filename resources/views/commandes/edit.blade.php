@@ -27,7 +27,7 @@
                         <option @selected($achatType == (old('TYPE_ACHAT') ? old('TYPE_ACHAT') : $commande->TYPE_ACHAT)) value="{{ $achatType }}">{{ $achatType }}</option>
                     @endforeach
                 </select>
-                <label for="typeAchat">Type Commande</label>
+                <label for="typeAchat">Type Achat</label>
                 @error('TYPE_ACHAT')
                     <p style="color: red;">{{ $message }}</p>
                 @enderror
@@ -70,13 +70,19 @@
             </div>
             <!-- Fournisseur -->
             <div class="inputBx">
-                <input value="{{ old('FOURNISSEUR') ? old('FOURNISSEUR') : $commande->FOURNISSEUR }}" id="fornisseur"
-                    name="FOURNISSEUR" type="text" placeholder=" ">
-                <label for="fornisseur">Fournisseur</label>
+                <select name="FOURNISSEUR" id="FOURNISSEUR">
+                    <option value="" hidden></option>
+                    @foreach ($fournisseurs as $fournisseur)
+                        <option @selected($fournisseur->id == old('FOURNISSEUR') ? old('FOURNISSEUR') : $commande->FOURNISSEUR) value="{{ $fournisseur->id }}">
+                            {{ $fournisseur->nom_fournisseur }}</option>
+                    @endforeach
+                </select>
+                <label for="rubrique">fournisseur</label>
                 @error('FOURNISSEUR')
                     <p style="color: red;">{{ $message }}</p>
                 @enderror
             </div>
+
             <!-- Délai de livraison -->
             <div class="inputBx">
                 <input value="{{ old('DELAI_LIVRAISON') ? old('DELAI_LIVRAISON') : $commande->DELAI_LIVRAISON }}"
@@ -141,22 +147,27 @@
             </div>
             <!-- Responsable dossier -->
             <div class="inputBx">
-                <input
-                    value="{{ old('RESPONSABLE_DOSSIER') ? old('RESPONSABLE_DOSSIER') : $commande->RESPONSABLE_DOSSIER }}"
-                    id="Responsable dossier" name="RESPONSABLE_DOSSIER" type="text" placeholder=" ">
-                <label for="Responsable dossier">Responsable dossier</label>
+                <select name="RESPONSABLE_DOSSIER" id="RESPONSABLE_DOSSIER">
+                    <option value="" hidden></option>
+                    @foreach ($responsables as $responsable)
+                        <option @selected($responsable->id == old('RESPONSABLE_DOSSIER') ? old('RESPONSABLE_DOSSIER') : $commande->RESPONSABLE_DOSSIER ) value="{{ $responsable->id }}">
+                            {{ $responsable->nom_responsable }}</option>
+                    @endforeach
+                </select>
+                <label for="rubrique">responsable dossier</label>
                 @error('RESPONSABLE_DOSSIER')
                     <p style="color: red;">{{ $message }}</p>
                 @enderror
             </div>
+            
             <!-- Statut commande -->
             <div class="inputBx2">
                 <p class="label-title">Statut commande</p>
                 <div class="radio-group">
                     @foreach ($statutCommandes as $statutCommande)
                         <div>
-                            <input @checked((old('STATUT_COMMANDE') ? old('STATUT_COMMANDE') : $commande->STATUT_COMMANDE) == $statutCommande) id="{{ $statutCommande }}" name="STATUT_COMMANDE" type="radio"
-                                value="{{ $statutCommande }}">
+                            <input @checked((old('STATUT_COMMANDE') ? old('STATUT_COMMANDE') : $commande->STATUT_COMMANDE) == $statutCommande) id="{{ $statutCommande }}" name="STATUT_COMMANDE"
+                                type="radio" value="{{ $statutCommande }}">
                             <label for="{{ $statutCommande }}" class="radio-label">{{ $statutCommande }}</label>
                         </div>
                     @endforeach
@@ -164,7 +175,7 @@
             </div>
             <!-- Enregistrer btn -->
             <button type="submit" class="btn">Enregistrer</button>
-            <a href="{{route("commandesUpdate.index")}}" class="btn2">retour</a>
+            <a href="{{ route('commandesUpdate.index') }}" class="btn2">retour</a>
             <!-- <button onclick="window.location.href='{{ route('commandesUpdate.index') }}'" class="btn">Retour</button> -->
             <!-- <button id="redirectButton" class="btn">Retour</button> -->
 

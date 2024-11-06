@@ -4,14 +4,19 @@ use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\BonCommandeController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\DepotController;
+use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\LivraisonController;
 use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\ReceptionController;
+use App\Http\Controllers\ResponsableController;
 use App\Http\Controllers\RetourController;
 use App\Http\Controllers\RubriqueController;
 use Illuminate\Support\Facades\Route;
 
 // ajax_controller
+
+Route::get('/responsables/list',                          [AjaxController::class, "responsableList"])->name("responsables.list");
+Route::get('/fournisseurs/list',                          [AjaxController::class, "fournisseursList"])->name("fournisseurs.list");
 Route::get('/search',                          [AjaxController::class, "search"])->name("search");
 Route::get('commande/edit',                    [AjaxController::class, "editCommande"])->name("editCommande");
 Route::get('commande/list',                    [AjaxController::class, "list"])->name("list");
@@ -60,6 +65,18 @@ Route::get('/rubriques/create',                [RubriqueController::class, "crea
 Route::post('/rubriques',                      [RubriqueController::class, "store"])->name("rubriques.store");
 Route::get('/rubriques/{rubrique}/edit',                      [RubriqueController::class, "edit"])->name("rubriques.edit");
 Route::put('/rubriques/{rubrique}',                      [RubriqueController::class, "update"])->name("rubriques.update");
+
+// fournisseur
+Route::get('/fournisseurs/create',                [FournisseurController::class, "create"])->name("fournisseurs.create");
+Route::post('/fournisseurs',                [FournisseurController::class, "store"])->name("fournisseurs.store");
+Route::get('/fournisseurs',                [FournisseurController::class, "index"])->name("fournisseurs.index");
+Route::get('/fournisseurs/{fournisseur}',                [FournisseurController::class, "destroy"])->name("fournisseurs.destroy");
+
+// responsable
+Route::get('/responsables/create',                [ResponsableController::class, "create"])->name("responsables.create");
+Route::post('/responsables',                [ResponsableController::class, "store"])->name("responsables.store");
+Route::get('/responsables',                [ResponsableController::class, "index"])->name("responsables.index");
+Route::get('/responsables/{responsable}',                [ResponsableController::class, "destroy"])->name("responsables.destroy");
 
 //views
 Route::view('/', "home");

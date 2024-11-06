@@ -42,6 +42,14 @@
                 <li class="groupe"><i class="fas fa-list-alt"></i> RUBRIQUES</li>
                 <li class="space"><i class="fas fa-plus"></i><a href="{{ route('rubriques.create') }}"> Créer une rubrique</a></li>
                 <li class="space"><i class="fas fa-edit"></i><a href="{{ route('rubriquesUpdate.index') }}"> Modifier une rubrique</a></li>
+    
+                
+                <li class="groupe"><i class="fas fa-list-alt"></i> add</li>
+                <li class="space"><i class="fas fa-plus"></i><a href="{{ route('fournisseurs.create') }}"> fournisseur</a></li>
+                <li class="space"><i class="fas fa-plus"></i><a href="{{ route('fournisseurs.index') }}"> list des fournisseur</a></li>
+                <li class="space"><i class="fas fa-edit"></i><a href="{{ route('responsables.create') }}"> responsable</a></li>
+                <li class="space"><i class="fas fa-edit"></i><a href="{{ route('responsables.index') }}">list des responsable</a></li>
+    
             </ul>
         </div>
         <div class="column content">

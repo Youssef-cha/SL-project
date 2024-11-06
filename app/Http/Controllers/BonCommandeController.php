@@ -7,6 +7,8 @@ use App\Models\Rubrique;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Fournisseur;
+use App\Models\Responsable;
 
 class BonCommandeController extends Controller
 {
@@ -17,11 +19,15 @@ class BonCommandeController extends Controller
         $achatTypes = $this->getEnumValues("commandes", "TYPE_ACHAT");
         $budgetTypes = $this->getEnumValues("commandes", "TYPE_BUDGET");
         $rubriques = Rubrique::all();
+        $fournisseurs = Fournisseur::orderBy('nom_fournisseur')->get();
+        $responsables = Responsable::orderBy('nom_responsable')->get();
 
         return view("boncommandes.create", [
             "achatTypes" => $achatTypes,
             "budgetTypes" => $budgetTypes,
             "rubriques" => $rubriques,
+            "fournisseurs" => $fournisseurs,
+            "responsables" => $responsables,
         ]);
     }
 
@@ -69,12 +75,16 @@ class BonCommandeController extends Controller
         $achatTypes = $this->getEnumValues("commandes", "TYPE_ACHAT");
         $budgetTypes = $this->getEnumValues("commandes", "TYPE_BUDGET");
         $rubriques = Rubrique::all();
+        $fournisseurs = Fournisseur::orderBy('nom_fournisseur')->get();
+        $responsables = Responsable::orderBy('nom_responsable')->get();
         return view('boncommandes.edit', [
             "commande" => $commande,
             "statutCommandes" => $statutCommandes,
             "achatTypes" => $achatTypes,
             "budgetTypes" => $budgetTypes,
             "rubriques" => $rubriques,
+            "fournisseurs" => $fournisseurs,
+            "responsables" => $responsables,
         ]);
     }
 
