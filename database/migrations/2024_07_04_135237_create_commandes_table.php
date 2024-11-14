@@ -43,7 +43,7 @@ return new class extends Migration
             $table->float('MONTANT_TVA');
 
             $table->date('DATE_DEPOT_SC');
-            $table->string('oz');
+            $table->string('oz')->nullable();
             $table->enum('STATUT_PAIEMENT', ['payee', 'non payee', 'deposee'])->default('non payee');
             $table->date('DATE_PAIEMENT');
             $table->float('MONTANT_PAYE')->nullable();
