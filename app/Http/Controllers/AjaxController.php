@@ -102,6 +102,170 @@ class AjaxController extends Controller
             echo $output;
         }
     }
+    public function list(Request $request)
+    {
+        if ($request->ajax()) {
+            $commandes = Commande::where('NUM_COMMANDE', 'not like', '__________/____')
+                ->where(function ($query) use ($request) {
+                    $query->where('NUM_COMMANDE', 'like', '%' . $request->search . '%')
+                        ->orWhere('DATE_COMMANDE', 'like', '%' . $request->search . '%')
+                        ->orWhere('STATUT_COMMANDE', 'like', '%' . $request->search . '%')
+                        ->orWhere('STATUT_LIVRAISON', 'like', '%' . $request->search . '%')
+                        ->orWhere('STATUT_RECEPTION', 'like', '%' . $request->search . '%')
+                        ->orWhere('STATUT_PAIEMENT', 'like', '%' . $request->search . '%');
+                })
+                ->orderBy('updated_at', 'desc')
+                ->get();
+            $commandesWithIntervals = $commandes->map(function ($commande) {
+                $daysLeft = null;
+                $deadline = null;
+
+                if ($commande->STATUT_LIVRAISON === 'livree' && $commande->STATUT_RECEPTION === 'receptionnee' && $commande->STATUT_PAIEMENT !== 'payee') {
+                    $dateCommande = Carbon::parse($commande->DATE_FACTURE);
+                    $deadline = $dateCommande->addDays(60)->format("Y-m-d");
+                    $today = Carbon::now();
+                    $daysLeft = 0;
+                    if ($today < $deadline) {
+                        $daysLeft = (int) $today->diffInDays($deadline, false);
+                    }
+                }
+
+                return [
+                    'commande' => $commande,
+                    'days_left' => $daysLeft,
+                    'deadline' => $deadline,
+                ];
+            });
+            $output = "";
+            if ($commandesWithIntervals->count() > 0) {
+                $output .= '
+                <table class="afftable">
+                    <tr>
+                        <th>numéro de commande</th>
+                        <th>DATE COMMANDE</th>
+                        <th>STATUT COMMANDE</th>
+                        <th>STATUT LIVRAISON</th>
+                        <th>STATUT RECEPTION</th>
+                        <th>STATUT PAIEMENT</th>
+                        <th>DELAI RESTANT</th>
+                        <th>DATE LIMITE DE PAIEMENT</th>
+                    </tr>';
+                foreach ($commandesWithIntervals as $commande) {
+                    $output .= '<tr>
+                <td>' . $commande["commande"]->NUM_COMMANDE . '</td>
+                <td>' . $commande["commande"]->DATE_COMMANDE . '</td>
+                <td>' . $commande["commande"]->STATUT_COMMANDE . '</td>
+                <td>' . $commande["commande"]->STATUT_LIVRAISON . '</td>
+                <td>' . $commande["commande"]->STATUT_RECEPTION . '</td>
+                <td>' . $commande["commande"]->STATUT_PAIEMENT . '</td>
+                <td>' . $commande["days_left"] . '</td>
+                <td>' . $commande["deadline"] . '</td>
+            </tr>';
+                }
+                $output .= '</table>';
+            } else {
+                $output = '<h3>Aucune donnée trouvée</h3>';
+            }
+            echo $output;
+        }
+    }
+    public function rubrique(Request $request)
+    {
+        if ($request->ajax()) {
+
+            $result = Rubrique::query()
+                ->where("REFERENCE_RUBRIQUE", "like", "%{$request->search}%")
+                ->orWhere("ANNEE_BUDGETAIRE", "like", "{$request->search}%")
+                ->get();
+
+            $output = "";
+            if ($result->count() > 0) {
+                $restPay = 0;
+                $restBud = 0;
+                $output .= '
+                <table class="afftable">
+                    <tr>
+                        <th>REFERENCE RUBRIQUE</th>
+                        <th>BUDGET</th>
+                        <th>annee</th>
+                        <th>total ttc</th>
+                        <th>reste</th>
+                    </tr>';
+                foreach ($result as $rub) {
+                    $rest = $rub->BUDGET - $rub->commandes->sum("TTC");
+                    $restBud += $rest > 0 ? $rest : 0;
+                    $restPay += $rest < 0 ? -$rest : 0;
+                    $output .= '
+                    <tr>
+                        <td>' . $rub->REFERENCE_RUBRIQUE . '</td>
+                        <td>' . $rub->BUDGET . '</td>
+                        <td>' . $rub->ANNEE_BUDGETAIRE . '</td>
+                        <td>' . $rub->commandes->sum("TTC") . '</td>
+                        <td>' . $rest . '</td>
+                    </tr>';
+                }
+                $output .= '</table>';
+                $output = '
+                <h3><strong style="font-weight: 700;">Total reste à payer :</strong> ' . $restPay . '</h3>
+                <h3><strong style="font-weight: 700;">Total reste du budget :</strong> ' . $restBud . '</h3>' . $output;
+            } else {
+                $output = '<hr><h3>Aucune donnée trouvée</h3>';
+            }
+            echo $output;
+        }
+    }
+    public function rap(Request $request)
+    {
+        if ($request->ajax()) {
+            $commandes = Commande::where('EXERCICE', 'like', '%' . $request->search . '%')
+                ->where('NUM_COMMANDE', 'not like', '__________/____')
+                ->orderBy('updated_at', 'desc')
+                ->get();
+            $commandes = $commandes->map(function ($commande) {
+                $taux = null;
+                if ($commande->TTC != null && $commande->MONTANT_PAYE != null) {
+                    $taux = round($commande->MONTANT_PAYE / $commande->TTC * 100, 2) . "%";
+                }
+                return [
+                    'commande' => $commande,
+                    'taux' => $taux,
+                ];
+            });
+            $output = "";
+            if ($commandes->count() > 0) {
+                $output .= '
+                <table class="afftable">
+                    <tr>
+                        <th>numéro de commande</th>
+                        <th>DATE COMMANDE</th>
+                        <th>fournisseur</th>
+                        <th>ht</th>
+                        <th>ttc</th>
+                        <th>tva</th>
+                        <th>montant paye</th>
+                        <th>taux</th>
+                        <th>statut paiement</th>
+                    </tr>';
+                foreach ($commandes as $commande) {
+                    $output .= '<tr>
+                                    <td>' . $commande["commande"]->NUM_COMMANDE . '</td>
+                                    <td>' . $commande["commande"]->DATE_COMMANDE . '</td>
+                                    <td>' . $commande["commande"]->FOURNISSEUR . '</td>
+                                    <td>' . $commande["commande"]->HT . '</td>
+                                    <td>' . $commande["commande"]->TTC . '</td>
+                                    <td>' . $commande["commande"]->MONTANT_TVA . '</td>
+                                    <td>' . $commande["commande"]->MONTANT_PAYE . '</td>
+                                    <td>' . $commande["taux"] . '</td>
+                                    <td>' . $commande["commande"]->STATUT_PAIEMENT . '</td>
+                                </tr>';
+                }
+                $output .= '</table>';
+            } else {
+                $output = '<h3>Aucune donnée trouvée</h3>';
+            }
+            echo $output;
+        }
+    }
     public function editCommande(Request $request)
     {
         if ($request->ajax()) {
@@ -228,238 +392,16 @@ class AjaxController extends Controller
             echo $output;
         }
     }
-    public function list(Request $request)
-    {
-        if ($request->ajax()) {
-            $commandes = Commande::where('NUM_COMMANDE', 'not like', '__________/____')
-                ->where(function ($query) use ($request) {
-                    $query->where('NUM_COMMANDE', 'like', '%' . $request->search . '%')
-                        ->orWhere('DATE_COMMANDE', 'like', '%' . $request->search . '%')
-                        ->orWhere('STATUT_COMMANDE', 'like', '%' . $request->search . '%')
-                        ->orWhere('STATUT_LIVRAISON', 'like', '%' . $request->search . '%')
-                        ->orWhere('STATUT_RECEPTION', 'like', '%' . $request->search . '%')
-                        ->orWhere('STATUT_PAIEMENT', 'like', '%' . $request->search . '%');
-                })
-                ->orderBy('updated_at', 'desc')
-                ->get();
-            $commandesWithIntervals = $commandes->map(function ($commande) {
-                $daysLeft = null;
-                $deadline = null;
 
-                if ($commande->STATUT_LIVRAISON === 'livree' && $commande->STATUT_RECEPTION === 'receptionnee' && $commande->STATUT_PAIEMENT !== 'payee') {
-                    $dateCommande = Carbon::parse($commande->DATE_FACTURE);
-                    $deadline = $dateCommande->addDays(60)->format("Y-m-d");
-                    $today = Carbon::now();
-                    $daysLeft = 0;
-                    if ($today < $deadline) {
-                        $daysLeft = (int) $today->diffInDays($deadline, false);
-                    }
-                }
 
-                return [
-                    'commande' => $commande,
-                    'days_left' => $daysLeft,
-                    'deadline' => $deadline,
-                ];
-            });
-            $output = "";
-            if ($commandesWithIntervals->count() > 0) {
-                $output .= '
-                <table class="afftable">
-                    <tr>
-                        <th>numéro de commande</th>
-                        <th>DATE COMMANDE</th>
-                        <th>STATUT COMMANDE</th>
-                        <th>STATUT LIVRAISON</th>
-                        <th>STATUT RECEPTION</th>
-                        <th>STATUT PAIEMENT</th>
-                        <th>DELAI RESTANT</th>
-                        <th>DATE LIMITE DE PAIEMENT</th>
-                    </tr>';
-                foreach ($commandesWithIntervals as $commande) {
-                    $output .= '<tr>
-                <td>' . $commande["commande"]->NUM_COMMANDE . '</td>
-                <td>' . $commande["commande"]->DATE_COMMANDE . '</td>
-                <td>' . $commande["commande"]->STATUT_COMMANDE . '</td>
-                <td>' . $commande["commande"]->STATUT_LIVRAISON . '</td>
-                <td>' . $commande["commande"]->STATUT_RECEPTION . '</td>
-                <td>' . $commande["commande"]->STATUT_PAIEMENT . '</td>
-                <td>' . $commande["days_left"] . '</td>
-                <td>' . $commande["deadline"] . '</td>
-            </tr>';
-                }
-                $output .= '</table>';
-            } else {
-                $output = '<h3>Aucune donnée trouvée</h3>';
-            }
-            echo $output;
-        }
-    }
-    public function rap(Request $request)
-    {
-        if ($request->ajax()) {
-            $commandes = Commande::where('EXERCICE', 'like', '%' . $request->search . '%')
-                ->where('NUM_COMMANDE', 'not like', '__________/____')
-                ->orderBy('updated_at', 'desc')
-                ->get();
-            $commandes = $commandes->map(function ($commande) {
-                $taux = null;
-                if ($commande->TTC != null && $commande->MONTANT_PAYE != null) {
-                    $taux = round($commande->MONTANT_PAYE / $commande->TTC * 100, 2) . "%";
-                }
-                return [
-                    'commande' => $commande,
-                    'taux' => $taux,
-                ];
-            });
-            $output = "";
-            if ($commandes->count() > 0) {
-                $output .= '
-                <table class="afftable">
-                    <tr>
-                        <th>numéro de commande</th>
-                        <th>DATE COMMANDE</th>
-                        <th>fournisseur</th>
-                        <th>ht</th>
-                        <th>ttc</th>
-                        <th>tva</th>
-                        <th>montant paye</th>
-                        <th>taux</th>
-                        <th>statut paiement</th>
-                    </tr>';
-                foreach ($commandes as $commande) {
-                    $output .= '<tr>
-                                    <td>' . $commande["commande"]->NUM_COMMANDE . '</td>
-                                    <td>' . $commande["commande"]->DATE_COMMANDE . '</td>
-                                    <td>' . $commande["commande"]->FOURNISSEUR . '</td>
-                                    <td>' . $commande["commande"]->HT . '</td>
-                                    <td>' . $commande["commande"]->TTC . '</td>
-                                    <td>' . $commande["commande"]->MONTANT_TVA . '</td>
-                                    <td>' . $commande["commande"]->MONTANT_PAYE . '</td>
-                                    <td>' . $commande["taux"] . '</td>
-                                    <td>' . $commande["commande"]->STATUT_PAIEMENT . '</td>
-                                </tr>';
-                }
-                $output .= '</table>';
-            } else {
-                $output = '<h3>Aucune donnée trouvée</h3>';
-            }
-            echo $output;
-        }
-    }
-    public function rubrique(Request $request)
-    {
-        if ($request->ajax()) {
-            $commandes = DB::table("commandes")
-                ->join("rubriques", "rubriques.REFERENCE_RUBRIQUE", "=", "commandes.REFERENCE_RUBRIQUE")
-                ->select(
-                    DB::raw('rubriques.BUDGET - SUM(commandes.TTC) AS RESTE')
-                )
-                ->where('rubriques.ANNEE_BUDGETAIRE', '=', Carbon::now()->format('Y'))
-                ->where('NUM_COMMANDE', 'not like', '__________/____')
-                ->groupBy('rubriques.REFERENCE_RUBRIQUE', 'rubriques.BUDGET')
-                ->get();
 
-            $SearchedCommandes = DB::table("commandes")
-                ->join("rubriques", "rubriques.REFERENCE_RUBRIQUE", "=", "commandes.REFERENCE_RUBRIQUE")
-                ->select(
-                    'rubriques.REFERENCE_RUBRIQUE',
-                    'rubriques.BUDGET',
-                    DB::raw('SUM(commandes.TTC) AS TOTAL_C'),
-                    DB::raw('rubriques.BUDGET - SUM(commandes.TTC) AS RESTE')
-                )
-                ->where('rubriques.ANNEE_BUDGETAIRE', '=', Carbon::now()->format('Y'))
-                ->where('NUM_COMMANDE', 'not like', '__________/____')
-                ->where(function ($query) use ($request) {
-                    $query->where('NUM_COMMANDE', 'like', '%' . $request->search . '%');
-                })
-                ->groupBy('rubriques.REFERENCE_RUBRIQUE', 'rubriques.BUDGET')
-                ->get();
 
-            $output = "";
-            if ($commandes->count() > 0) {
-                $resteP = 0;
-                $resteB = 0;
-                foreach ($commandes as $commande) {
-                    $resteP += $commande->RESTE < 0 ? $commande->RESTE * -1 : 0;
-                    $resteB += $commande->RESTE > 0 ? $commande->RESTE : 0;
-                }
-                if ($SearchedCommandes->count() > 0) {
-                    $output .= '
-                    <table class="afftable">
-                        <tr>
-                            <th>REFERENCE RUBRIQUE</th>
-                            <th>BUDGET</th>
-                            <th>total ttc</th>
-                            <th>reste</th>
-                        </tr>';
-                    foreach ($SearchedCommandes as $commande) {
-                        $output .= '<tr>
-                                            <td>' . $commande->REFERENCE_RUBRIQUE . '</td>
-                                            <td>' . $commande->BUDGET . '</td>
-                                            <td>' . $commande->TOTAL_C . '</td>
-                                            <td>' . $commande->RESTE . '</td>
-                                        </tr>';
-                    }
-                    $output .= '</table>';
-                } else {
-                    $output = '<h3>Aucune donnée trouvée</h3>';
-                }
-                $output .= '<hr style="border: 1px solid #000; margin: 20px 0;">
-                <h3><strong style="font-weight: 700;">Total reste à payer :</strong> ' . $resteP . '</h3>
-                <h3><strong style="font-weight: 700;">Total reste du budget :</strong> ' . $resteB . '</h3>';
-            } else {
-                $output = '<hr><h3>Aucune donnée trouvée</h3>';
-            }
-            echo $output;
-        }
-    }
-    public function reste(Request $request)
-    {
-        if ($request->ajax()) {
-            $commandes = DB::table("commandes")
-                ->join("rubriques", "rubriques.REFERENCE_RUBRIQUE", "=", "commandes.REFERENCE_RUBRIQUE")
-                ->select(
-                    'rubriques.REFERENCE_RUBRIQUE',
-                    'rubriques.BUDGET',
-                    DB::raw('SUM(commandes.TTC) AS TOTAL_C'),
-                    DB::raw('rubriques.BUDGET - SUM(commandes.TTC) AS RESTE')
-                )
-                ->where('NUM_COMMANDE', 'not like', '__________/____')
-                ->where('rubriques.ANNEE_BUDGETAIRE', '=', $request->search)
-                ->groupBy('rubriques.REFERENCE_RUBRIQUE', 'rubriques.BUDGET')
-                ->get();
-            $output = "";
-            if ($commandes->count() > 0) {
-                $resteP = 0;
-                $resteB = 0;
-                $output .= '
-                <table class="afftable">
-                    <tr>
-                        <th>REFERENCE RUBRIQUE</th>
-                        <th>BUDGET</th>
-                        <th>total ttc</th>
-                        <th>reste</th>
-                    </tr>';
-                foreach ($commandes as $commande) {
-                    $resteP += $commande->RESTE < 0 ? $commande->RESTE * -1 : 0;
-                    $resteB += $commande->RESTE > 0 ? $commande->RESTE : 0;
-                    $output .= '<tr>
-                                    <td>' . $commande->REFERENCE_RUBRIQUE . '</td>
-                                    <td>' . $commande->BUDGET . '</td>
-                                    <td>' . $commande->TOTAL_C . '</td>
-                                    <td>' . $commande->RESTE . '</td>
-                                </tr>';
-                }
-                $output .= '</table>';
-                $output .= '<h3><strong style="font-weight: 700;">Total reste à payer :</strong> ' . $resteP . '</h3>
-            <h3><strong style="font-weight: 700;">Total reste du budget :</strong> ' . $resteB . '</h3>';
-            } else {
-                $output = '<h3>Aucune donnée trouvée</h3>';
-            }
-            echo $output;
-        }
-    }
+
+
+
+
+
+
     public function complexesList(Request $request)
     {
         if ($request->ajax()) {
@@ -478,10 +420,10 @@ class AjaxController extends Controller
                     </tr>';
                 foreach ($complexes as $complexe) {
                     $link = '
-                    <a href="' . route("complexes.destroy", ["complexe" => $complexe->id]) . '" class="link">supprimer</a> '. 
-                    ($complexe->efps->count() != 0 ?
-                     '<a href="' . ($complexe->efps->count() == 0 ? "" :
-                      route("complexes.efps.index", ["complexe" => $complexe->id])) . '" class="link">efps</a>' : "" ) .'
+                    <a href="' . route("complexes.destroy", ["complexe" => $complexe->id]) . '" class="link">supprimer</a> ' .
+                        ($complexe->efps->count() != 0 ?
+                            '<a href="' . ($complexe->efps->count() == 0 ? "" :
+                                route("complexes.efps.index", ["complexe" => $complexe->id])) . '" class="link">efps</a>' : "") . '
                     <a href="' . route("complexes.efps.create", ["complexe" => $complexe->id]) . '" class="link">ajouter un efp</a>
                     
                     ';

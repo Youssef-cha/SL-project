@@ -16,7 +16,7 @@ class Rubrique extends Model
     protected $primaryKey = 'REFERENCE_RUBRIQUE';
     protected $keyType = 'string';
     public $incrementing = false;
-    public function commande(){
+    public function commandes(){
         return $this->hasMany(Commande::class,"REFERENCE_RUBRIQUE");
     }
 }

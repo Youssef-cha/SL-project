@@ -29,7 +29,6 @@
                 <li class="space"><i class="fas fa-clipboard-list"></i><a href="{{ route('commandesList.index') }}"> Suivi des Commandes</a></li>
                 <li class="space"><i class="fas fa-list-alt"></i><a href="{{ route('rubriques.index') }}"> Suivi des rubriques</a></li>
                 <li class="space"><i class="fas fa-money-bill-wave"></i><a href="{{ route('raps.index') }}"> Suivi des RAP</a></li>
-                <li class="space"><i class="fas fa-money-check-alt"></i><a href="{{ route('restes.index') }}"> Total Reste à Payer</a></li>
                 
                 <li class="groupe"><i class="fas fa-shopping-cart"></i> COMMANDES</li>
                 <li class="space"><i class="fas fa-plus-circle"></i><a href="{{ route('commandes.create') }}"> Créer une commande</a></li>

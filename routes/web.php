@@ -24,7 +24,6 @@ Route::get('/search',                          [AjaxController::class, "search"]
 Route::get('commande/edit',                    [AjaxController::class, "editCommande"])->name("editCommande");
 Route::get('commande/list',                    [AjaxController::class, "list"])->name("list");
 Route::get('/rap/list',                        [AjaxController::class, "rap"])->name("rap");
-Route::get('/reste/list',                      [AjaxController::class, "reste"])->name("reste");
 Route::get('/rubrique/list',                   [AjaxController::class, "rubrique"])->name("rubrique");
 Route::get('/rubrique/edit',                   [AjaxController::class, "editRubrique"])->name("editRubrique");
 Route::get('/commandes/retours/list',          [AjaxController::class, "retours"])->name("retours");
@@ -101,4 +100,3 @@ Route::view('/status', 'commandesList.index')->name("commandesList.index");
 Route::view('/recherche', "commandes.index")->name("commandes.index");
 Route::view('/rubriques/edit', "rubriquesUpdate.index")->name("rubriquesUpdate.index");
 Route::view('/raps', "raps.index")->name("raps.index");
-Route::view('/restes', "restes.index")->name("restes.index");
