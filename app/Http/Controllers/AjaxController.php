@@ -418,24 +418,24 @@ class AjaxController extends Controller
                         <th>creer a </th>
                         <th>supprimer</th>
                     </tr>';
-                foreach ($complexes as $complexe) {
-                    $link = '
-                    <a href="' . route("complexes.destroy", ["complexe" => $complexe->id]) . '" class="link">supprimer</a> ' .
-                        ($complexe->efps->count() != 0 ?
-                            '<a href="' . ($complexe->efps->count() == 0 ? "" :
-                                route("complexes.efps.index", ["complexe" => $complexe->id])) . '" class="link">efps</a>' : "") . '
-                    <a href="' . route("complexes.efps.create", ["complexe" => $complexe->id]) . '" class="link">ajouter un efp</a>
+                    foreach ($complexes as $complexe) {
+                        $link = '
+                            <a href="' . route("complexes.destroy", ["complexe" => $complexe->id]) . '" class="link" onclick="return confirmDelete()">supprimer</a> ' .
+                            ($complexe->efps->count() != 0 ?
+                                '<a href="' . ($complexe->efps->count() == 0 ? "" :
+                                    route("complexes.efps.index", ["complexe" => $complexe->id])) . '" class="link">efps</a>' : "") . '
+                            <a href="' . route("complexes.efps.create", ["complexe" => $complexe->id]) . '" class="link">ajouter un efp</a>
+                        ';
                     
-                    ';
-
-                    $output .= '<tr>
+                        $output .= '<tr>
                                         <td>' . $complexe->id . '</td>
                                         <td>' . $complexe->nom_complexe . '</td>
                                         <td>' . $complexe->efps->count() . '</td>
                                         <td>' . $complexe->created_at . '</td>
                                         <td>' . $link . '</td>
-                                </tr>';
-                }
+                                    </tr>';
+                    }
+                    
 
                 $output .= '</table>';
             } else {
@@ -463,7 +463,7 @@ class AjaxController extends Controller
                     </tr>';
                 foreach ($responsables as $responsable) {
                     $link = '
-                     <a href="' . route("responsables.destroy", ["responsable" => $responsable->id]) . '" class="link">supprimer</a>';
+                     <a href="' . route("responsables.destroy", ["responsable" => $responsable->id]) . '" class="link" onclick="return confirmDelete()">supprimer</a>';
 
                     $output .= '<tr>
                                         <td>' . $responsable->id . '</td>
@@ -499,7 +499,7 @@ class AjaxController extends Controller
                     </tr>';
                 foreach ($fournisseurs as $fournisseur) {
                     $link = '
-                     <a href="' . route("fournisseurs.destroy", ["fournisseur" => $fournisseur->id]) . '" class="link">supprimer</a>';
+                     <a href="' . route("fournisseurs.destroy", ["fournisseur" => $fournisseur->id]) . '" class="link" onclick="return confirmDelete()">supprimer</a>';
 
                     $output .= '<tr>
                                         <td>' . $fournisseur->id . '</td>

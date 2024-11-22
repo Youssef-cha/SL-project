@@ -4,7 +4,7 @@
         <input type="text" name="" id="search" placeholder=" tapez n cmd / n bon cmd" >
     </div>
     @session('error')
-            <div class="p-4 bg-green-100">
+            <div class="pop-up">
                 {{ $value }}
             </div>
         @endsession

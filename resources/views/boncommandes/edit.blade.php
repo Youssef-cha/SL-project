@@ -3,7 +3,7 @@
     <div class="box-form">
         <h1>mettre a jour bon Commande n° {{$commande->NUM_COMMANDE}} </h1>
         @session('success')
-            <div class="p-4 bg-green-100">
+            <div class="pop-up">
                 {{ $value }}
             </div>
         @endsession

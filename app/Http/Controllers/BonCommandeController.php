@@ -64,7 +64,7 @@ class BonCommandeController extends Controller
             "DATE_COMMANDE" => $request->DATE_COMMANDE,
             "RESPONSABLE_DOSSIER" => $request->RESPONSABLE_DOSSIER,
         ]);
-        return redirect()->back()->with('success', "commande n°: $commandeId A été ajouté avec succès");
+        return redirect()->back()->with('success', "Bon Commande n°: $commandeId A été ajouté avec succès");
     }
 
     public function edit($commande)

@@ -3,7 +3,7 @@
     <div class="box-form">
         <h1>Créer Une retour :</h1>
         @session('success')
-        <p style="color: green"> {{ $value }} </p>
+        <p class="pop-up"> {{ $value }} </p>
         @endsession
         <form method="post" action=" {{route("commandes.retours.store", $commande->NUM_COMMANDE)}} " class="form-container">
             @csrf

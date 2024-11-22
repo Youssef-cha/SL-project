@@ -2,9 +2,10 @@
 @section('content')
 
     <div class="search-box">
-        <input type="text" name="" id="search" placeholder="tapez numéro de commande" >
+        <input type="text" name="" id="search" placeholder="tapez nom fournisseur" >
     </div>
-    <a href="{{ route('fournisseurs.create') }}">ajouter</a>
+    <a href="{{ route('fournisseurs.create') }}" class="btn-link">ajouter un fournisseur</a>
+
     <div id="serchResult">
     </div>
     <script>

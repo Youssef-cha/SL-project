@@ -2,9 +2,9 @@
 @section('content')
 
     <div class="search-box">
-        <input type="text" name="" id="search" placeholder="tapez numéro de commande" >
+        <input type="text" name="" id="search" placeholder="tapez nom responsable" >
     </div>
-    <a href="{{ route('responsables.create') }}">ajouter</a>
+    <a href="{{ route('responsables.create') }}" class="btn-link">ajouter un responsable</a>
     <div id="serchResult">
     </div>
     <script>

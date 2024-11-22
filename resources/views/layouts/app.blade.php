@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+ <!DOCTYPE html>
+ <html lang="en"> 
 
 <head>
     <meta charset="UTF-8">
@@ -11,6 +11,8 @@
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- <script src="{{ asset('js/script.js') }}"></script> -->
+
 </head>
 
 <body>
@@ -51,9 +53,15 @@
             </ul>
         </div>
         <div class="column content">
+            <button id="menu-toggle" class="menu-toggle-button" onclick="toggleMenu()"><i class="fa-solid fa-arrow-left"></i></button>
             @yield('content')
         </div>
     </div>
+
+    <script src="{{ asset('js/script.js') }}"></script>
+
+
 </body>
 
 </html>
+

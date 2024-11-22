@@ -120,4 +120,5 @@ class CommandeController extends Controller
         $enumValues = explode("','", $matches[1]);
         return $enumValues;
     }
+
 }

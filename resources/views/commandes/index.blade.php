@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="search-box">
-    <input type="text" name="search" id="search" placeholder="Tapez fournisseur/n de commande">
+    <input type="text" name="search" id="search" placeholder="Tapez numéro de commande">
 
     </div>
     <div id="serchResult">
