@@ -18,8 +18,8 @@ class RubriqueFactory extends Factory
     {
         return [
             'REFERENCE_RUBRIQUE' => fake()->name(),
-            'ANNEE_BUDGETAIRE' => fake()->randomNumber(),
-            'BUDGET' => fake()->randomNumber(),
+            'ANNEE_BUDGETAIRE' => 2024,
+            'BUDGET' => 10000,
         ];
     }
 }

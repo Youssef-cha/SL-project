@@ -13,6 +13,7 @@ use App\Http\Controllers\ReceptionController;
 use App\Http\Controllers\ResponsableController;
 use App\Http\Controllers\RetourController;
 use App\Http\Controllers\RubriqueController;
+use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 
 // ajax_controller
@@ -29,6 +30,7 @@ Route::get('/rubrique/edit',                   [AjaxController::class, "editRubr
 Route::get('/commandes/retours/list',          [AjaxController::class, "retours"])->name("retours");
 
 // commande_controller
+Route::get('/commandes',                      [CommandeController::class, "index"])->name("commandes.index");
 Route::post('/commandes',                      [CommandeController::class, "store"])->name("commandes.store");
 Route::get('/commandes/create',                [CommandeController::class, "create"])->name("commandes.create");
 Route::put('/commandes/{commande}',            [CommandeController::class, "update"])->name("commandes.update");
@@ -91,12 +93,15 @@ Route::get('/complexes/{complexe}/efps/create',                [EfpController::c
 Route::get('/complexes/{complexe}/efps',                [EfpController::class, "index"])->name("complexes.efps.index");
 Route::post('/complexes/{complexe}/efps',                [EfpController::class, "store"])->name("complexes.efps.store");
 
+// auth
+Route::get('/login',[SessionController::class, "create"])->name('sessions.create');
+Route::post('/login',[SessionController::class, "store"])->name('sessions.store');
 
 //views
 Route::view('/', "home");
 Route::view('/commandes/retours', "commandes_retours.index")->name("commandes.retours");
 Route::view('/commandes/edit', "commandesUpdate.index")->name('commandesUpdate.index');
 Route::view('/status', 'commandesList.index')->name("commandesList.index");
-Route::view('/recherche', "commandes.index")->name("commandes.index");
 Route::view('/rubriques/edit', "rubriquesUpdate.index")->name("rubriquesUpdate.index");
 Route::view('/raps', "raps.index")->name("raps.index");
+

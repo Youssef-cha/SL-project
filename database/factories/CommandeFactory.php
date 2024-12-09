@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Fournisseur;
 use App\Models\Responsable;
 use App\Models\Rubrique;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,25 +21,25 @@ class CommandeFactory extends Factory
     public function definition(): array
     {
         return [
-            'NUM_COMMANDE'  => fake()->name(),
-            'AVIS_ACHAT'  => fake()->name(),
+            'NUM_COMMANDE'  => "CMD" . fake()->randomNumber(),
+            'AVIS_ACHAT'  => "...",
             'TYPE_ACHAT'    => 'Marche',
             'TYPE_BUDGET'    => 'Fonctionnement',
-            'OBJET_ACHAT'    => fake()->name(),
-            'REFERENCE_RUBRIQUE'    => Rubrique::factory()->create(),
-            'FOURNISSEUR'    => Fournisseur::factory()->create(),
+            'OBJET_ACHAT'    => "...",
+            'rubrique_id'    => Rubrique::factory()->create(),
+            'fournisseur_id'    => Fournisseur::factory()->create(),
             'DELAI_LIVRAISON'  => fake()->randomNumber(),
             'GARANTIE'  => 'non',
-            'NUM_MARCHE'  => fake()->name(),
-            'EXERCICE'  => fake()->randomNumber,
+            'NUM_MARCHE'  => fake()->randomNumber(),
+            'EXERCICE'  => 0000,
             'DATE_COMMANDE'  => fake()->date(),
-            'RESPONSABLE_DOSSIER'  => Responsable::factory()->create(),
+            'user_id'  => User::factory()->create(),
             'STATUT_COMMANDE'  => 'attribuee',
 
             'DATE_LIVRAISON'  => fake()->date(),
             'STATUT_LIVRAISON'  => 'non livree',
-            'oz'  => fake()->randomNumber,
-            'LIEU_LIVRAISON'  => fake()->name(),
+            'oz'  => fake()->randomNumber(),
+            'LIEU_LIVRAISON'  => "...",
 
             'DATE_VERIFICATION_RECEPTION'  => fake()->date(),
             'STATUT_RECEPTION'  => 'non receptionnee',

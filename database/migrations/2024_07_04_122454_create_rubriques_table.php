@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rubriques', function (Blueprint $table) {
+            $table->id();
             $table->string('REFERENCE_RUBRIQUE', length: 50);
             $table->integer('ANNEE_BUDGETAIRE');
             $table->float('BUDGET');
-            $table->primary(['REFERENCE_RUBRIQUE', 'ANNEE_BUDGETAIRE']);
             $table->timestamps();
         });
     }

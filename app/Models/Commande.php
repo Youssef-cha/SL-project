@@ -9,52 +9,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Commande extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        "NUM_COMMANDE",
-        "AVIS_ACHAT",
-        "TYPE_ACHAT",
-        "TYPE_BUDGET",
-        "OBJET_ACHAT",
-        "REFERENCE_RUBRIQUE",
-        "FOURNISSEUR",
-        "DELAI_LIVRAISON",
-        "GARANTIE",
-        "RETENUE_GARANTIE",
-        "NUM_MARCHE",
-        "EXERCICE",
-        "DATE_COMMANDE",
-        "RESPONSABLE_DOSSIER",
-        "STATUT_COMMANDE",
-        "DATE_LIVRAISON",
-        "STATUT_LIVRAISON",
-        "oz",
-        "LIEU_LIVRAISON",
-        "DATE_VERIFICATION_RECEPTION",
-        "STATUT_RECEPTION",
-        "DATE_DEPOT_SL",
-        "NUM_FACTURE",
-        "DATE_FACTURE",
-        "HT",
-        "TTC",
-        "TAUX_TVA",
-        "MONTANT_TVA",
-        "DATE_DEPOT_SC",
-        "STATUT_PAIEMENT",
-        "DATE_PAIEMENT",
-        "MONTANT_PAYE"
-    ];
+    protected $guarded = [];
     protected $primaryKey = 'NUM_COMMANDE';
     protected $keyType = 'string';
     public $incrementing = false;
     public function rubrique(){
-        return $this->belongsTo(Rubrique::class, "REFERENCE_RUBRIQUE");
+        return $this->belongsTo(Rubrique::class);
     }
 
-    public function responsable(){
-        return $this->BelongsTo(Responsable::class,"RESPONSABLE_DOSSIER","id");
-    }
     public function fournisseur(){
-        return $this->belongsTo(Fournisseur::class,'FOURNISSEUR');
+        return $this->belongsTo(Fournisseur::class);
+    }
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
     public function retours(){

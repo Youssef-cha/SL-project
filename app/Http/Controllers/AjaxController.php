@@ -15,14 +15,12 @@ use function PHPUnit\Framework\isNull;
 
 class AjaxController extends Controller
 {
+    // search
     public function search(Request $request)
     {
-
         if ($request->ajax()) {
             $data = Commande::where('NUM_COMMANDE', 'like', '%' . $request->search . '%')
-                ->orWhere('OBJET_ACHAT', 'like', '%' . $request->search . '%')
-                ->orWhere('FOURNISSEUR', 'like', '%' . $request->search . '%')
-                ->orderBy('NUM_COMMANDE', 'desc')
+                ->latest()
                 ->get();
             $output = "";
             if ($data->count() > 0) {
@@ -67,7 +65,7 @@ class AjaxController extends Controller
                             <td>' . $row->TYPE_ACHAT . '</td>
                             <td>' . $row->TYPE_BUDGET . '</td>
                             <td>' . $row->OBJET_ACHAT . '</td>
-                            <td>' . $row->REFERENCE_RUBRIQUE . '</td>
+                            <td>' . $row->rubrique->REFERENCE_RUBRIQUE . '</td>
                             <td>' . $row->fournisseur->nom_fournisseur . '</td>
                             <td>' . $row->DELAI_LIVRAISON . '</td>
                             <td>' . $row->GARANTIE . '</td>
@@ -75,7 +73,7 @@ class AjaxController extends Controller
                             <td>' . $row->NUM_MARCHE . '</td>
                             <td>' . $row->EXERCICE . '</td>
                             <td>' . $row->DATE_COMMANDE . '</td>
-                            <td>' . $row->responsable->nom_responsable . '</td>
+                            <td>' . $row->user->name . '</td>
                             <td>' . $row->STATUT_COMMANDE . '</td>
                             <td>' . $row->DATE_LIVRAISON . '</td>
                             <td>' . $row->STATUT_LIVRAISON . '</td>
@@ -102,25 +100,27 @@ class AjaxController extends Controller
             echo $output;
         }
     }
+    // suivi des commanedes
     public function list(Request $request)
     {
         if ($request->ajax()) {
+            $search = $request->search;
             $commandes = Commande::where('NUM_COMMANDE', 'not like', '__________/____')
-                ->where(function ($query) use ($request) {
-                    $query->where('NUM_COMMANDE', 'like', '%' . $request->search . '%')
-                        ->orWhere('DATE_COMMANDE', 'like', '%' . $request->search . '%')
-                        ->orWhere('STATUT_COMMANDE', 'like', '%' . $request->search . '%')
-                        ->orWhere('STATUT_LIVRAISON', 'like', '%' . $request->search . '%')
-                        ->orWhere('STATUT_RECEPTION', 'like', '%' . $request->search . '%')
-                        ->orWhere('STATUT_PAIEMENT', 'like', '%' . $request->search . '%');
+                ->where(function ($query) use ($search) {
+                    $query->where('NUM_COMMANDE', 'like', $search . '%')
+                        ->orWhere('DATE_COMMANDE', 'like', $search . '%')
+                        ->orWhere('STATUT_COMMANDE', 'like', $search . '%')
+                        ->orWhere('STATUT_LIVRAISON', 'like', $search . '%')
+                        ->orWhere('STATUT_RECEPTION', 'like', $search . '%')
+                        ->orWhere('STATUT_PAIEMENT', 'like', $search . '%');
                 })
-                ->orderBy('updated_at', 'desc')
+                ->orderBy('STATUT_PAIEMENT')
                 ->get();
             $commandesWithIntervals = $commandes->map(function ($commande) {
                 $daysLeft = null;
                 $deadline = null;
 
-                if ($commande->STATUT_LIVRAISON === 'livree' && $commande->STATUT_RECEPTION === 'receptionnee' && $commande->STATUT_PAIEMENT !== 'payee') {
+                if ($commande->STATUT_LIVRAISON === 'livree' && $commande->STATUT_RECEPTION === 'receptionnee' && $commande->STATUT_PAIEMENT !== 'payee' && $commande->DATE_FACTURE !== NULL) {
                     $dateCommande = Carbon::parse($commande->DATE_FACTURE);
                     $deadline = $dateCommande->addDays(60)->format("Y-m-d");
                     $today = Carbon::now();
@@ -169,12 +169,13 @@ class AjaxController extends Controller
             echo $output;
         }
     }
+    // suivi des rubriques
     public function rubrique(Request $request)
     {
         if ($request->ajax()) {
 
             $result = Rubrique::query()
-                ->where("REFERENCE_RUBRIQUE", "like", "%{$request->search}%")
+                ->where("REFERENCE_RUBRIQUE", "like", "{$request->search}%")
                 ->orWhere("ANNEE_BUDGETAIRE", "like", "{$request->search}%")
                 ->get();
 
@@ -209,11 +210,12 @@ class AjaxController extends Controller
                 <h3><strong style="font-weight: 700;">Total reste à payer :</strong> ' . $restPay . '</h3>
                 <h3><strong style="font-weight: 700;">Total reste du budget :</strong> ' . $restBud . '</h3>' . $output;
             } else {
-                $output = '<hr><h3>Aucune donnée trouvée</h3>';
+                $output = '<h3>Aucune donnée trouvée</h3>';
             }
             echo $output;
         }
     }
+    // suivi des rap
     public function rap(Request $request)
     {
         if ($request->ajax()) {
@@ -250,7 +252,7 @@ class AjaxController extends Controller
                     $output .= '<tr>
                                     <td>' . $commande["commande"]->NUM_COMMANDE . '</td>
                                     <td>' . $commande["commande"]->DATE_COMMANDE . '</td>
-                                    <td>' . $commande["commande"]->FOURNISSEUR . '</td>
+                                    <td>' . $commande["commande"]->FOURNISSEUR->nom_fournisseur . '</td>
                                     <td>' . $commande["commande"]->HT . '</td>
                                     <td>' . $commande["commande"]->TTC . '</td>
                                     <td>' . $commande["commande"]->MONTANT_TVA . '</td>
@@ -418,24 +420,24 @@ class AjaxController extends Controller
                         <th>creer a </th>
                         <th>supprimer</th>
                     </tr>';
-                    foreach ($complexes as $complexe) {
-                        $link = '
+                foreach ($complexes as $complexe) {
+                    $link = '
                             <a href="' . route("complexes.destroy", ["complexe" => $complexe->id]) . '" class="link" onclick="return confirmDelete()">supprimer</a> ' .
-                            ($complexe->efps->count() != 0 ?
-                                '<a href="' . ($complexe->efps->count() == 0 ? "" :
-                                    route("complexes.efps.index", ["complexe" => $complexe->id])) . '" class="link">efps</a>' : "") . '
+                        ($complexe->efps->count() != 0 ?
+                            '<a href="' . ($complexe->efps->count() == 0 ? "" :
+                                route("complexes.efps.index", ["complexe" => $complexe->id])) . '" class="link">efps</a>' : "") . '
                             <a href="' . route("complexes.efps.create", ["complexe" => $complexe->id]) . '" class="link">ajouter un efp</a>
                         ';
-                    
-                        $output .= '<tr>
+
+                    $output .= '<tr>
                                         <td>' . $complexe->id . '</td>
                                         <td>' . $complexe->nom_complexe . '</td>
                                         <td>' . $complexe->efps->count() . '</td>
                                         <td>' . $complexe->created_at . '</td>
                                         <td>' . $link . '</td>
                                     </tr>';
-                    }
-                    
+                }
+
 
                 $output .= '</table>';
             } else {

@@ -13,10 +13,7 @@ class Rubrique extends Model
         "ANNEE_BUDGETAIRE",
         "BUDGET",
     ];
-    protected $primaryKey = 'REFERENCE_RUBRIQUE';
-    protected $keyType = 'string';
-    public $incrementing = false;
     public function commandes(){
-        return $this->hasMany(Commande::class,"REFERENCE_RUBRIQUE");
+        return $this->hasMany(Commande::class);
     }
 }
