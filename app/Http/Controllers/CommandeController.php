@@ -12,8 +12,7 @@ use Illuminate\Support\Facades\DB;
 class CommandeController extends Controller
 {
     public function index(){
-        $commandes = Commande::with('fournisseur')->with('user')->with('rubrique')->get();
-        return view('commandes.index', compact('commandes'));
+        return view('commandes.index', );
     }
     public function create()
     {
