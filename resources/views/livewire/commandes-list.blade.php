@@ -50,19 +50,8 @@
                             Add commande
                         </a>
                         <div class="flex items-center space-x-3 w-full md:w-auto">
-                            {{-- sort button --}}
-                            <div class="flex justify-end items-center space-x-2 p-4 dark:bg-gray-800 ">
+                            <x-sort-select :sortColumns="$sortColumns" />
 
-                                <select wire:model.live='sort'
-                                    class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:border-gray-600">
-                                    <option value="NUM_COMMANDE">Numero de Commande</option>
-                                    <option value="DATE_COMMANDE">Date Commande</option>
-                                    <option value="DATE_VERIFICATION_RECEPTION">Date Verification</option>
-                                    <option value="DATE_LIVRAISON">Date Livraison</option>
-                                    <option value="EXERCICE">Exercice</option>
-                                    <option value="HT">HT</option>
-                                </select>
-                            </div>
 
 
                             {{-- filter button --}}
@@ -91,7 +80,7 @@
                                             <label for="{{ $label }}"
                                                 class="mr-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $label }}</label>
                                             <select wire:model.defer="filters.{{ array_key_first($filter[0]->toArray()) }}"
-                                                class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:border-gray-600">
+                                                class="w-full md:ew-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:border-gray-600">
                                                 <option value="">tous</option>
                                                 @foreach ($filter as $value)
                                                 <option value="{{ $value[array_key_first($value->toArray())] }}">

@@ -2,7 +2,7 @@
     <div class="flex flex-wrap justify-between items-center">
         <div class="flex justify-start items-center">
             <button togglerFor="sidebar"
-                class="flex items-center justify-center p-3 text-xl font-light text-gray-600 hover:bg-gray-200 w-8 h-7 r focus:ring-4 focus:ring-gray-300 mx-4">
+                class="flex items-center rounded-md justify-center p-3 text-xl font-light text-gray-600 hover:bg-gray-200 w-8 h-7 r focus:ring-4 focus:ring-gray-300 mx-4">
                 <i class="fa-solid fa-bars"></i>
             </button>
             <a href="/" class="flex items-center justify-between mr-4">

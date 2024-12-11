@@ -12,6 +12,7 @@ class CommandesList extends Component
     public $perPage = 10;
     public $search = '';
     public $sort = 'created_at';
+    public $sortDirection = 'asc';
     public $filters = [];
 
     public function updated($prop)
@@ -53,7 +54,7 @@ class CommandesList extends Component
                 )
                 ;
         }
-        return $query->orderBy($this->sort, "desc")->paginate($this->perPage);
+        return $query->orderBy($this->sort, $this->sortDirection)->paginate($this->perPage);
     }
     public function render()
     {
@@ -76,6 +77,23 @@ class CommandesList extends Component
                 'Status Reception' => $statusRec,
                 'Status Paiement' => $statusPai,
             ],
+            'sortColumns' => [
+                'Delai Livraison' => 'DELAI_LIVRAISON',
+                'Retenue Garantie' => 'RETENUE_GARANTIE',
+                'Exercice' => 'EXERCICE',
+                'Date Commande' => 'DATE_COMMANDE',
+                'Date Livraison' => 'DATE_LIVRAISON',
+                'Date Verification Reception' => 'DATE_VERIFICATION_RECEPTION',
+                'Date Depot (Service Logistique)' => 'DATE_DEPOT_SL',
+                'Date Depot (Service comptabilite)' => 'DATE_DEPOT_SC',
+                'Date Facture' => 'DATE_FACTURE',
+                'HT' => 'HT',
+                'TTC' => 'TTC',
+                'TAUX_TVA' => 'TAUX_TVA',
+                'Montant TVA' => 'MONTANT_TVA',
+                'Date Paiement' => 'DATE_PAIEMENT',
+                'Montant Paye' => 'MONTANT_PAYE',
+            ]
         ]);
     }
 }

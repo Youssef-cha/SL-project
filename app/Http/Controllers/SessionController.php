@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SessionController extends Controller
 {
@@ -10,6 +11,12 @@ class SessionController extends Controller
         return view('auth.login');
     }
     public function store(){
-        // soon
+        $validated = request()->validate([
+            "email" => ['required','email'],
+            "password" => ['required'],
+        ]);
+        if(Auth::attempt($validated)){
+            return 'hello';
+        }
     }
 }

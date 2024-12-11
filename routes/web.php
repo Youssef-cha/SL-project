@@ -14,6 +14,9 @@ use App\Http\Controllers\ResponsableController;
 use App\Http\Controllers\RetourController;
 use App\Http\Controllers\RubriqueController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\SuiviCommandeController;
+use App\Http\Controllers\SuiviRapController;
+use App\Http\Controllers\SuiviRubriqueController;
 use Illuminate\Support\Facades\Route;
 
 // ajax_controller
@@ -23,7 +26,6 @@ Route::get('/responsables/list',                          [AjaxController::class
 Route::get('/fournisseurs/list',                          [AjaxController::class, "fournisseursList"])->name("fournisseurs.list");
 Route::get('/search',                          [AjaxController::class, "search"])->name("search");
 Route::get('commande/edit',                    [AjaxController::class, "editCommande"])->name("editCommande");
-Route::get('commande/list',                    [AjaxController::class, "list"])->name("list");
 Route::get('/rap/list',                        [AjaxController::class, "rap"])->name("rap");
 Route::get('/rubrique/list',                   [AjaxController::class, "rubrique"])->name("rubrique");
 Route::get('/rubrique/edit',                   [AjaxController::class, "editRubrique"])->name("editRubrique");
@@ -93,9 +95,18 @@ Route::get('/complexes/{complexe}/efps/create',                [EfpController::c
 Route::get('/complexes/{complexe}/efps',                [EfpController::class, "index"])->name("complexes.efps.index");
 Route::post('/complexes/{complexe}/efps',                [EfpController::class, "store"])->name("complexes.efps.store");
 
+// suiviCommandes
+Route::get('/suiviCommandes',                    [SuiviCommandeController::class, "index"])->name("suiviCommandes.index");
+
+// suiviRubriques
+Route::get('/suiviRubriques',                    [SuiviRubriqueController::class, "index"])->name("suiviRubriques.index");
+
+// suiviRubriques
+Route::get('/suiviRaps',                    [SuiviRapController::class, "index"])->name("suiviRaps.index");
+
 // auth
-Route::get('/login',[SessionController::class, "create"])->name('sessions.create');
-Route::post('/login',[SessionController::class, "store"])->name('sessions.store');
+Route::get('/login', [SessionController::class, "create"])->name('sessions.create');
+Route::post('/login', [SessionController::class, "store"])->name('sessions.store');
 
 //views
 Route::view('/', "home");
@@ -104,4 +115,3 @@ Route::view('/commandes/edit', "commandesUpdate.index")->name('commandesUpdate.i
 Route::view('/status', 'commandesList.index')->name("commandesList.index");
 Route::view('/rubriques/edit', "rubriquesUpdate.index")->name("rubriquesUpdate.index");
 Route::view('/raps', "raps.index")->name("raps.index");
-
