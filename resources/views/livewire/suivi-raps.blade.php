@@ -54,35 +54,24 @@
                         <thead
                             class="text-xs text-nowrap text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                    <th scope="col" class="px-4 w-fit py-3" >numéro de commande</th>
-                                    <th scope="col" class="px-4 w-fit py-3" >DATE COMMANDE</th>
-                                    <th scope="col" class="px-4 w-fit py-3" >fournisseur</th>
-                                    <th scope="col" class="px-4 w-fit py-3" >ht</th>
-                                    <th scope="col" class="px-4 w-fit py-3" >ttc</th>
-                                    <th scope="col" class="px-4 w-fit py-3" >tva</th>
-                                    <th scope="col" class="px-4 w-fit py-3" >montant paye</th>
-                                    <th scope="col" class="px-4 w-fit py-3" >taux</th>
-                                    <th scope="col" class="px-4 w-fit py-3" >statut paiement</th>
+                                <th scope="col" class="px-4 w-fit py-3">numéro de commande</th>
+                                <th scope="col" class="px-4 w-fit py-3">DATE COMMANDE</th>
+                                <th scope="col" class="px-4 w-fit py-3">fournisseur</th>
+                                <th scope="col" class="px-4 w-fit py-3">ht</th>
+                                <th scope="col" class="px-4 w-fit py-3">taux tva</th>
+                                <th scope="col" class="px-4 w-fit py-3">tva</th>
+                                <th scope="col" class="px-4 w-fit py-3">ttc</th>
+                                <th scope="col" class="px-4 w-fit py-3">montant paye</th>
+                                <th scope="col" class="px-4 w-fit py-3">taux</th>
+                                <th scope="col" class="px-4 w-fit py-3">statut paiement</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($commandes as $commande)
                                 @php
-                                    $daysLeft = null;
-                                    $dueDate = null;
-                                    if (
-                                        $commande->STATUT_LIVRAISON === 'livree' &&
-                                        $commande->STATUT_RECEPTION === 'receptionnee' &&
-                                        $commande->STATUT_PAIEMENT !== 'payee' &&
-                                        $commande->DATE_FACTURE !== null
-                                    ) {
-                                        $dateCommande = Carbon::parse($commande->DATE_FACTURE);
-                                        $dueDate = $dateCommande->addDays(60)->format('Y-m-d');
-                                        $today = Carbon::now();
-                                        $daysLeft = 0;
-                                        if ($today < $dueDate) {
-                                            $daysLeft = (int) $today->diffInDays($dueDate, false);
-                                        }
+                                    $taux = null;
+                                    if ($commande->TTC != null && $commande->MONTANT_PAYE != null) {
+                                        $taux = round(($commande->MONTANT_PAYE / $commande->TTC) * 100, 2) . ' %';
                                     }
                                 @endphp
                                 <tr class="border-b dark:border-gray-700">
@@ -92,17 +81,23 @@
                                     <td class="px-4 w-auto py-3">
                                         {{ $commande->DATE_COMMANDE }} </td>
                                     <td class="px-4 w-auto py-3">
-                                        {{ $commande->STATUT_COMMANDE }} </td>
+                                        {{ $commande->fournisseur->nom_fournisseur }} </td>
                                     <td class="px-4 w-auto py-3">
-                                        {{ $commande->STATUT_LIVRAISON }} </td>
+                                        {{ $commande->HT }} </td>
                                     <td class="px-4 w-auto py-3">
-                                        {{ $commande->STATUT_RECEPTION }} </td>
+                                        {{ $commande->TAUX_TVA ? $commande->TAUX_TVA . " %" : "" }} </td>
+                                        <td class="px-4 w-auto py-3">
+                                            {{ $commande->MONTANT_TVA }} </td>
+                                    <td class="px-4 w-auto py-3">
+                                        {{ $commande->TTC }} </td>
+
+                                    <td class="px-4 w-auto py-3">
+                                        {{ $commande->MONTANT_PAYE }} </td>
+                                    <td class="px-4 w-auto py-3">
+                                        {{ $taux }} </td>
+
                                     <td class="px-4 w-auto py-3">
                                         {{ $commande->STATUT_PAIEMENT }} </td>
-                                    <td class="px-4 w-auto py-3"> {{ $daysLeft }}
-                                    </td>
-                                    <td class="px-4 w-auto py-3"> {{ $dueDate }}
-                                    </td>
 
                                 </tr>
                             @endforeach

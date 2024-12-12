@@ -2,14 +2,16 @@
 
 namespace App\Livewire;
 
+use App\Models\Commande;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class SuiviRaps extends Component
 {
     use WithPagination;
     public $perPage = 10;
     public $search = '';
-    public $sort = 'rubriques.created_at';
+    public $sort = 'created_at';
     public $sortDirection = 'asc';
 
     public $filters = [];
@@ -28,17 +30,17 @@ class SuiviRaps extends Component
 
     public function queryCommande()
     {
-        $query = Rubrique::query()
-            ->selectRaw('rubriques.id , REFERENCE_RUBRIQUE , BUDGET, ANNEE_BUDGETAIRE, SUM(TTC) as total_ttc')
-            ->leftJoin('commandes', 'rubriques.id', '=', 'commandes.rubrique_id')
-            ->groupBy('rubriques.id', 'REFERENCE_RUBRIQUE', 'BUDGET', 'ANNEE_BUDGETAIRE');
+        $query = Commande::with('fournisseur');
         // filter
         foreach ($this->filters as $name => $value) {
             $query->where("rubriques.$name", 'like', $value . "%");
         }
         // search
         if ($this->search) {
-            $query->where('rubriques.REFERENCE_RUBRIQUE', 'like', $this->search . '%');
+            $query->where('NUM_COMMANDE', 'like', $this->search . '%')
+            ->orWhereHas('fournisseur' ,function($query){
+                $query->where('nom_fournisseur', 'like', $this->search . '%');
+            });
         }
         // sort
         $query->orderBy($this->sort, $this->sortDirection);
@@ -47,6 +49,19 @@ class SuiviRaps extends Component
     }
     public function render()
     {
-        return view('livewire.suivi-raps');
+        $statusPai = Commande::select('STATUT_PAIEMENT')->distinct()->get();
+        $commandes = $this->queryCommande();
+        return view('livewire.suivi-raps', [
+            'commandes' => $commandes,
+            'inputFilters' => [
+                'Status Paiement' => $statusPai,
+            ],
+            'sortColumns' => [
+                'Date Commande' => 'DATE_COMMANDE',
+                'HT' => 'HT',
+                'TTC' => 'TTC',
+                'TVA' => 'TVA',
+            ]   
+        ]);
     }
 }
