@@ -64,6 +64,7 @@
                                 <th scope="col" class="px-4 w-fit py-3">annee</th>
                                 <th scope="col" class="px-4 w-fit py-3">BUDGET</th>
                                 <th scope="col" class="px-4 w-fit py-3">total ttc</th>
+                                <th scope="col" class="px-4 w-fit py-3">Nombre de Commande</th>
                                 <th scope="col" class="px-4 w-fit py-3">reste</th>
                             </tr>
                         </thead>
@@ -76,6 +77,7 @@
                                     <td class="px-4 w-auto py-3"> {{ $rubrique->ANNEE_BUDGETAIRE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $rubrique->BUDGET }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $rubrique->total_ttc }} </td>
+                                    <td class="px-4 w-auto py-3"> {{ $rubrique->commandes->count() }} </td>
                                     <td class="px-4 w-auto py-3">
                                         {{ $rubrique->BUDGET - $rubrique->total_ttc }} </td>
 

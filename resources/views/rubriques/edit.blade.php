@@ -1,28 +1,20 @@
 @extends('layouts.app')
 @section('content')
-<div class="box-form">
-    <h1>Créer Une Nouvelle Rubrique</h1>
-    @session('success')
-        <div class="pop-up">
-            {{ $value }}
-        </div>
-    @endsession
-    <form method="post" action="{{ route('rubriques.update', $rubrique->REFERENCE_RUBRIQUE) }}" class="form-container">
-        @csrf
-        @method("PUT")
-        <div class="inputBx">
-            <input value="{{ old('BUDGET') ?? $rubrique->BUDGET }}" type="number" id="BUDGET" name="BUDGET"
-                placeholder=" ">
-            <label for="BUDGET">Budget</label>
-            @error('BUDGET')
-                <p style="color: red">{{ $message }}</p>
-            @enderror
-        </div>
-        <div class="grp-btn">
-            <button type="submit" class="btn">modifier</button>
-            <a href="{{ route('rubriquesUpdate.index') }}" class="btn2" style="margin-left: 10px;">retour</a>
-        </div>
-
-    </form>
-</div>
+    <x-session-success />
+    <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Modifier la Rubrique: {{ $rubrique->REFERENCE_RUBRIQUE }}/{{ $rubrique->ANNEE_BUDGETAIRE }}</h2>
+        <form method="POST" action="{{ route('rubriques.update', $rubrique->id) }}" class="form-container">
+            @csrf
+            @method('PATCH')
+            <x-form-fields-container>
+                <x-form-input type="number" label="Budget" name="BUDGET" />
+            </x-form-fields-container>
+            <x-form-button>
+                Enregistrer
+            </x-form-button>
+        </form>
+        <x-delete-confirmation resource="rubriques" :id="$rubrique->id">
+            supprimer la rubrique
+        </x-delete-confirmation>
+    </div>
 @endsection

@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\Rubrique;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class RubriquesList extends Component
 {
@@ -25,38 +27,20 @@ class RubriquesList extends Component
     }
     public function queryCommande()
     {
-        $query = Commande::with(['user', 'fournisseur', 'rubrique']);
+        $query = Rubrique::with('commandes');
         foreach ($this->filters as $name => $value) {
             $query->where($name, 'like', $value . "%");
         }
         if ($this->search) {
-            $query->where('NUM_COMMANDE', 'like', $this->search . '%')
-                ->orWhereHas(
-                    'fournisseur',
-                    function ($query) {
-                        $query->where('nom_fournisseur', 'like', $this->search . '%');
-                    }
-                )
-                ->orWhereHas(
-                    'rubrique',
-                    function ($query) {
-                        $query->where('REFERENCE_RUBRIQUE', 'like', $this->search . '%');
-                    }
-                )
-                ->orWhereHas(
-                    'user',
-                    function ($query) {
-                        $query->where('name', 'like', $this->search . '%');
-                    }
-                )
-            ;
+            $query->where('REFERENCE_RUBRIQUE', 'like', $this->search . '%');
         }
         return $query->orderBy($this->sort, $this->sortDirection)->paginate($this->perPage);
     }
     public function render()
     {
+        $rubriques = $this->queryCommande();
         return view('livewire.rubriques-list', [
-            'commandes' => $commandes,
+            'rubriques' => $rubriques,
             'inputFilters' => [
               
             ],

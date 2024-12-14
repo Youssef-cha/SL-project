@@ -35,7 +35,7 @@ class FournisseurController extends Controller
             'nom_fournisseur' => 'required',
         ]);
         $fournisseur->update($validData);
-        return redirect()->back()->with('success', 'fournisseur tbdl');
+        return redirect()->back()->with('success', 'fournisseur A été mis à jour avec succès');
     }
     public function destroy(Fournisseur $fournisseur)
     {

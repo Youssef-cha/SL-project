@@ -9,6 +9,7 @@
             </x-side-group>
             <x-side-group fclass="fa-solid fa-chart-simple" aria="info" title="info">
                 <x-side-link :active="request()->is('commandes')" href="{{ route('commandes.index') }}  ">commandes</x-side-link>
+                <x-side-link :active="request()->is('rubriques')" href="{{ route('rubriques.index') }}  ">rubriques</x-side-link>
                 <x-side-link :active="request()->is('fournisseurs')" href="{{ route('fournisseurs.index') }}  ">fournisseurs</x-side-link>
             </x-side-group>
         </ul>

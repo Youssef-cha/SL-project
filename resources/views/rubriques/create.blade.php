@@ -1,43 +1,21 @@
 @extends('layouts.app')
 @section('content')
-<div class="box-form">
-    <h1>Créer Une Nouvelle Rubrique</h1>
-    @session('success')
-        <div class="pop-up">
-            {{ $value }}
-        </div>
-    @endsession
-    <form method="post" action="{{ route('rubriques.store') }}" class="form-container">
+    <x-session-success />
+
+
+    <!-- nom fournisseur -->
+    <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Créer une Rubrique</h2>
+        <form method="POST" action="{{ route('rubriques.store') }}" class="form-container">
             @csrf
-            <div class="inputBx">
-                <input value="{{ old('REFERENCE_RUBRIQUE') }}" type="text" id="reference_rubrique2" name="REFERENCE_RUBRIQUE"
-                    placeholder=" ">
-                <label for="reference_rubrique2">Référence Rubrique</label>
-                @error('REFERENCE_RUBRIQUE')
-                    <p style="color: red">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="inputBx">
-                <input value="{{ old('ANNEE_BUDGETAIRE') }}" type="number" id="ANNEE_BUDGETAIRE" name="ANNEE_BUDGETAIRE"
-                    placeholder=" ">
-                <label for="ANNEE_BUDGETAIRE">Année Budgétaire</label>
-                @error('ANNEE_BUDGETAIRE')
-                    <p style="color: red">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="inputBx">
-                <input value="{{ old('BUDGET') }}" type="number" id="BUDGET" name="BUDGET" placeholder=" ">
-                <label for="BUDGET">Budget</label>
-                @error('BUDGET')
-                    <p style="color: red">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="grp-btn">
-                <button type="submit" class="btn">Créer</button>
-            </div>
+            <x-form-fields-container>
+                <x-form-input label="Référence Rubrique" name="REFERENCE_RUBRIQUE" />
+                <x-form-input label="Année Budgétaire" name="ANNEE_BUDGETAIRE" />
+                <x-form-input type="number" label="Budget" name="BUDGET" />
+            </x-form-fields-container>
+            <x-form-button>
+                Enregistrer
+            </x-form-button>
         </form>
     </div>
 @endsection
