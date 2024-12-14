@@ -20,20 +20,22 @@
                                     filter</h6>
                                 <ul class="space-y-2 text-sm" aria-labelledby="filterDropdownButton">
                                     @foreach ($inputFilters as $label => $filter)
-                                        <li class="flex items-center">
-                                            <label for="{{ $label }}"
-                                                class="mr-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $label }}</label>
-                                            <select
-                                                wire:model.defer="filters.{{ array_key_first($filter[0]->toArray()) }}"
-                                                class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:border-gray-600">
-                                                <option value="">tous</option>
-                                                @foreach ($filter as $value)
-                                                    <option value="{{ $value[array_key_first($value->toArray())] }}">
-                                                        {{ $value[array_key_first($value->toArray())] }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </li>
+                                        @if ($filter->first()) 
+                                            <li class="flex items-center">
+                                                <label for="{{ $label }}"
+                                                    class="mr-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{ $label }}</label>
+                                                <select
+                                                    wire:model.defer="filters.{{ array_key_first($filter->first()->toArray()) }}"
+                                                    class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:border-gray-600">
+                                                    <option value="">tous</option>
+                                                    @foreach ($filter as $value)
+                                                        <option value="{{ $value[array_key_first($value->toArray())] }}">
+                                                            {{ $value[array_key_first($value->toArray())] }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </li>
+                                        @endif
                                     @endforeach
                                 </ul>
                                 <div class="w-full flex justify-center pt-5">

@@ -11,13 +11,6 @@ class FournisseurController extends Controller
     {
         return view('fournisseurs.index');
     }
-    public function destroy($fournisseur )
-    {
-        $fournisseur = Fournisseur::find($fournisseur);
-        $fournisseur->delete();
-
-        return redirect()->back();
-    }
     public function create()
     {
         return view('fournisseurs.create');
@@ -31,5 +24,22 @@ class FournisseurController extends Controller
         ]);
         Fournisseur::create($validData);
         return redirect()->back()->with('success', 'fournisseur A été ajouté avec succès');
+    }
+    public function edit(Fournisseur $fournisseur)
+    {
+        return view('fournisseurs.edit', compact('fournisseur'));
+    }
+    public function update(Fournisseur $fournisseur)
+    {
+        $validData = request()->validate([
+            'nom_fournisseur' => 'required',
+        ]);
+        $fournisseur->update($validData);
+        return redirect()->back()->with('success', 'fournisseur tbdl');
+    }
+    public function destroy(Fournisseur $fournisseur)
+    {
+        $fournisseur->delete();
+        return redirect()->route('fournisseurs.index')->with('success', 'le fournisseur a été supprimée avec succès.');
     }
 }

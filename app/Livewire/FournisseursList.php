@@ -2,11 +2,11 @@
 
 namespace App\Livewire;
 
-use App\Models\Commande;
+use App\Models\Fournisseur;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class SuiviCommandes extends Component
+class FournisseursList extends Component
 {
     use WithPagination;
     public $perPage = 10;
@@ -27,35 +27,25 @@ class SuiviCommandes extends Component
     }
     public function queryCommande()
     {
-        $query = Commande::with(['user', 'fournisseur', 'rubrique']);
+        $query = Fournisseur::with('commandes');
         foreach ($this->filters as $name => $value) {
             $query->where($name, 'like', $value . "%");
         }
         if ($this->search) {
-            $query->where('NUM_COMMANDE', 'like', $this->search . '%');
+            $query->where('nom_fournisseur', 'like', $this->search . '%');
         }
         return $query->orderBy($this->sort, $this->sortDirection)->paginate($this->perPage);
     }
     public function render()
     {
-        $statusCmd = Commande::select('STATUT_COMMANDE')->distinct()->get();
-        $statusLvr = Commande::select('STATUT_LIVRAISON')->distinct()->get();
-        $statusRec = Commande::select('STATUT_RECEPTION')->distinct()->get();
-        $statusPai = Commande::select('STATUT_PAIEMENT')->distinct()->get();
-        $commandes = $this->queryCommande();
-
-
-
-        return view('livewire.suivi-commandes', [
-            'commandes' => $commandes,
+        $fournisseurs = $this->queryCommande();
+        return view('livewire.fournisseurs-list', [
+            'fournisseurs' => $fournisseurs,
             'inputFilters' => [
-                'Status Commande' => $statusCmd,
-                'Status Livraison' => $statusLvr,
-                'Status Reception' => $statusRec,
-                'Status Paiement' => $statusPai,
+             
             ],
             'sortColumns' => [
-                'Date Commande' => 'DATE_COMMANDE',
+             
             ]
         ]);
     }

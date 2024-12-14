@@ -13,6 +13,6 @@ class Fournisseur extends Model
         'nom_fournisseur'
     ];
     public function commandes(){
-        return $this->hasMany(Commande::class,'FOURNISSEUR');
+        return $this->hasMany(Commande::class);
     }
 }

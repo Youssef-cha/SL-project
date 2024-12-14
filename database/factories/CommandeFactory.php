@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Efp;
 use App\Models\Fournisseur;
 use App\Models\Responsable;
 use App\Models\Rubrique;
@@ -50,6 +51,7 @@ class CommandeFactory extends Factory
             'TAUX_TVA'  => fake()->randomNumber(),
             'MONTANT_TVA'  => fake()->randomNumber(),
 
+            'efp_id'  => Efp::factory(),
             'DATE_DEPOT_SC'  => fake()->date(),
             'STATUT_PAIEMENT'  => 'non payee',
             'DATE_PAIEMENT'  => fake()->date(),

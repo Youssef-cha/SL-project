@@ -2,9 +2,7 @@
 @section('content')
     <div class="box-form">
         <h1>Créer Une retour :</h1>
-        @session('success')
-        <p class="pop-up"> {{ $value }} </p>
-        @endsession
+        <x-session-success />
         <form method="post" action=" {{route("commandes.retours.store", $commande->NUM_COMMANDE)}} " class="form-container">
             @csrf
             <div class="inputBx">

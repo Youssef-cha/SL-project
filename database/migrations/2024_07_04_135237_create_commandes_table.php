@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Efp;
 use App\Models\Fournisseur;
 use App\Models\Rubrique;
 use App\Models\User;
@@ -22,40 +23,41 @@ return new class extends Migration
             $table->enum('TYPE_BUDGET', ['Fonctionnement', 'Investissement', 'Compte hors budget']);
             $table->text('OBJET_ACHAT');
             $table->integer('DELAI_LIVRAISON');
-            $table->enum('GARANTIE', ["oui", "non"]);
-            $table->float('RETENUE_GARANTIE');
-            $table->string('NUM_MARCHE', 50)->nullable();
+            $table->enum('GARANTIE', ["oui", "non"])->default('non');
+            $table->float('RETENUE_GARANTIE')->nullable();
+            $table->string('NUM_MARCHE', 50);
             $table->integer('EXERCICE');
             $table->date('DATE_COMMANDE');
             $table->enum('STATUT_COMMANDE', ['attribuee', 'annulee'])->default('attribuee');
             
             // livraison
-            $table->date('DATE_LIVRAISON');
+            $table->date('DATE_LIVRAISON')->nullable();
             $table->enum('STATUT_LIVRAISON', ["livree", "non livree"])->default('non livree');
-            $table->text('LIEU_LIVRAISON');
+            $table->text('LIEU_LIVRAISON')->nullable();
             
             // reception
             $table->enum('STATUT_RECEPTION', ["receptionnee", "non receptionnee"])->default('non receptionnee');
-            $table->date('DATE_VERIFICATION_RECEPTION');
+            $table->date('DATE_VERIFICATION_RECEPTION')->nullable();
 
             // ??
-            $table->date('DATE_DEPOT_SL');
-            $table->date('DATE_DEPOT_SC');
+            $table->date('DATE_DEPOT_SL')->nullable();
+            $table->date('DATE_DEPOT_SC')->nullable();
             $table->string('oz')->nullable();
 
             // facture
-            $table->string('NUM_FACTURE', 50);
-            $table->date('DATE_FACTURE');
-            $table->float('HT');
-            $table->float('TTC');
-            $table->float('TAUX_TVA');
-            $table->float('MONTANT_TVA');
+            $table->string('NUM_FACTURE', 50)->nullable();
+            $table->date('DATE_FACTURE')->nullable();
+            $table->float('HT')->nullable();
+            $table->float('TTC')->nullable();
+            $table->float('TAUX_TVA')->nullable();
+            $table->float('MONTANT_TVA')->nullable();
 
             // paiement
             $table->enum('STATUT_PAIEMENT', ['payee', 'non payee', 'deposee'])->default('non payee');
-            $table->date('DATE_PAIEMENT');
+            $table->date('DATE_PAIEMENT')->nullable();
             $table->float('MONTANT_PAYE')->nullable();
 
+            $table->foreignIdFor(Efp::class)->constrained();
             $table->foreignIdFor(Rubrique::class)->constrained();
             $table->foreignIdFor(Fournisseur::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();

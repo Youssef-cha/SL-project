@@ -1,13 +1,10 @@
-@php
-    use Carbon\Carbon;
-@endphp
 <div>
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
             <!-- Start coding here -->
             <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg ">
                 <div
-                    class="flex flex-col lg:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4 pb-1">
+                    class="flex flex-col lg:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                     <div class="w-full md:w-1/2">
                         {{-- search bar --}}
                         <form class="flex items-center">
@@ -41,43 +38,59 @@
                                 <option value="100">100</option>
                             </select>
                         </div>
-                        <div class="flex items-center space-x-3 w-full md:w-auto">
-                            {{-- sort button --}}
-                            <x-sort-select :sortColumns="$sortColumns" />
-                            {{-- filter button --}}
-                            <x-filter-button :inputFilters="$inputFilters" />
 
-                        </div>
+                        {{-- add button --}}
+                        <a href="{{ route('fournisseurs.create') }}"
+                            class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                            <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path clip-rule="evenodd" fill-rule="evenodd"
+                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                            </svg>
+                            Ajouter un fournisseur
+                        </a>
+
                     </div>
-                </div>
-                <div class="flex  items-start justify-around py-2 mb-2 text-gray-600">
-                    <h4>Total reste à payer : <span class="text-gray-800 dark:text-gray-200 font-semibold">{{ $totalC }}</span> </h4>
-                    <h4>Total reste du budget : <span class="text-gray-800 dark:text-gray-200 font-semibold">{{ $totalB }}</span>
-                    </h4>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="text-nowrap w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead
                             class="text-xs text-nowrap text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="px-4 w-fit py-3">REFERENCE RUBRIQUE</th>
-                                <th scope="col" class="px-4 w-fit py-3">annee</th>
-                                <th scope="col" class="px-4 w-fit py-3">BUDGET</th>
-                                <th scope="col" class="px-4 w-fit py-3">total ttc</th>
-                                <th scope="col" class="px-4 w-fit py-3">reste</th>
+                                <th scope="col" class="px-4 w-3 py-3"></th>
+                                <th scope="col" class="px-4 w-fit py-3">nom_fournisseur</th>
+                                <th scope="col" class="px-4 w-fit py-3">nombre de commande</th>
                             </tr>
                         </thead>
                         <tbody>
-
-                            @foreach ($rubriques as $rubrique)
+                            @foreach ($fournisseurs as $fournisseur)
                                 <tr class="border-b dark:border-gray-700">
+                                    {{-- actions --}}
+                                    <td class="px-2 py-3 flex items-center justify-end border-r border-gray-700">
+                                        <button id="{{ $fournisseur->id }}-button"
+                                            class="dropdown-button inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
+                                            type="button">
+                                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
+                                                viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                                            </svg>
+                                        </button>
+                                        <div id="{{ $fournisseur->id }}"
+                                            class="dropdown-menu absolute translate-y-10 translate-x-44 hidden h-auto z-40 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
 
-                                    <td class="px-4 w-auto py-3"> {{ $rubrique->REFERENCE_RUBRIQUE }} </td>
-                                    <td class="px-4 w-auto py-3"> {{ $rubrique->ANNEE_BUDGETAIRE }} </td>
-                                    <td class="px-4 w-auto py-3"> {{ $rubrique->BUDGET }} </td>
-                                    <td class="px-4 w-auto py-3"> {{ $rubrique->total_ttc }} </td>
-                                    <td class="px-4 w-auto py-3">
-                                        {{ $rubrique->BUDGET - $rubrique->total_ttc }} </td>
+                                                <li>
+                                                    <a href="{{ route("fournisseurs.edit",$fournisseur->id) }}"
+                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
+                                                        le fournisseur</a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <th class="px-4 w-auto py-3"> {{ $fournisseur->nom_fournisseur }} </td>
+                                    <td class="px-4 w-auto py-3"> {{ $fournisseur->commandes->count() }} </td>
 
                                 </tr>
                             @endforeach
@@ -87,7 +100,7 @@
                 </div>
                 <div class="p-4">
 
-                    {{ $rubriques->links('vendor.livewire.tailwind') }}
+                    {{ $fournisseurs->links('vendor.livewire.tailwind') }}
                 </div>
 
             </div>

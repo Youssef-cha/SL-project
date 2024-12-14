@@ -2,11 +2,7 @@
 @section('content')
     <div class="box-form">
         <h1>complexe</h1>
-        @session('success')
-            <div class="pop-up">
-                {{ $value }}
-            </div>
-        @endsession
+        <x-session-success />
 
         <form method="post" action="{{ route('complexes.store') }}" class="form-container">
             @csrf

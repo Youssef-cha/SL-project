@@ -1,31 +1,20 @@
 @extends('layouts.app')
 @section('content')
-    <div class="box-form">
-        <h1>fournisseur</h1>
-        @session('success')
-            <div class="pop-up">
-                {{ $value }}
-            </div>
-        @endsession
 
-        <form method="post" action="{{ route('fournisseurs.store') }}" class="form-container">
+<x-session-success />
+
+
+    <!-- nom fournisseur -->
+    <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Créer un Fournisseur</h2>
+        <form method="POST" action="{{ route('fournisseurs.store') }}" class="form-container">
             @csrf
-
-            <div class="inputBx">
-                <input id="datever" value="{{ old('nom_fournisseur') }}" name="nom_fournisseur" type="text"
-                    placeholder=" ">
-                <label for="datever" class="label-title unique-label" id="autre_label_unique">nom fournisseur</label>
-                @error('nom_fournisseur')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <button type="submit" class="btn">Enregistrer</button>
-            <a href="{{route("fournisseurs.index")}}" class="btn2">retour</a>
-
-
-
+            <x-form-fields-container>
+                <x-form-input label="nom de fournisseur" name="nom_fournisseur" />
+            </x-form-fields-container>
+            <x-form-button>
+                Enregistrer
+            </x-form-button>
         </form>
     </div>
-    <script src="{{ asset('js/script.js') }}"></script>
 @endsection

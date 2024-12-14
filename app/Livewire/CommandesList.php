@@ -30,7 +30,6 @@ class CommandesList extends Component
         $query = Commande::with(['user', 'fournisseur', 'rubrique']);
         foreach ($this->filters as $name => $value) {
             $query->where($name, 'like', $value . "%");
-            
         }
         if ($this->search) {
             $query->where('NUM_COMMANDE', 'like', $this->search . '%')
@@ -52,7 +51,7 @@ class CommandesList extends Component
                         $query->where('name', 'like', $this->search . '%');
                     }
                 )
-                ;
+            ;
         }
         return $query->orderBy($this->sort, $this->sortDirection)->paginate($this->perPage);
     }
@@ -66,34 +65,36 @@ class CommandesList extends Component
         $statusRec = Commande::select('STATUT_RECEPTION')->distinct()->get();
         $statusPai = Commande::select('STATUT_PAIEMENT')->distinct()->get();
         $commandes = $this->queryCommande();
-        return view('livewire.commandes-list', [
-            'commandes' => $commandes,
-            'inputFilters' => [
-                'Type Achat' => $typeAchat,
-                'Type Budget' => $typeBudget,
-                'Garantie' => $Garantie,
-                'Status Commande' => $statusCmd,
-                'Status Livraison' => $statusLvr,
-                'Status Reception' => $statusRec,
-                'Status Paiement' => $statusPai,
-            ],
-            'sortColumns' => [
-                'Delai Livraison' => 'DELAI_LIVRAISON',
-                'Retenue Garantie' => 'RETENUE_GARANTIE',
-                'Exercice' => 'EXERCICE',
-                'Date Commande' => 'DATE_COMMANDE',
-                'Date Livraison' => 'DATE_LIVRAISON',
-                'Date Verification Reception' => 'DATE_VERIFICATION_RECEPTION',
-                'Date Depot (Service Logistique)' => 'DATE_DEPOT_SL',
-                'Date Depot (Service comptabilite)' => 'DATE_DEPOT_SC',
-                'Date Facture' => 'DATE_FACTURE',
-                'HT' => 'HT',
-                'TTC' => 'TTC',
-                'TAUX_TVA' => 'TAUX_TVA',
-                'Montant TVA' => 'MONTANT_TVA',
-                'Date Paiement' => 'DATE_PAIEMENT',
-                'Montant Paye' => 'MONTANT_PAYE',
-            ]
-        ]);
+
+            return view('livewire.commandes-list', [
+                'commandes' => $commandes,
+                'inputFilters' => [
+                    'Type Achat' => $typeAchat,
+                    'Type Budget' => $typeBudget,
+                    'Garantie' => $Garantie,
+                    'Status Commande' => $statusCmd,
+                    'Status Livraison' => $statusLvr,
+                    'Status Reception' => $statusRec,
+                    'Status Paiement' => $statusPai,
+                ],
+                'sortColumns' => [
+                    'Delai Livraison' => 'DELAI_LIVRAISON',
+                    'Retenue Garantie' => 'RETENUE_GARANTIE',
+                    'Exercice' => 'EXERCICE',
+                    'Date Commande' => 'DATE_COMMANDE',
+                    'Date Livraison' => 'DATE_LIVRAISON',
+                    'Date Verification Reception' => 'DATE_VERIFICATION_RECEPTION',
+                    'Date Depot (Service Logistique)' => 'DATE_DEPOT_SL',
+                    'Date Depot (Service comptabilite)' => 'DATE_DEPOT_SC',
+                    'Date Facture' => 'DATE_FACTURE',
+                    'HT' => 'HT',
+                    'TTC' => 'TTC',
+                    'TAUX_TVA' => 'TAUX_TVA',
+                    'Montant TVA' => 'MONTANT_TVA',
+                    'Date Paiement' => 'DATE_PAIEMENT',
+                    'Montant Paye' => 'MONTANT_PAYE',
+                ]
+            ]);
+     
     }
 }

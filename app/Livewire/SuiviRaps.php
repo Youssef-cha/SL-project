@@ -38,9 +38,9 @@ class SuiviRaps extends Component
         // search
         if ($this->search) {
             $query->where('NUM_COMMANDE', 'like', $this->search . '%')
-            ->orWhereHas('fournisseur' ,function($query){
-                $query->where('nom_fournisseur', 'like', $this->search . '%');
-            });
+                ->orWhereHas('fournisseur', function ($query) {
+                    $query->where('nom_fournisseur', 'like', $this->search . '%');
+                });
         }
         // sort
         $query->orderBy($this->sort, $this->sortDirection);
@@ -51,6 +51,9 @@ class SuiviRaps extends Component
     {
         $statusPai = Commande::select('STATUT_PAIEMENT')->distinct()->get();
         $commandes = $this->queryCommande();
+
+
+
         return view('livewire.suivi-raps', [
             'commandes' => $commandes,
             'inputFilters' => [
@@ -61,7 +64,7 @@ class SuiviRaps extends Component
                 'HT' => 'HT',
                 'TTC' => 'TTC',
                 'TVA' => 'TVA',
-            ]   
+            ]
         ]);
     }
 }

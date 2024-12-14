@@ -1,186 +1,83 @@
 @extends('layouts.app')
 @section('content')
-    <div class="box-form">
-        <h1>mettre a jour Commande n° {{ $commande->NUM_COMMANDE }} </h1>
-        @session('success')
-            <div class="pop-up">
-                {{ $value }}
-            </div>
-        @endsession
+
+    @session('success')
+        <div class="pop-up">
+            {{ $value }}
+        </div>
+    @endsession
+    <!-- numéro de commande -->
+    <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Modifier Commande</h2>
         <form method="post" action="{{ route('commandes.update', $commande->NUM_COMMANDE) }}" class="form-container">
             @csrf
             @method('PUT')
-            <!-- Numéro appel d'offre -->
-            <div class="inputBx">
-                <input value="{{ old('AVIS_ACHAT') ? old('AVIS_ACHAT') : $commande->AVIS_ACHAT }}" id="avis_achat"
-                    name="AVIS_ACHAT" type="text" placeholder=" ">
-                <label for="avis_achat">Numéro appel d'offre </label>
-                @error('AVIS_ACHAT')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Type Commande -->
-            <div class="inputBx">
-                <select name="TYPE_ACHAT" id="">
-                    <option value="" hidden></option>
+            <x-form-fields-container>
+
+                <x-form-select :half="true" label="Type Achat" name="TYPE_ACHAT">
                     @foreach ($achatTypes as $achatType)
-                        <option @selected($achatType == (old('TYPE_ACHAT') ? old('TYPE_ACHAT') : $commande->TYPE_ACHAT)) value="{{ $achatType }}">{{ $achatType }}</option>
+                        <option @selected((old('TYPE_ACHAT') ?? $commande->TYPE_ACHAT) == $achatType) value="{{ $achatType }}">{{ $achatType }}</option>
                     @endforeach
-                </select>
-                <label for="typeAchat">Type Achat</label>
-                @error('TYPE_ACHAT')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- type budget -->
-            <div class="inputBx">
-                <select name="TYPE_BUDGET" id="">
-                    <option value="" hidden></option>
+                </x-form-select>
+                <x-form-select :half="true" label="Type Budget" name="TYPE_BUDGET">
                     @foreach ($budgetTypes as $budgetType)
-                        <option @selected($budgetType == (old('TYPE_BUDGET') ? old('TYPE_BUDGET') : $commande->TYPE_BUDGET)) value="{{ $budgetType }}">{{ $budgetType }}</option>
+                        <option @selected((old('TYPE_BUDGET') ?? $commande->TYPE_BUDGET) == $budgetType) value="{{ $budgetType }}">{{ $budgetType }}</option>
                     @endforeach
-                </select>
-                <label for="typeAchat">type budget</label>
-                @error('TYPE_BUDGET')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Objet d'achat -->
-            <div class="inputBx">
-                <input value="{{ old('OBJET_ACHAT') ? old('OBJET_ACHAT') : $commande->OBJET_ACHAT }}" id="objet_achat"
-                    name="OBJET_ACHAT" type="text" placeholder=" ">
-                <label for="objet_achat">Objet d'achat</label>
-                @error('OBJET_ACHAT')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Référence Rubrique -->
-            <div class="inputBx">
-                <select name="REFERENCE_RUBRIQUE" id="rubrique">
-                    <option value="" hidden></option>
+
+                </x-form-select>
+                <x-form-text-area :update="$commande" label="Objet d'achat" name="OBJET_ACHAT" />
+                <x-form-input :update="$commande" label="Numéro appel d'offre" name="AVIS_ACHAT" />
+                <x-form-select :half="true" label="Référence Rubrique" name="rubrique_id">
                     @foreach ($rubriques as $rubrique)
-                        <option @selected($rubrique->REFERENCE_RUBRIQUE == (old('REFERENCE_RUBRIQUE') ? old('REFERENCE_RUBRIQUE') : $commande->REFERENCE_RUBRIQUE)) value="{{ $rubrique->REFERENCE_RUBRIQUE }}">
+                        <option @selected((old('rubrique_id') ?? $commande->rubrique_id) == $rubrique->id) value="{{ $rubrique->id }}">
                             {{ $rubrique->REFERENCE_RUBRIQUE }}</option>
                     @endforeach
-                </select>
-                <label for="rubrique">Référence Rubrique</label>
-                @error('REFERENCE_RUBRIQUE')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Fournisseur -->
-            <div class="inputBx">
-                <select name="FOURNISSEUR" id="FOURNISSEUR">
-                    <option value="" hidden></option>
+                </x-form-select>
+                <x-form-select :half="true" label="efp" name="efp_id">
+                    @foreach ($efps as $efp)
+                        <option @selected((old('efp_id') ?? $commande->efp_id) == $efp->id) value="{{ $efp->id }}">
+                            {{ $efp->nom_efp }}</option>
+                    @endforeach
+                </x-form-select>
+                <x-form-select :half="true" label="fournisseur" name="fournisseur_id">
                     @foreach ($fournisseurs as $fournisseur)
-                        <option @selected($fournisseur->id == old('FOURNISSEUR') ? old('FOURNISSEUR') : $commande->FOURNISSEUR) value="{{ $fournisseur->id }}">
+                        <option @selected((old('fournisseur_id') ?? $commande->fournisseur_id) == $fournisseur->id) value="{{ $fournisseur->id }}">
                             {{ $fournisseur->nom_fournisseur }}</option>
                     @endforeach
-                </select>
-                <label for="rubrique">fournisseur</label>
-                @error('FOURNISSEUR')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
+                </x-form-select>
+                <x-form-input :update="$commande" :half="true" type="number" min="0" label="Délai de livraison"
+                    name="DELAI_LIVRAISON" />
+                <div class="flex flex-col  justify-start space-y-1">
 
-            <!-- Délai de livraison -->
-            <div class="inputBx">
-                <input value="{{ old('DELAI_LIVRAISON') ? old('DELAI_LIVRAISON') : $commande->DELAI_LIVRAISON }}"
-                    id="DELAI_LIVRAISON" name="DELAI_LIVRAISON" type="number" min="0" placeholder=" ">
-                <label for="DELAI_LIVRAISON">Délai de livraison</label>
-                @error('DELAI_LIVRAISON')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Garantie -->
-            <div class="inputBx2">
-                <p class="label-title">Garantie</p>
-                <div class="radio-group">
-                    <div>
-                        <input id="GARANTIEoui" @checked((old('GARANTIE') ? old('GARANTIE') : $commande->GARANTIE) == 'oui') name="GARANTIE" type="radio" value="oui">
-                        <label for="GARANTIEoui" class="radio-label">Oui</label>
-                    </div>
-                    <div>
-                        <input id="GARANTIEnon" @checked((old('GARANTIE') ? old('GARANTIE') : $commande->GARANTIE) == 'non') name="GARANTIE" type="radio" value="non">
-                        <label for="GARANTIEnon" class="radio-label">Non</label>
-                    </div>
-                </div>
-                @error('GARANTIE')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Retenue garantie -->
-            <div class="inputBx dropped">
-                <input value="{{ old('RETENUE_GARANTIE') ? old('RETENUE_GARANTIE') : $commande->RETENUE_GARANTIE }}"
-                    id="RETENUE_GARANTIE" name="RETENUE_GARANTIE" type="number" placeholder=" ">
-                <label for="RETENUE_GARANTIE">Retenue garantie</label>
-                @error('RETENUE_GARANTIE')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Numéro de marché -->
-            <div class="inputBx">
-                <input value="{{ old('NUM_MARCHE') ? old('NUM_MARCHE') : $commande->NUM_MARCHE }}" id="NUM_MARCHE"
-                    name="NUM_MARCHE" type="text" placeholder=" ">
-                <label for="NUM_MARCHE">Numéro de marché</label>
-                @error('NUM_MARCHE')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Exercice -->
-            <div class="inputBx">
-                <input value="{{ old('EXERCICE') ? old('EXERCICE') : $commande->EXERCICE }}" id="EXERCICE" name="EXERCICE"
-                    type="number" min="0" placeholder=" ">
-                <label for="EXERCICE">Exercice</label>
-                @error('EXERCICE')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Date commande -->
-            <div class="inputBx">
-                <input value="{{ old('DATE_COMMANDE') ? old('DATE_COMMANDE') : $commande->DATE_COMMANDE }}"
-                    id="DATE_COMMANDE" name="DATE_COMMANDE" type="date" placeholder=" ">
-                <label for="DATE_COMMANDE" class="label-title unique-label" id="autre_label_unique">Date commande</label>
-                @error('DATE_COMMANDE')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Responsable dossier -->
-            <div class="inputBx">
-                <select name="RESPONSABLE_DOSSIER" id="RESPONSABLE_DOSSIER">
-                    <option value="" hidden></option>
-                    @foreach ($responsables as $responsable)
-                        <option @selected($responsable->id == old('RESPONSABLE_DOSSIER') ? old('RESPONSABLE_DOSSIER') : $commande->RESPONSABLE_DOSSIER ) value="{{ $responsable->id }}">
-                            {{ $responsable->nom_responsable }}</option>
-                    @endforeach
-                </select>
-                <label for="rubrique">responsable dossier</label>
-                @error('RESPONSABLE_DOSSIER')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-            
-            <!-- Statut commande -->
-            <div class="inputBx2">
-                <p class="label-title">Statut commande</p>
-                <div class="radio-group">
-                    @foreach ($statutCommandes as $statutCommande)
-                        <div>
-                            <input @checked((old('STATUT_COMMANDE') ? old('STATUT_COMMANDE') : $commande->STATUT_COMMANDE) == $statutCommande) id="{{ $statutCommande }}" name="STATUT_COMMANDE"
-                                type="radio" value="{{ $statutCommande }}">
-                            <label for="{{ $statutCommande }}" class="radio-label">{{ $statutCommande }}</label>
+                    <label class=" inline-flex items-center cursor-pointer">
+                        <input id="garantie" name="GARANTIE" type="checkbox" value="oui" @checked((old('GARANTIE') ?? $commande->GARANTIE) == 'oui')
+                            class="sr-only peer">
+                        <div
+                            class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600">
                         </div>
-                    @endforeach
+                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Garantie</span>
+                    </label>
+                    <x-form-input :update="$commande" id="retenue" type="number" min="0" name="RETENUE_GARANTIE"
+                        placeholder="Retenue Garantie" />
+
                 </div>
-            </div>
-            <!-- Enregistrer btn -->
-            <button type="submit" class="btn">Enregistrer</button>
-            <a href="{{ route('commandesUpdate.index') }}" class="btn2">retour</a>
-            <!-- <button onclick="window.location.href='{{ route('commandesUpdate.index') }}'" class="btn">Retour</button> -->
-            <!-- <button id="redirectButton" class="btn">Retour</button> -->
-
-
+                <x-form-input :update="$commande" :half="true" label="Numéro de marché" name="NUM_MARCHE" />
+                <x-form-input :update="$commande" :half="true" type="date" label="Date commande"
+                    name="DATE_COMMANDE" />
+                <x-form-input :update="$commande" :half="true" type="number" min="" label="Exercice"
+                    name="EXERCICE" />
+                <label class="col-span-2 inline-flex items-center cursor-pointer">
+                    <input name="STATUT_COMMANDE" type="checkbox" value="annulee" @checked((old('STATUT_COMMANDE') ?? $commande->STATUT_COMMANDE) == 'annulee')
+                        class="sr-only peer">
+                    <div
+                        class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600">
+                    </div>
+                    <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">commande annulee</span>
+                </label>
+            </x-form-fields-container>
+            <x-form-button>
+                Enregistrer
+            </x-form-button>
         </form>
     </div>
-    <script src="{{ asset('js/script.js') }}"></script>
 @endsection

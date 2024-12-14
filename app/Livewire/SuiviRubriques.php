@@ -62,6 +62,9 @@ class SuiviRubriques extends Component
             }
         }
         $rubriques = $this->queryCommande();
+
+
+
         return view('livewire.suivi-rubriques', [
             'totalC' => $totalC,
             'totalB' => $totalB,

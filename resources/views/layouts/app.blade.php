@@ -14,10 +14,13 @@
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 </head>
 
-<body class="antialiased bg-gray-50 dark:bg-gray-900">
-    <x-nav-bar></x-nav-bar>
-    <x-side-bar></x-side-bar>
-    <main class="p-4  min-h-screen pt-2 w-full">
+<body class=" pt-16 antialiased min-h-screen bg-gray-50 dark:bg-gray-900">
+    
+    @auth
+        <x-nav-bar></x-nav-bar>
+        <x-side-bar></x-side-bar>
+    @endauth
+    <main class="p-4 pt-2   w-full">
         @yield('content')
     </main>
     <script src="{{ asset('js/script.js') }}"></script>
