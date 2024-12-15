@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Models\Complexe;
 use App\Models\Fournisseur;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ComplexesList extends Component
 {
@@ -26,45 +28,22 @@ class ComplexesList extends Component
     }
     public function queryCommande()
     {
-        $query = Commande::with(['user', 'fournisseur', 'rubrique']);
+        $query = Complexe::with('efps');
         foreach ($this->filters as $name => $value) {
             $query->where($name, 'like', $value . "%");
         }
         if ($this->search) {
-            $query->where('NUM_COMMANDE', 'like', $this->search . '%')
-                ->orWhereHas(
-                    'fournisseur',
-                    function ($query) {
-                        $query->where('nom_fournisseur', 'like', $this->search . '%');
-                    }
-                )
-                ->orWhereHas(
-                    'rubrique',
-                    function ($query) {
-                        $query->where('REFERENCE_RUBRIQUE', 'like', $this->search . '%');
-                    }
-                )
-                ->orWhereHas(
-                    'user',
-                    function ($query) {
-                        $query->where('name', 'like', $this->search . '%');
-                    }
-                )
-            ;
+            $query->where('nom_complexe', 'like', $this->search . '%');
         }
         return $query->orderBy($this->sort, $this->sortDirection)->paginate($this->perPage);
     }
     public function render()
     {
-        $fournisseurs = $this->queryCommande();
+        $complexes = $this->queryCommande();
         return view('livewire.complexes-list', [
-            'fournisseurs' => $fournisseurs,
-            'inputFilters' => [
-                
-            ],
-            'sortColumns' => [
-                
-            ]
+            'complexes' => $complexes,
+            'inputFilters' => [],
+            'sortColumns' => []
         ]);
     }
 }

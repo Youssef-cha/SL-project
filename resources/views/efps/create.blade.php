@@ -1,26 +1,21 @@
 @extends('layouts.app')
 @section('content')
-    <div class="box-form">
-        <h1>efp</h1>
-        <x-session-success />
+    <x-session-success />
 
-        <form method="post" action="{{ route('complexes.efps.store', $complexe) }}" class="form-container">
+
+    <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Créer un efp</h2>
+        <form method="POST" action="{{ route('complexes.efps.store', $complexe->id) }}" class="form-container">
             @csrf
+            <x-form-fields-container>
+                <x-form-input label="nom efp" name="nom_efp" />
+            </x-form-fields-container>
 
-            <div class="inputBx">
-                <input id="datever" value="{{ old('nom_efp') }}" name="nom_efp" type="text" placeholder=" ">
-                <label for="datever" class="label-title unique-label" id="autre_label_unique">nom efp</label>
-                @error('nom_efp')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <button type="submit" class="btn">Enregistrer</button>
-            <a href="{{ route('complexes.index') }}" class="btn2">retour</a>
-
-
+            <x-form-button>
+                Enregistrer
+            </x-form-button>
 
         </form>
+
     </div>
-    <script src="{{ asset('js/script.js') }}"></script>
 @endsection

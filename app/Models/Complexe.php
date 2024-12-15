@@ -12,6 +12,6 @@ class Complexe extends Model
         'nom_complexe'
     ];
     public function efps(){
-        return $this->hasMany(Efp::class, "id");
+        return $this->hasMany(Efp::class);
     }
 }

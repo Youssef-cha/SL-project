@@ -2,11 +2,14 @@
 
 namespace App\Livewire;
 
+use App\Models\Efp;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class EfpsList extends Component
 {
     use WithPagination;
+    public $complexe = '';
     public $perPage = 10;
     public $search = '';
     public $sort = 'created_at';
@@ -23,46 +26,29 @@ class EfpsList extends Component
     {
         // nothing here but it is required
     }
+    public function mount($complexe)
+    {
+        $this->complexe = $complexe;
+    }
     public function queryCommande()
     {
-        $query = Commande::with(['user', 'fournisseur', 'rubrique']);
+        $query = Efp::with('commandes')
+            ->where('complexe_id', $this->complexe);
         foreach ($this->filters as $name => $value) {
             $query->where($name, 'like', $value . "%");
         }
         if ($this->search) {
-            $query->where('NUM_COMMANDE', 'like', $this->search . '%')
-                ->orWhereHas(
-                    'fournisseur',
-                    function ($query) {
-                        $query->where('nom_fournisseur', 'like', $this->search . '%');
-                    }
-                )
-                ->orWhereHas(
-                    'rubrique',
-                    function ($query) {
-                        $query->where('REFERENCE_RUBRIQUE', 'like', $this->search . '%');
-                    }
-                )
-                ->orWhereHas(
-                    'user',
-                    function ($query) {
-                        $query->where('name', 'like', $this->search . '%');
-                    }
-                )
-            ;
+            $query->where('nom_efp', 'like', $this->search . '%');
         }
         return $query->orderBy($this->sort, $this->sortDirection)->paginate($this->perPage);
     }
     public function render()
     {
+        $efps = $this->queryCommande();
         return view('livewire.efps-list', [
-            'commandes' => $commandes,
-            'inputFilters' => [
-              
-            ],
-            'sortColumns' => [
-              
-            ]
+            'efps' => $efps,
+            'inputFilters' => [],
+            'sortColumns' => []
         ]);
     }
 }

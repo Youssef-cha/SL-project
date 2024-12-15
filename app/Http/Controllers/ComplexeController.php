@@ -22,8 +22,23 @@ class ComplexeController extends Controller
         Complexe::create($validData);
         return redirect()->back()->with('success','complexe A été ajouté avec succès');;
     }
-    public function destroy(Complexe $complexe){
+    public function edit($complexe){
+        $complexe = Complexe::findOrFail($complexe);
+        return view('complexes.edit', compact('complexe'));
+    }
+
+    public function update(Request $request , $complexe){
+        $complexe = Complexe::findOrFail($complexe);
+        $validData = $request->validate([
+            'nom_complexe' => 'required'
+        ]);
+        $complexe->update($validData);
+        return redirect()->back()->with('success', 'complexe A été mis à jour avec succès');
+
+    }
+    public function destroy($complexe){
+        $complexe = Complexe::findOrFail($complexe);
         $complexe->delete();
-        return redirect()->back();
+        return redirect()->route('complexes.index');
     }
 }

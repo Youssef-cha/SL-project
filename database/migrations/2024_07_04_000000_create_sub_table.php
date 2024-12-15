@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Complexe;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -25,15 +26,14 @@ return new class extends Migration
         });
         Schema::create('complexes', function (Blueprint $table) {
             $table->id();
-            $table->string('nom_complexe',50);
+            $table->string('nom_complexe', 50);
             $table->timestamps();
         });
         Schema::create('efps', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_complexe');
-            $table->string('nom_efp',50);
+            $table->string('nom_efp', 50);
             $table->timestamps();
-            $table->foreign('id_complexe')->references('id')->on('complexes')->onDelete('cascade');
+            $table->foreignIdFor(Complexe::class)->constrained()->cascadeOnDelete();
         });
     }
 

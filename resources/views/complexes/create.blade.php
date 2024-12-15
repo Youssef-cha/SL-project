@@ -1,27 +1,19 @@
 @extends('layouts.app')
 @section('content')
-    <div class="box-form">
-        <h1>complexe</h1>
-        <x-session-success />
+    <x-session-success />
 
-        <form method="post" action="{{ route('complexes.store') }}" class="form-container">
+
+    <!-- nom fournisseur -->
+    <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Créer un Complexe</h2>
+        <form method="POST" action="{{ route('complexes.store') }}" class="form-container">
             @csrf
-
-            <div class="inputBx">
-                <input id="datever" value="{{ old('nom_complexe') }}" name="nom_complexe" type="text"
-                    placeholder=" ">
-                <label for="datever" class="label-title unique-label" id="autre_label_unique">nom complexe</label>
-                @error('nom_complexe')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <button type="submit" class="btn">Enregistrer</button>
-            <a href="{{route("complexes.index")}}" class="btn2">retour</a>
-
-
-
+            <x-form-fields-container>
+                <x-form-input label="nom complexe" name="nom_complexe" />
+            </x-form-fields-container>
+            <x-form-button>
+                Enregistrer
+            </x-form-button>
         </form>
     </div>
-    <script src="{{ asset('js/script.js') }}"></script>
 @endsection

@@ -9,10 +9,15 @@ class Efp extends Model
 {
     use HasFactory;
     public $fillable = [
-        'id_complexe',
+        'complexe_id',
         'nom_efp'
     ];
-    public function complexe(){
-        return $this->belongsTo(Complexe::class,"id");
+    public function complexe()
+    {
+        return $this->belongsTo(Complexe::class);
+    }
+    public function commandes()
+    {
+        return $this->hasMany(Commande::class);
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\BonCommandeController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\ComplexeController;
@@ -17,7 +16,6 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SuiviCommandeController;
 use App\Http\Controllers\SuiviRapController;
 use App\Http\Controllers\SuiviRubriqueController;
-use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
 // ajax_controller
@@ -25,7 +23,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     // commande_controller
-    Route::resource('commandes' , RubriqueController::class)->except('show');
+    Route::resource('commandes' , CommandeController::class)->except('show');
                   
     // livraison_controller                  
     Route::get('/livraisons/{commande}/edit',                        [LivraisonController::class, "edit"])->name("livraisons.edit");
@@ -52,18 +50,18 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('rubriques' , RubriqueController::class)->except('show');
 
     // fournisseur
-    Route::resource('fournisseurs' , RubriqueController::class)->except('show');
+    Route::resource('fournisseurs' , FournisseurController::class)->except('show');
 
     // complexes
-    Route::get('/complexes/create',                                  [ComplexeController::class, "create"])->name("complexes.create");
-    Route::post('/complexes',                                        [ComplexeController::class, "store"])->name("complexes.store");
-    Route::get('/complexes',                                         [ComplexeController::class, "index"])->name("complexes.index");
-    Route::get('/complexes/{complexe}',                              [ComplexeController::class, "destroy"])->name("complexes.destroy");
+    Route::resource('complexes' , ComplexeController::class)->except('show');
 
     //efps
-    Route::get('/complexes/{complexe}/efps/create',                  [EfpController::class, "create"])->name("complexes.efps.create");
     Route::get('/complexes/{complexe}/efps',                         [EfpController::class, "index"])->name("complexes.efps.index");
+    Route::get('/complexes/{complexe}/efps/create',                  [EfpController::class, "create"])->name("complexes.efps.create");
     Route::post('/complexes/{complexe}/efps',                        [EfpController::class, "store"])->name("complexes.efps.store");
+    Route::get('/efps/{efp}/edit',                        [EfpController::class, "edit"])->name("efps.edit");
+    Route::put('/efps/{efp}',                        [EfpController::class, "update"])->name("efps.update");
+    Route::delete('/efps/{efp}',                        [EfpController::class, "destroy"])->name("efps.destroy");
 
     // suiviCommandes
     Route::get('/suiviCommandes',                                    [SuiviCommandeController::class, "index"])->name("suiviCommandes.index");
