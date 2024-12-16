@@ -8,11 +8,11 @@
             @csrf
             @method('PUT')
             <x-form-fields-container>
-                <x-form-input value="Livrée" name="STATUT_LIVRAISON" type="hidden" />
-                <x-form-input name="DATE_LIVRAISON" type="date" label="Date De Livraison"/>
-                <x-form-text-area name="LIEU_LIVRAISON" label="Lieu De Livraison"/>
+                <x-form-input :update="$commande" value="Livrée" name="STATUT_LIVRAISON" type="hidden" />
+                <x-form-input :update="$commande" name="DATE_LIVRAISON" type="date" label="Date De Livraison"/>
+                <x-form-text-area :update="$commande" name="LIEU_LIVRAISON" label="Lieu De Livraison"/>
             </x-form-fields-container>
-            <x-form-button>
+            <x-form-button route="commandes.index" :param="$commande->NUM_COMMANDE" >
                 Enregistrer
             </x-form-button>
         </form>

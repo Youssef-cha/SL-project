@@ -1,42 +1,3 @@
-{{-- @extends('layouts.app')
-@section('content')
-    <div class="box-form">
-        <h1>Paiement</h1>
-        @session('success')
-            <div class="pop-up">
-                {{ $value }}
-            </div>
-        @endsession
-        <form method="post" action="{{route('paiements.update', $commande->NUM_COMMANDE)}}" class="form-container">
-            @csrf
-            @method("PUT")
-            
-            
-            <div class="inputBx2">
-                <p class="label-title">payee</p>
-                <div class="radio-group">
-                    <div>
-                        <input id="STATUT_PAIEMENToui" @checked($commande->STATUT_PAIEMENT == 'payee') name="STATUT_PAIEMENT" type="radio" value="payee">
-                        <label for="STATUT_PAIEMENToui" class="radio-label">Oui</label>
-                    </div>
-                    <div>
-                        <input id="STATUT_PAIEMENTnon" name="STATUT_PAIEMENT" type="radio" @checked($commande->STATUT_PAIEMENT == 'deposee') value="deposee">
-                        <label for="STATUT_PAIEMENTnon" class="radio-label">Non</label>
-                    </div>
-                </div>
-                @error('STATUT_PAIEMENT')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-
-            
-
-            <button type="submit" class="btn">Enregistrer</button>
-            <a href="{{route("commandesUpdate.index")}}" class="btn2">retour</a>
-        </form>
-    </div>
-    <script src="{{ asset('js/script.js') }}"></script>
-@endsection --}}
 
 
 @extends('layouts.app')
@@ -49,9 +10,9 @@
             @csrf
             @method('PUT')
             <x-form-fields-container>
-                <x-form-input name="oz" label="Numero OZ :" />
-                <x-form-input name="DATE_PAIEMENT" type="date" label="Date De Paiement :" />
-                <x-form-input name="MONTANT_PAYE" type="number" label="Montant Payee :" />
+                <x-form-input :update="$commande" name="oz" label="Numero OZ :" />
+                <x-form-input :update="$commande" name="DATE_PAIEMENT" type="date" label="Date De Paiement :" />
+                <x-form-input :update="$commande" name="MONTANT_PAYE" type="number" label="Montant Payee :" />
                 <label class="col-span-2 inline-flex items-center cursor-pointer">
                     <input name="STATUT_PAIEMENT" value="payee" type="checkbox" @checked((old('STATUT_PAIEMENT') ?? $commande->STATUT_PAIEMENT) == 'payee')
                         class="sr-only peer">
@@ -61,7 +22,7 @@
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">payee</span>
                 </label>
             </x-form-fields-container>
-            <x-form-button>
+            <x-form-button route="commandes.index" :param="$commande->NUM_COMMANDE">
                 Enregistrer
             </x-form-button>
         </form>

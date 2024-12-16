@@ -8,10 +8,10 @@
             @csrf
             @method('PUT')
             <x-form-fields-container>
-                <x-form-input value="deposee" name="STATUT_PAIEMENT" type="hidden"/>
-                <x-form-input name="DATE_DEPOT_SC" type="date" label="Date Depot Service Comptabilite :"/>
+                <x-form-input :update="$commande" value="deposee" name="STATUT_PAIEMENT" type="hidden"/>
+                <x-form-input :update="$commande" name="DATE_DEPOT_SC" type="date" label="Date Depot Service Comptabilite :"/>
             </x-form-fields-container>
-            <x-form-button>
+            <x-form-button route="commandes.index" :param="$commande->NUM_COMMANDE">
                 Enregistrer
             </x-form-button>
         </form>
