@@ -12,6 +12,7 @@
                 <x-side-link :active="request()->is('rubriques')" href="{{ route('rubriques.index') }}  ">rubriques</x-side-link>
                 <x-side-link :active="request()->is('fournisseurs')" href="{{ route('fournisseurs.index') }}  ">fournisseurs</x-side-link>
                 <x-side-link :active="request()->is('complexes')" href="{{ route('complexes.index') }}  ">complexes et efps</x-side-link>
+                <x-side-link :active="request()->is('complexes')" href="{{ route('complexes.index') }}  ">retours</x-side-link>
             </x-side-group>
         </ul>
     </div>

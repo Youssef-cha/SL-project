@@ -30,7 +30,7 @@ class SuiviRubriques extends Component
 
     public function queryCommande()
     {
-        $query = Rubrique::query()
+        $query = Rubrique::with('commandes')
             ->selectRaw('rubriques.id , REFERENCE_RUBRIQUE , BUDGET, ANNEE_BUDGETAIRE, SUM(TTC) as total_ttc')
             ->leftJoin('commandes', 'rubriques.id', '=', 'commandes.rubrique_id')
             ->groupBy('rubriques.id', 'REFERENCE_RUBRIQUE', 'BUDGET', 'ANNEE_BUDGETAIRE');

@@ -12,7 +12,7 @@
             <x-form-fields-container>
                 <x-form-input :update="$complexe" label="nom de complexe" name="nom_complexe" />
             </x-form-fields-container>
-            <x-form-button>
+            <x-form-button route="complexes.index">
                 Enregistrer
             </x-form-button>
         </form>

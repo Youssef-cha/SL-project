@@ -58,13 +58,13 @@
                                     commande</th>
                                 <th scope="col" class="px-4 w-fit py-3">DATE COMMANDE
                                 </th>
-                                <th scope="col" class="px-4 w-fit py-3">STATUT COMMANDE
+                                <th scope="col" class="px-4 w-fit py-3">STATUS COMMANDE
                                 </th>
-                                <th scope="col" class="px-4 w-fit py-3">STATUT LIVRAISON
+                                <th scope="col" class="px-4 w-fit py-3">STATUS LIVRAISON
                                 </th>
-                                <th scope="col" class="px-4 w-fit py-3">STATUT RECEPTION
+                                <th scope="col" class="px-4 w-fit py-3">STATUS RECEPTION
                                 </th>
-                                <th scope="col" class="px-4 w-fit py-3">STATUT PAIEMENT
+                                <th scope="col" class="px-4 w-fit py-3">STATUS PAIEMENT
                                 </th>
                                 <th scope="col" class="px-4 w-fit py-3">DELAI RESTANT
                                 </th>

@@ -10,7 +10,7 @@
             <x-form-fields-container>
                 <x-form-input :update="$fournisseur" label="nom de fournisseur" name="nom_fournisseur" />
             </x-form-fields-container>
-            <x-form-button>
+            <x-form-button route="fournisseurs.index">
                 Enregistrer
             </x-form-button>
         </form>

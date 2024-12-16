@@ -11,7 +11,7 @@
                 <x-form-input label="nom efp" name="nom_efp" />
             </x-form-fields-container>
 
-            <x-form-button>
+            <x-form-button route="complexes.index">
                 Enregistrer
             </x-form-button>
 
