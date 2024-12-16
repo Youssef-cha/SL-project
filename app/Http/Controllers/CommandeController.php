@@ -99,10 +99,12 @@ class CommandeController extends Controller
             "*.required" => "Ce champ est obligatoire",
             "*EXERCICE.size" => "EXERCICE Doit comporter 4 caractères"
         ]);
+
         $validData['GARANTIE'] = request()->GARANTIE ?? 'non';
         if($validData['GARANTIE'] == 'non'){
             $validData['RETENUE_GARANTIE'] = NULL;
         }
+
         $commande->update($validData);
         return redirect()->back()->with('success', 'Commande A été mis à jour avec succès!');
     }

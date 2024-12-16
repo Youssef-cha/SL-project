@@ -12,6 +12,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     {{-- jquery --}}
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+    <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png">
 </head>
 
 <body class=" pt-16 relative antialiased min-h-screen bg-gray-50 dark:bg-gray-900">

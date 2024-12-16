@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 @section('content')
     <div class="box-form">
         <h1>Paiement</h1>
@@ -10,32 +10,8 @@
         <form method="post" action="{{route('paiements.update', $commande->NUM_COMMANDE)}}" class="form-container">
             @csrf
             @method("PUT")
-            <div class="inputBx">
-                <input id="dateLI" value="{{old('oz') ? old('oz') : $commande->oz}}" name="oz" type="text"
-                    placeholder=" ">
-                <label for="dateLI" class="label-title unique-label" id="autre_label_unique">numero oz</label>
-                @error('oz')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-            <div class="inputBx">
-                <input id="dateLI" value="{{old('oz') ? old('DATE_PAIEMENT') : $commande->DATE_PAIEMENT}}" name="DATE_PAIEMENT" type="date"
-                    placeholder=" ">
-                <label for="dateLI" class="label-title unique-label" id="autre_label_unique">DATE PAIEMENT</label>
-                @error('DATE_PAIEMENT')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
             
-            <div class="inputBx">
-                <input id="dateLI" value="{{old('MONTANT_PAYE') ? old('MONTANT_PAYE') : $commande->MONTANT_PAYE}}" name="MONTANT_PAYE" type="number"
-                    placeholder=" ">
-                <label for="dateLI" class="label-title unique-label" id="autre_label_unique">montant paye</label>
-                @error('MONTANT_PAYE')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-
+            
             <div class="inputBx2">
                 <p class="label-title">payee</p>
                 <div class="radio-group">
@@ -60,4 +36,34 @@
         </form>
     </div>
     <script src="{{ asset('js/script.js') }}"></script>
+@endsection --}}
+
+
+@extends('layouts.app')
+@section('content')
+    <x-session-success />
+    <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Modifier le paiement :
+            {{ $commande->NUM_COMMANDE }}</h2>
+        <form method="POST" action="{{ route('paiements.update', $commande->NUM_COMMANDE) }}" class="form-container">
+            @csrf
+            @method('PUT')
+            <x-form-fields-container>
+                <x-form-input name="oz" label="Numero OZ :" />
+                <x-form-input name="DATE_PAIEMENT" type="date" label="Date De Paiement :" />
+                <x-form-input name="MONTANT_PAYE" type="number" label="Montant Payee :" />
+                <label class="col-span-2 inline-flex items-center cursor-pointer">
+                    <input name="STATUT_PAIEMENT" value="payee" type="checkbox" @checked((old('STATUT_PAIEMENT') ?? $commande->STATUT_PAIEMENT) == 'payee')
+                        class="sr-only peer">
+                    <div
+                        class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600">
+                    </div>
+                    <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">payee</span>
+                </label>
+            </x-form-fields-container>
+            <x-form-button>
+                Enregistrer
+            </x-form-button>
+        </form>
+    </div>
 @endsection

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\BonCommandeController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\ComplexeController;
 use App\Http\Controllers\DepotController;
@@ -9,7 +8,6 @@ use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\LivraisonController;
 use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\ReceptionController;
-use App\Http\Controllers\ResponsableController;
 use App\Http\Controllers\RetourController;
 use App\Http\Controllers\RubriqueController;
 use App\Http\Controllers\SessionController;

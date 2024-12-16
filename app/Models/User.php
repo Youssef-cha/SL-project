@@ -10,6 +10,9 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+    public function isAdmin() : bool {
+        return $this->admin == 1;
+    }
 
     /**
      * The attributes that are mass assignable.

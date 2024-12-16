@@ -21,10 +21,10 @@
         <div>
             @can('add-users')
                 <a href="{{ route('users.create') }}"
-                    class="rounded-full mt-3  p-4 flex items-center justify-between ring ring-green-500  ">
-                    <div class="flex items-center space-x-3 text-md dark:text-gray-300">
+                    class="dark:text-gray-300 hover:text-primary-500 hover:bg-gray-900 transition-colors duration-300 bg-gray-700 rounded-full mt-3  p-4 flex items-center justify-between ring ring-green-500  ">
+                    <div class="flex items-center space-x-3 text-md text-inherit">
                         <i class="fa-solid fa-plus"></i>
-                        <span class=" font-semibold ">ajouter un responsable</span>
+                        <span class=" font-semibold text-inherit">ajouter un responsable</span>
                     </div>
                 </a>
             @endcan
@@ -35,7 +35,7 @@
                     <span class=" font-semibold ">{{ Auth::user()->name }}</span>
                 </div>
                 <button form="logout" type="submit"
-                    class=" absolute w-16 text-xl right-0 inset-y-0 block text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-red-300 capitalize  hover:text-primary-500 transition-colors px-5 py-2.5 text-center font-semibold dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                    class=" absolute w-16 text-xl right-0 inset-y-0 block text-white bg-gray-700 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-red-300 capitalize  hover:text-primary-500 transition-colors px-5 py-2.5 text-center font-semibold dark:bg-gray-600 dark:hover:bg-gray-900 dark:focus:ring-gray-800">
                     <i class="fa-solid fa-arrow-right-from-bracket "></i>
                 </button>
                 <form id="logout" class="hidden" action="{{ route('sessions.destroy') }}" method="POST">

@@ -1,32 +1,19 @@
 @extends('layouts.app')
 @section('content')
-    <div class="box-form">
-        <h1>depot</h1>
-        @session('success')
-            <div class="pop-up">
-                {{ $value }}
-            </div>
-        @endsession
-
-        <form method="post" action="{{ route('depots.update', $commande->NUM_COMMANDE) }}" class="form-container">
+    <x-session-success />
+    <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Modifier le depot :
+            {{ $commande->NUM_COMMANDE }}</h2>
+        <form method="POST" action="{{ route('depots.update', $commande->NUM_COMMANDE) }}" class="form-container">
             @csrf
             @method('PUT')
-
-            <input value="deposee" name="STATUT_PAIEMENT" type="hidden">
-
-            <div class="inputBx">
-                <input id="datever" value="{{ old('DATE_DEPOT_SC') ? old('DATE_DEPOT_SC') : $commande->DATE_DEPOT_SC }}"
-                    name="DATE_DEPOT_SC" type="date" placeholder=" ">
-                <label for="datever" class="label-title unique-label" id="autre_label_unique">DATE DEPOT SC</label>
-                @error('DATE_DEPOT_SC')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <button type="submit" class="btn">Enregistrer</button>
-            <a href="{{route("commandesUpdate.index")}}" class="btn2">retour</a>
-
+            <x-form-fields-container>
+                <x-form-input value="deposee" name="STATUT_PAIEMENT" type="hidden"/>
+                <x-form-input name="DATE_DEPOT_SC" type="date" label="Date Depot Service Comptabilite :"/>
+            </x-form-fields-container>
+            <x-form-button>
+                Enregistrer
+            </x-form-button>
         </form>
     </div>
-    <script src="{{ asset('js/script.js') }}"></script>
 @endsection

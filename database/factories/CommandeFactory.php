@@ -23,7 +23,9 @@ class CommandeFactory extends Factory
     public function definition(): array
     {
         return [
+
             'NUM_COMMANDE'  => $this->id ++,
+
             'AVIS_ACHAT'  => "...",
             'TYPE_ACHAT'    => 'Marche',
             'TYPE_BUDGET'    => 'Fonctionnement',

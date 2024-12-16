@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 @section('content')
     <div class="box-form">
         <h1>Reception</h1>
@@ -11,63 +11,6 @@
         <form method="post" action="{{ route('receptions.update', $commande->NUM_COMMANDE) }}" class="form-container">
             @csrf
             @method('PUT')
-            <input value="réceptionnée" name="STATUT_RECEPTION" type="hidden">
-
-            <div class="inputBx">
-                <input id="datever"
-                    value="{{ old('DATE_VERIFICATION_RECEPTION') ? old('DATE_VERIFICATION_RECEPTION') : $commande->DATE_VERIFICATION_RECEPTION }}"
-                    name="DATE_VERIFICATION_RECEPTION" type="date" placeholder=" ">
-                <label for="datever" class="label-title unique-label" id="autre_label_unique">Date de vérification
-                    reception:</label>
-                @error('DATE_VERIFICATION_RECEPTION')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="inputBx">
-                <input id="datedepo" value="{{ old('DATE_DEPOT_SL') ? old('DATE_DEPOT_SL') : $commande->DATE_DEPOT_SL }}"
-                    name="DATE_DEPOT_SL" type="date" placeholder=" ">
-                <label for="datedepo" class="label-title unique-label" id="autre_label_unique">Date depot SL:</label>
-                @error('DATE_DEPOT_SL')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="inputBx">
-                <input id="numeroFacture" value="{{ old('NUM_FACTURE') ? old('NUM_FACTURE') : $commande->NUM_FACTURE }}"
-                    name="NUM_FACTURE" type="text" placeholder=" ">
-                <label for="numeroFacture">Numéro de Facture:</label>
-                @error('NUM_FACTURE')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="inputBx">
-                <input id="datefacture" value="{{ old('DATE_FACTURE') ? old('DATE_FACTURE') : $commande->DATE_FACTURE }}"
-                    name="DATE_FACTURE" type="date" placeholder=" ">
-                <label for="datefacture" class="label-title unique-label" id="autre_label_unique">Date facture:</label>
-                @error('DATE_FACTURE')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="inputBx">
-                <input id="ht" value="{{ old('HT') ? old('HT') : $commande->HT }}" name="HT" type="number"
-                    min="0" placeholder=" ">
-                <label for="ht">HT:</label>
-                @error('HT')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="inputBx">
-                <input id="ttc" value="{{ old('TTC') ? old('TTC') : $commande->TTC }}" name="TTC" type="number"
-                    min="0" placeholder=" ">
-                <label for="ttc">TTC:</label>
-                @error('TTC')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
-            </div>
 
             <div class="inputBx">
                 <input id="ttva" value="{{ old('TAUX_TVA') ? old('TAUX_TVA') : $commande->TAUX_TVA }}" name="TAUX_TVA"
@@ -92,4 +35,32 @@
         </form>
     </div>
     <script src="{{ asset('js/script.js') }}"></script>
+@endsection --}}
+@extends('layouts.app')
+@section('content')
+    <x-session-success />
+    <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Modifier la reception :
+            {{ $commande->NUM_COMMANDE }}</h2>
+        <form method="POST" action="{{ route('receptions.update', $commande->NUM_COMMANDE) }}" class="form-container">
+            @csrf
+            @method('PUT')
+            <x-form-fields-container>
+                <x-form-input value="réceptionnée" name="STATUT_RECEPTION" type="hidden" />
+                <x-form-input name="DATE_VERIFICATION_RECEPTION" type="date"
+                    label="Date de vérification
+                    reception :" />
+                <x-form-input name="DATE_DEPOT_SL" type="date" label="Date depot service logistique :" />
+                <x-form-input name="NUM_FACTURE" type="text" label="Numero de facture :" />
+                <x-form-input name="DATE_FACTURE" type="date" label="Date de facture :" />
+                <x-form-input name="HT" type="number" min="0" label="HT :" />
+                <x-form-input name="TTC" type="number" min="0" label="TTC :" />
+                <x-form-input name="TAUX_TVA" type="number" min="0" label="TAUX TVA :" />
+                <x-form-input name="MONTANT_TVA" type="number" min="0" label="Montant TVA :" />
+            </x-form-fields-container>
+            <x-form-button>
+                Enregistrer
+            </x-form-button>
+        </form>
+    </div>
 @endsection
