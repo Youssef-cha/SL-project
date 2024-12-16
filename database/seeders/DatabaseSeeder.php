@@ -14,8 +14,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
         Commande::factory(100)->create();
         $this->call(adminSeed::class);
+
         
     }
 }

@@ -120,6 +120,31 @@
                                                         commande</a>
                                                 </li>
                                                 <li>
+
+                                                    <a href="{{ route('livraisons.edit', $commande->NUM_COMMANDE) }}"
+                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
+                                                        livraison</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('receptions.edit', $commande->NUM_COMMANDE) }}"
+                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
+                                                        reception</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('depots.edit', $commande->NUM_COMMANDE) }}"
+                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
+                                                        depot</a>
+                                                </li>
+
+                                                @if ($commande->STATUT_PAIEMENT !== 'non payee')
+                                                    <li>
+                                                        <a href="{{ route('paiements.edit', $commande->NUM_COMMANDE) }}"
+                                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
+                                                            paiement</a>
+                                                    </li>
+                                                @endif
+
+                                                <li>
                                                     <a href="{{ route('commandes.retours.create', $commande->NUM_COMMANDE) }}"
                                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">créer une retour</a>
                                                 </li>
@@ -131,6 +156,7 @@
                                                             class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">retours</a>
                                                     </li>
                                                 @endif
+
 
 
                                             </ul>

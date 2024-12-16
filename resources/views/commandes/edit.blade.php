@@ -4,7 +4,7 @@
     <x-session-success></x-session-success>
     <!-- numéro de commande -->
     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Modifier Commande</h2>
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Modifier La Commande : {{$commande->NUM_COMMANDE}}</h2>
         <form method="post" action="{{ route('commandes.update', $commande->NUM_COMMANDE) }}" class="form-container">
             @csrf
             @method('PUT')
