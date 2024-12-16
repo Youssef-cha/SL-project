@@ -18,7 +18,7 @@ class EfpFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_complexe' => Complexe::factory(),
+            'complexe_id' => Complexe::factory(),
             'nom_efp' => fake()->name(),
         ];
     }

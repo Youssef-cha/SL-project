@@ -54,7 +54,7 @@
 
 
 
-                           <x-filter-button :inputFilters="$inputFilters"></x-filter-button>
+                            <x-filter-button :inputFilters="$inputFilters"></x-filter-button>
                         </div>
                     </div>
                 </div>
@@ -119,7 +119,31 @@
                                                     <a href="{{ route('commandes.edit', $commande->NUM_COMMANDE) }}"
                                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
                                                         commande</a>
-                                                
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('livraisons.edit', $commande->NUM_COMMANDE) }}"
+                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
+                                                        livraison</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('receptions.edit', $commande->NUM_COMMANDE) }}"
+                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
+                                                        reception</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('depots.edit', $commande->NUM_COMMANDE) }}"
+                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
+                                                        depot</a>
+                                                </li>
+
+                                                @if ($commande->STATUT_PAIEMENT !== 'non payee')
+                                                    <li>
+                                                        <a href="{{ route('paiements.edit', $commande->NUM_COMMANDE) }}"
+                                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
+                                                            paiement</a>
+                                                    </li>
+                                                @endif
+
                                             </ul>
                                             <div class="py-1">
                                                 <a href="{{ route('commandes.edit', $commande->NUM_COMMANDE) }}"

@@ -22,7 +22,7 @@ class CommandeFactory extends Factory
     public function definition(): array
     {
         return [
-            'NUM_COMMANDE'  => "cmd" . fake()->randomNumber(),
+            'NUM_COMMANDE'  => fake()->name(),
             'AVIS_ACHAT'  => "...",
             'TYPE_ACHAT'    => 'Marche',
             'TYPE_BUDGET'    => 'Fonctionnement',

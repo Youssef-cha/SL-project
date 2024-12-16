@@ -98,9 +98,9 @@ class CommandeController extends Controller
             "*.required" => "Ce champ est obligatoire",
             "*EXERCICE.size" => "EXERCICE Doit comporter 4 caractères"
         ]);
-        dd($validData);
+        // dd($validData);
         $validData['GARANTIE'] = request()->GARANTIE ?? 'non';
-        dd($validData);
+        // dd($validData);
         $commande->update($validData);
         return redirect()->back()->with('success', 'Commande A été mis à jour avec succès!');
     }

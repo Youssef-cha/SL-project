@@ -18,13 +18,13 @@ class PaiementController extends Controller
     }
     public function update(Request $request, Commande $commande){
         if($commande->STATUT_PAIEMENT != "payee" && $commande->STATUT_PAIEMENT != "deposee"){
-            return redirect()->route('commandesUpdate.index')->with("error", "Vous devez d'abord mettre à jour le dépôt !");
+            return redirect()->route('depots.edit' , $commande->NUM_COMMANDE)->with("error", "Vous devez d'abord mettre à jour le dépôt !");
         }
         $newData = $request->validate([
-            "STATUT_PAIEMENT" => ['required','in:deposee,payee'],
             "DATE_PAIEMENT" => ['required'],
             "MONTANT_PAYE" => ['required'],
             "oz" => ['required'],
+            "STATUT_PAIEMENT" => '',
         ], [
             '*.required' => 'Ce champ est obligatoire'
         ]);
