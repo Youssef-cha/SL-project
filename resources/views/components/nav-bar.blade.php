@@ -3,7 +3,7 @@
         <div class="flex flex-wrap justify-between items-center">
             <div class="flex justify-start items-center">
                 <button togglerFor="sidebar"
-                    class="flex items-center rounded-md justify-center p-3 text-xl font-light text-gray-600 hover:bg-gray-200 w-8 h-7 r focus:ring-4 focus:ring-gray-300 mx-4">
+                    class="flex items-center rounded-md justify-center p-3 text-xl font-light text-gray-600 dark:hover:text-primary-500 transition-all duration-300 dark:hover:bg-gray-700 w-8 h-7 r focus:ring-4 dark:focus:ring-gray-700 mx-4">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <a href="/" class="flex items-center justify-between mr-4">
@@ -12,13 +12,7 @@
                         Logistique</span>
                 </a>
             </div>
-            <div class="flex items-center lg:order-2">
-                <form class="flex items-center" action="{{ route('sessions.destroy') }}" method="POST">
-                    @csrf
-                    <button type="submit" class=" text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 capitalize rounded-md text-sm px-5 py-2.5 text-center font-semibold  mr-4 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">logout</button>
-                </form>
-    
-            </div>
+            
         </div>
     </nav>
 

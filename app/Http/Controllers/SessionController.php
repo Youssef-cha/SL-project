@@ -18,12 +18,13 @@ class SessionController extends Controller
             "email" => ['required', 'email'],
             "password" => ['required'],
         ]);
-        if (Auth::attempt($validated)) {
+        
+        if (Auth::attempt($validated , request()->remember ? true : false)) {
             request()->session()->regenerate();
             return redirect('/');
         }
         throw ValidationException::withMessages([
-            'email' => 'sorry, those credentials do not match.'
+            'email' => 'email ou mot de passe incorrect.'
         ]);
     }
     public function destroy()

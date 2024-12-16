@@ -16,12 +16,11 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SuiviCommandeController;
 use App\Http\Controllers\SuiviRapController;
 use App\Http\Controllers\SuiviRubriqueController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // ajax_controller
 Route::middleware(['auth'])->group(function () {
-
-
     // commande_controller
     Route::resource('commandes', CommandeController::class)->except('show');
 
@@ -74,10 +73,13 @@ Route::middleware(['auth'])->group(function () {
 
     // suiviRubriques
     Route::get('/suiviRaps',                                         [SuiviRapController::class, "index"])->name("suiviRaps.index");
+    // users
+    Route::get('/users/create',                                       [UserController::class, "create"])->can("add-users")->name("users.create");
+    Route::post('/users',                                       [UserController::class, "store"])->can("add-users")->name("users.store");
 
 
     //views
-    Route::view('/', "home");
+    Route::view('/', "home")->name('home');
 });
 
 // auth

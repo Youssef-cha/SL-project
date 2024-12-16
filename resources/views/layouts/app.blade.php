@@ -14,7 +14,7 @@
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 </head>
 
-<body class=" pt-16 antialiased min-h-screen bg-gray-50 dark:bg-gray-900">
+<body class=" pt-16 relative antialiased min-h-screen bg-gray-50 dark:bg-gray-900">
     
     @auth
         <x-nav-bar></x-nav-bar>
