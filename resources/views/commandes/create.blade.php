@@ -95,7 +95,7 @@
                 <x-form-input :half="true" type="date" label="Date commande" name="DATE_COMMANDE" />
 
             </x-form-fields-container>
-            <x-form-button>
+            <x-form-button route="commandes.index">
                 Enregistrer
             </x-form-button>
         </form>

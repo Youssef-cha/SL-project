@@ -1,7 +1,6 @@
 <div>
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
-            <!-- Start coding here -->
             <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg ">
                 <div
                     class="flex flex-col lg:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
@@ -39,7 +38,7 @@
                             </select>
                         </div>
 
-                        {{-- add product button --}}
+                        {{-- add item button --}}
                         <a href="{{ route('commandes.create') }}"
                             class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                             <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
@@ -78,12 +77,12 @@
                                 <th scope="col" class="px-4 w-fit py-3">Exercice</th>
                                 <th scope="col" class="px-4 w-fit py-3">Date commande</th>
                                 <th scope="col" class="px-4 w-fit py-3">Responsable dossier</th>
-                                <th scope="col" class="px-4 w-fit py-3">Statut commande</th>
+                                <th scope="col" class="px-4 w-fit py-3">Status commande</th>
                                 <th scope="col" class="px-4 w-fit py-3">Date livraison</th>
-                                <th scope="col" class="px-4 w-fit py-3">Statut livraison</th>
+                                <th scope="col" class="px-4 w-fit py-3">Status livraison</th>
                                 <th scope="col" class="px-4 w-fit py-3">Lieu livraison</th>
                                 <th scope="col" class="px-4 w-fit py-3">Date verification reception</th>
-                                <th scope="col" class="px-4 w-fit py-3">Statut reception</th>
+                                <th scope="col" class="px-4 w-fit py-3">Status reception</th>
                                 <th scope="col" class="px-4 w-fit py-3">Date depot SL</th>
                                 <th scope="col" class="px-4 w-fit py-3">Numero facture</th>
                                 <th scope="col" class="px-4 w-fit py-3">Date facture</th>
@@ -92,7 +91,7 @@
                                 <th scope="col" class="px-4 w-fit py-3">Taux TVA</th>
                                 <th scope="col" class="px-4 w-fit py-3">Montant TVA</th>
                                 <th scope="col" class="px-4 w-fit py-3">Date depot SC</th>
-                                <th scope="col" class="px-4 w-fit py-3">Statut paiement</th>
+                                <th scope="col" class="px-4 w-fit py-3">Status paiement</th>
                                 <th scope="col" class="px-4 w-fit py-3">Montant paye</th>
                                 <th scope="col" class="px-4 w-fit py-3">Date paiement</th>
                             </tr>
@@ -121,6 +120,7 @@
                                                         commande</a>
                                                 </li>
                                                 <li>
+
                                                     <a href="{{ route('livraisons.edit', $commande->NUM_COMMANDE) }}"
                                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
                                                         livraison</a>
@@ -144,14 +144,30 @@
                                                     </li>
                                                 @endif
 
+                                                <li>
+                                                    <a href="{{ route('commandes.retours.create', $commande->NUM_COMMANDE) }}"
+                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">créer une retour</a>
+                                                </li>
+
+
+                                                @if ($commande->retours->count() > 0) 
+                                                    <li>
+                                                        <a href="{{ route('commandes.retours.index', $commande->NUM_COMMANDE) }}"
+                                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">retours</a>
+                                                    </li>
+                                                @endif
+
+
+
                                             </ul>
-                                            <div class="py-1">
-                                                <a href="{{ route('commandes.edit', $commande->NUM_COMMANDE) }}"
-                                                    class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">supprimer</a>
-                                            </div>
+
                                         </div>
                                     </td>
-                                    <th class="px-4 w-auto py-3"> {{ $commande->NUM_COMMANDE }} </td>
+                                    <th class="px-4 w-auto py-3
+                                    @if ($commande->retours->count() > 0 )
+                                        text-red-500
+                                    @endif
+                                    "> {{ $commande->NUM_COMMANDE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->AVIS_ACHAT }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->TYPE_ACHAT }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->TYPE_BUDGET }} </td>

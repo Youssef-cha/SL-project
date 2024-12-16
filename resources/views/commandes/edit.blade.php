@@ -1,11 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-    @session('success')
-        <div class="pop-up">
-            {{ $value }}
-        </div>
-    @endsession
+    <x-session-success></x-session-success>
     <!-- numéro de commande -->
     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
         <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Modifier La Commande : {{$commande->NUM_COMMANDE}}</h2>
@@ -75,7 +71,7 @@
                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">commande annulee</span>
                 </label>
             </x-form-fields-container>
-            <x-form-button>
+            <x-form-button route="commandes.index">
                 Enregistrer
             </x-form-button>
         </form>

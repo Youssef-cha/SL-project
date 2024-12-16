@@ -19,10 +19,13 @@ class CommandeFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    private $id =0;
     public function definition(): array
     {
         return [
-            'NUM_COMMANDE'  => fake()->name(),
+
+            'NUM_COMMANDE'  => $this->id ++,
+
             'AVIS_ACHAT'  => "...",
             'TYPE_ACHAT'    => 'Marche',
             'TYPE_BUDGET'    => 'Fonctionnement',

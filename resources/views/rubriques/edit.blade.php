@@ -9,7 +9,7 @@
             <x-form-fields-container>
                 <x-form-input type="number" label="Budget" name="BUDGET" />
             </x-form-fields-container>
-            <x-form-button>
+            <x-form-button route="rubriques.index">
                 Enregistrer
             </x-form-button>
         </form>

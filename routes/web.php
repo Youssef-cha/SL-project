@@ -21,37 +21,40 @@ Route::middleware(['auth'])->group(function () {
 
 
     // commande_controller
-    Route::resource('commandes' , CommandeController::class)->except('show');
-                  
+    Route::resource('commandes', CommandeController::class)->except('show');
+
     // livraison_controller                  
     Route::get('/livraisons/{commande}/edit',                        [LivraisonController::class, "edit"])->name("livraisons.edit");
     Route::put('/livraisons/{commande}',                             [LivraisonController::class, "update"])->name("livraisons.update");
-                  
+
     // reception_controller                  
     Route::get('/receptions/{commande}/edit',                        [ReceptionController::class, "edit"])->name("receptions.edit");
     Route::put('/receptions/{commande}',                             [ReceptionController::class, "update"])->name("receptions.update");
-                  
+
     // depot_controller                  
     Route::get('/depots/{commande}/edit',                            [DepotController::class, "edit"])->name("depots.edit");
     Route::put('/depots/{commande}',                                 [DepotController::class, "update"])->name("depots.update");
-                  
+
     // paiement_controller                  
     Route::get('/paiements/{commande}/edit',                         [PaiementController::class, "edit"])->name("paiements.edit");
     Route::put('/paiements/{commande}',                              [PaiementController::class, "update"])->name("paiements.update");
-                  
+
     // retour
-    Route::get('/commandes/{commande}/retours/create',               [RetourController::class, "create"])->name("commandes.retours.create");
     Route::get('/commandes/{commande}/retours',                      [RetourController::class, "index"])->name("commandes.retours.index");
+    Route::get('/commandes/{commande}/retours/create',               [RetourController::class, "create"])->name("commandes.retours.create");
     Route::post('/commandes/{commande}/retours',                     [RetourController::class, "store"])->name("commandes.retours.store");
+    Route::get('/retours/{retour}/edit',                      [RetourController::class, "edit"])->name("retours.edit");
+    Route::put('/retours/{retour}',                      [RetourController::class, "update"])->name("retours.update");
+    Route::delete('/retours/{retour}',                      [RetourController::class, "destroy"])->name("retours.destroy");
 
     // rubrique_controller
-    Route::resource('rubriques' , RubriqueController::class)->except('show');
+    Route::resource('rubriques', RubriqueController::class)->except('show');
 
     // fournisseur
-    Route::resource('fournisseurs' , FournisseurController::class)->except('show');
+    Route::resource('fournisseurs', FournisseurController::class)->except('show');
 
     // complexes
-    Route::resource('complexes' , ComplexeController::class)->except('show');
+    Route::resource('complexes', ComplexeController::class)->except('show');
 
     //efps
     Route::get('/complexes/{complexe}/efps',                         [EfpController::class, "index"])->name("complexes.efps.index");

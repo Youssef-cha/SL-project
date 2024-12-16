@@ -13,8 +13,9 @@ use Illuminate\Support\Facades\DB;
 
 class CommandeController extends Controller
 {
-    public function index(){
-        return view('commandes.index', );
+    public function index()
+    {
+        return view('commandes.index',);
     }
     public function create()
     {
@@ -59,8 +60,8 @@ class CommandeController extends Controller
         Commande::create($validData);
         return redirect()->route('commandes.create')->with('success', 'commande A été ajouté avec succès');
     }
-
-    public function edit(Commande $commande){
+    public function edit(Commande $commande)
+    {
         $statutCommandes = $this->getEnumValues("commandes", "STATUT_COMMANDE");
         $achatTypes = $this->getEnumValues("commandes", "TYPE_ACHAT");
         $budgetTypes = $this->getEnumValues("commandes", "TYPE_BUDGET");
@@ -77,8 +78,9 @@ class CommandeController extends Controller
             "fournisseurs" => $fournisseurs,
         ]);
     }
-    public function update(Request $request, Commande $commande){
-        
+    public function update(Request $request, Commande $commande)
+    {
+
         $validData = $request->validate([
             "AVIS_ACHAT" => ['required'],
             "TYPE_ACHAT" => ['required'],
@@ -88,7 +90,6 @@ class CommandeController extends Controller
             "fournisseur_id" => ['required'],
             "efp_id" => ['required'],
             "DELAI_LIVRAISON" => ['required'],
-            "GARANTIE" => '',
             "RETENUE_GARANTIE" => $request->GARANTIE == "oui" ? ['required'] : '',
             "NUM_MARCHE" => ['required'],
             "EXERCICE" => ['required', 'size:4'],
@@ -98,13 +99,15 @@ class CommandeController extends Controller
             "*.required" => "Ce champ est obligatoire",
             "*EXERCICE.size" => "EXERCICE Doit comporter 4 caractères"
         ]);
-        // dd($validData);
+
         $validData['GARANTIE'] = request()->GARANTIE ?? 'non';
-        // dd($validData);
+        if($validData['GARANTIE'] == 'non'){
+            $validData['RETENUE_GARANTIE'] = NULL;
+        }
+
         $commande->update($validData);
         return redirect()->back()->with('success', 'Commande A été mis à jour avec succès!');
     }
-    
     private function getEnumValues($tableName, $columnName)
     {
 
@@ -113,5 +116,4 @@ class CommandeController extends Controller
         $enumValues = explode("','", $matches[1]);
         return $enumValues;
     }
-
 }
