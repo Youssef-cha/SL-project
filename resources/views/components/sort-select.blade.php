@@ -10,13 +10,13 @@
     </select>
     <label class="dark:text-gray-400">
         asc
-        <input class="checked:bg-primary-600 focus:ring-primary-600" checked
+        <input class="checked:bg-primary-600 dark:checked:bg-primary-600 focus:ring-primary-600" checked
             wire:model.live='sortDirection' type="radio" value="asc"
             name="sortDirection">
     </label>
     <label class="dark:text-gray-400">
         desc
-        <input class="checked:bg-primary-600  focus:ring-primary-600" type="radio"
+        <input class="checked:bg-primary-600 dark:checked:bg-primary-600  focus:ring-primary-600" type="radio"
             wire:model.live='sortDirection' value="desc" name="sortDirection">
     </label>
 </div>

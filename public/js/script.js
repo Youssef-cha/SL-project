@@ -1,4 +1,23 @@
 $(document).ready(function () {
+  // dark mode toggle
+
+  // Check for saved theme preference on page load
+  if (localStorage.getItem("theme") === "dark") {
+    $("html").addClass("dark"); // Add 'dark' class if preference is dark
+  }
+
+  // Toggle dark mode on button click
+  $("#darkModeToggle").on("click", function () {
+    $("html").toggleClass("dark"); // Toggle 'dark' class on <html>
+
+    // Save the theme preference in local storage
+    if ($("html").hasClass("dark")) {
+      localStorage.setItem("theme", "dark");
+    } else {
+      localStorage.setItem("theme", "light");
+    }
+  });
+
   // side bar
   $("[togglerFor]").each(function (index) {
     $(this).click(function () {
