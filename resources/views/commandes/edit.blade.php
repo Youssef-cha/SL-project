@@ -22,8 +22,13 @@
 
                 </x-form-select>
                 <x-form-text-area :update="$commande" label="Objet d'achat" name="OBJET_ACHAT" />
-                <x-form-input :update="$commande" label="Numéro appel d'offre" name="AVIS_ACHAT" />
-                <x-form-select :half="true" label="Référence Rubrique" name="rubrique_id">
+                <x-form-select :update="$commande" label="Numéro appel d'offre" name="numero_appel_offre">
+                    @foreach ($appelOffres as $appelOffres)
+                        <option @selected((old('numero_appel_offre') ?? $commande->numero_appel_offre) == $appelOffres->numero_appel_offre) value="{{ $appelOffres->numero_appel_offre }}">
+                            {{ $appelOffres->numero_appel_offre }}</option>
+                    @endforeach
+
+                </x-form-select>                <x-form-select :half="true" label="Référence Rubrique" name="rubrique_id">
                     @foreach ($rubriques as $rubrique)
                         <option @selected((old('rubrique_id') ?? $commande->rubrique_id) == $rubrique->id) value="{{ $rubrique->id }}">
                             {{ $rubrique->REFERENCE_RUBRIQUE }}</option>
@@ -57,11 +62,10 @@
                         placeholder="Retenue Garantie" />
 
                 </div>
-                <x-form-input :update="$commande" :half="true" label="Numéro de marché" name="NUM_MARCHE" />
-                <x-form-input :update="$commande" :half="true" type="date" label="Date commande"
-                    name="DATE_COMMANDE" />
                 <x-form-input :update="$commande" :half="true" type="number" min="" label="Exercice"
                     name="EXERCICE" />
+                <x-form-input :update="$commande" type="date" label="Date commande"
+                    name="DATE_COMMANDE" />
                 <label class="col-span-2 inline-flex items-center cursor-pointer">
                     <input name="STATUT_COMMANDE" type="checkbox" value="annulee" @checked((old('STATUT_COMMANDE') ?? $commande->STATUT_COMMANDE) == 'annulee')
                         class="sr-only peer">

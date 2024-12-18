@@ -16,6 +16,9 @@ class Commande extends Model
     public function rubrique(){
         return $this->belongsTo(Rubrique::class);
     }
+    public function appelOffre(){
+        return $this->belongsTo(AppelOffre::class, 'numero_appel_offre');
+    }
 
     public function fournisseur(){
         return $this->belongsTo(Fournisseur::class);

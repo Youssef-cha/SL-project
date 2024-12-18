@@ -6,10 +6,12 @@
     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
         <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Modifier le paiement :
             {{ $commande->NUM_COMMANDE }}</h2>
-        <form method="POST" action="{{ route('paiements.update', $commande->NUM_COMMANDE) }}" class="form-container">
+        <form method="POST" action="{{ route('commandes.update', $commande->NUM_COMMANDE) }}" class="form-container">
             @csrf
             @method('PUT')
             <x-form-fields-container>
+                <x-form-input value="paiement" name="update" type="hidden" />
+
                 <x-form-input :update="$commande" name="oz" label="Numero OZ :" />
                 <x-form-input :update="$commande" name="DATE_PAIEMENT" type="date" label="Date De Paiement :" />
                 <x-form-input :update="$commande" name="MONTANT_PAYE" type="number" label="Montant Payee :" />
