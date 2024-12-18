@@ -64,7 +64,7 @@
                             <tr>
                                 <th scope="col" class="px-4 w-fit py-3"></th>
                                 <th scope="col" class="px-4 w-fit py-3">Numero de commande</th>
-                                <th scope="col" class="px-4 w-fit py-3">numero d'appel d'offre</th>
+                                <th scope="col" class="px-4 w-fit py-3">Avis achat</th>
                                 <th scope="col" class="px-4 w-fit py-3">Type achat</th>
                                 <th scope="col" class="px-4 w-fit py-3">Type budget</th>
                                 <th scope="col" class="px-4 w-fit py-3">Objet achat</th>
@@ -146,7 +146,7 @@
 
                                                 <li>
                                                     <a href="{{ route('commandes.retours.create', $commande->NUM_COMMANDE) }}"
-                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">créer un retour</a>
+                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">créer une retour</a>
                                                 </li>
 
 
@@ -168,7 +168,7 @@
                                         text-red-500
                                     @endif
                                     "> {{ $commande->NUM_COMMANDE }} </td>
-                                    <td class="px-4 w-auto py-3"> {{ $commande->numero_appel_offre }} </td>
+                                    <td class="px-4 w-auto py-3"> {{ $commande->AVIS_ACHAT }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->TYPE_ACHAT }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->TYPE_BUDGET }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->OBJET_ACHAT }} </td>
@@ -176,8 +176,8 @@
                                     <td class="px-4 w-auto py-3"> {{ $commande->fournisseur->nom_fournisseur }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->DELAI_LIVRAISON }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->GARANTIE }} </td>
-                                    <td class="px-4 w-auto py-3"> {{ $commande->RETENUE_GARANTIE }}</td>
-                                    <td class="px-4 w-auto py-3"> {{ $commande->appelOffre->numero_marche }} </td>
+                                    <td class="px-4 w-auto py-3"> {{ $commande->RETENUE_GARATIE }}</td>
+                                    <td class="px-4 w-auto py-3"> {{ $commande->NUM_MARCHE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->EXERCICE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->DATE_COMMANDE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->user->name }} </td>

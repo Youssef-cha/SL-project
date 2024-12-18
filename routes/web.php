@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AppelOffreController;
+use App\Http\Controllers\BonCommandeController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\ComplexeController;
 use App\Http\Controllers\DepotController;
@@ -17,24 +19,25 @@ use App\Http\Controllers\SuiviRubriqueController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// ajax_controller
 Route::middleware(['auth'])->group(function () {
-    // commande_controller
+    // commande
     Route::resource('commandes', CommandeController::class)->except('show');
+    // bon_commande
+    Route::resource('bonCommandes', BonCommandeController::class)->except('show');
 
-    // livraison_controller                  
+    // livraison                  
     Route::get('/livraisons/{commande}/edit',                        [LivraisonController::class, "edit"])->name("livraisons.edit");
     Route::put('/livraisons/{commande}',                             [LivraisonController::class, "update"])->name("livraisons.update");
 
-    // reception_controller                  
+    // reception                  
     Route::get('/receptions/{commande}/edit',                        [ReceptionController::class, "edit"])->name("receptions.edit");
     Route::put('/receptions/{commande}',                             [ReceptionController::class, "update"])->name("receptions.update");
 
-    // depot_controller                  
+    // depot                  
     Route::get('/depots/{commande}/edit',                            [DepotController::class, "edit"])->name("depots.edit");
     Route::put('/depots/{commande}',                                 [DepotController::class, "update"])->name("depots.update");
 
-    // paiement_controller                  
+    // paiement                  
     Route::get('/paiements/{commande}/edit',                         [PaiementController::class, "edit"])->name("paiements.edit");
     Route::put('/paiements/{commande}',                              [PaiementController::class, "update"])->name("paiements.update");
 
@@ -46,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/retours/{retour}',                      [RetourController::class, "update"])->name("retours.update");
     Route::delete('/retours/{retour}',                      [RetourController::class, "destroy"])->name("retours.destroy");
 
-    // rubrique_controller
+    // rubrique
     Route::resource('rubriques', RubriqueController::class)->except('show');
 
     // fournisseur
@@ -75,6 +78,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/users/create',                                       [UserController::class, "create"])->can("add-users")->name("users.create");
     Route::post('/users',                                       [UserController::class, "store"])->can("add-users")->name("users.store");
 
+    // appel offre
+    Route::resource('appelOffres', AppelOffreController::class)->except('show');
 
     //views
     Route::view('/', "home")->name('home');

@@ -11,10 +11,12 @@
                 <x-side-link :active="request()->is('suiviRaps')" href="{{ route('suiviRaps.index') }}">Suivi des raps</x-side-link>
             </x-side-group>
             <x-side-group fclass="fa-solid fa-chart-simple" aria="info" title="info">
-                <x-side-link :active="request()->is('commandes')" href="{{ route('commandes.index') }}  ">commandes</x-side-link>
-                <x-side-link :active="request()->is('rubriques')" href="{{ route('rubriques.index') }}  ">rubriques</x-side-link>
-                <x-side-link :active="request()->is('fournisseurs')" href="{{ route('fournisseurs.index') }}  ">fournisseurs</x-side-link>
-                <x-side-link :active="request()->is('complexes')" href="{{ route('complexes.index') }}  ">complexes / efps</x-side-link>
+                <x-side-link :active="request()->is('commandes')" href="{{ route('commandes.index') }}  ">commande</x-side-link>
+                <x-side-link :active="request()->is('bonCommandes')" href="{{ route('bonCommandes.index') }}  ">bon commande</x-side-link>
+                <x-side-link :active="request()->is('appelOffres')" href="{{ route('appelOffres.index') }}  ">appel offre</x-side-link>
+                <x-side-link :active="request()->is('rubriques')" href="{{ route('rubriques.index') }}  ">rubrique</x-side-link>
+                <x-side-link :active="request()->is('fournisseurs')" href="{{ route('fournisseurs.index') }}  ">fournisseur</x-side-link>
+                <x-side-link :active="request()->is('complexes')" href="{{ route('complexes.index') }}  ">complexe / efp</x-side-link>
             </x-side-group>
             
         </ul>

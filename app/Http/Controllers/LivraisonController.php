@@ -12,15 +12,5 @@ class LivraisonController extends Controller
             "commande" => $commande
         ]);
     }
-    public function update(Request $request, Commande $commande){
-        $newData = $request->validate([
-            "STATUT_LIVRAISON" => ['required','in:Livrée'],
-            "DATE_LIVRAISON" => ['required'],
-            "LIEU_LIVRAISON" => ['required'],
-        ], [
-            '*.required' => 'Ce champ est obligatoire'
-        ]);
-        $commande->update($newData);
-        return redirect()->back()->with("success", "livraison A été mis à jour avec succès!");
-    }
+ 
 }

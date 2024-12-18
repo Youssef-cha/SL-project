@@ -12,6 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('appel_offres', function (Blueprint $table) {
+            $table->string('numero_appel_offre',50)->primary();
+            $table->string('numero_marche');
+            $table->timestamps();
+        });
         Schema::create('fournisseurs', function (Blueprint $table) {
             $table->id();
             $table->string('nom_fournisseur');

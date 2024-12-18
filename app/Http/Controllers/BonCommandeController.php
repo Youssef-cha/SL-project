@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BonCommande;
 use App\Models\Commande;
 use App\Models\Rubrique;
 use Carbon\Carbon;
@@ -15,19 +16,16 @@ class BonCommandeController extends Controller
 
     public function create()
     {
-        $commandes = Commande::all();
         $achatTypes = $this->getEnumValues("commandes", "TYPE_ACHAT");
         $budgetTypes = $this->getEnumValues("commandes", "TYPE_BUDGET");
         $rubriques = Rubrique::all();
         $fournisseurs = Fournisseur::orderBy('nom_fournisseur')->get();
-        $responsables = Responsable::orderBy('nom_responsable')->get();
 
         return view("boncommandes.create", [
             "achatTypes" => $achatTypes,
             "budgetTypes" => $budgetTypes,
             "rubriques" => $rubriques,
             "fournisseurs" => $fournisseurs,
-            "responsables" => $responsables,
         ]);
     }
 
@@ -88,27 +86,82 @@ class BonCommandeController extends Controller
         ]);
     }
 
-    public function update(Request $request, $commande)
+    public function update(Request $request, BonCommande $commande)
     {
-        $commande = Commande::findOrFail(base64_decode($commande));
-        $newData = $request->validate([
-            "AVIS_ACHAT" => ['required'],
-            "TYPE_BUDGET" => ['required'],
-            "OBJET_ACHAT" => ['required'],
-            "REFERENCE_RUBRIQUE" => ['required'],
-            "FOURNISSEUR" => ['required'],
-            "DELAI_LIVRAISON" => ['required'],
-            "GARANTIE" => ['required'],
-            "RETENUE_GARANTIE" => $request->GARANTIE == "oui" ? ['required'] : '',
-            "EXERCICE" => ['required', 'size:4'],
-            "DATE_COMMANDE" => ['required'],
-            "RESPONSABLE_DOSSIER" => ['required'],
-        ], [
-            "*.required" => "Ce champ est obligatoire",
-            "*EXERCICE.size" => "EXERCICE Doit comporter 4 caractères"
-        ]);
-        $commande->update($newData);
-        return redirect()->back()->with('success', 'Commande A été mis à jour avec succès!');
+        if (request()->update === 'paiement') {
+            if ($commande->STATUT_PAIEMENT != "payee" && $commande->STATUT_PAIEMENT != "deposee") {
+                return redirect()->route('depots.edit', $commande->NUM_COMMANDE)->with("error", "Vous devez d'abord mettre à jour le dépôt !");
+            }
+            $newData = $request->validate([
+                "DATE_PAIEMENT" => ['required'],
+                "MONTANT_PAYE" => ['required'],
+                "oz" => ['required'],
+                "STATUT_PAIEMENT" => '',
+            ], [
+                '*.required' => 'Ce champ est obligatoire'
+            ]);
+            $commande->update($newData);
+            return redirect()->back()->with("success", "paiement A été mis à jour avec succès!");
+        } elseif (request()->update === 'reception') {
+            $newData = $request->validate([
+                "STATUT_RECEPTION" => ['required', 'in:réceptionnée'],
+                "DATE_VERIFICATION_RECEPTION" => ['required'],
+                "DATE_DEPOT_SL" => ['required'],
+                "NUM_FACTURE" => ['required'],
+                "DATE_FACTURE" => ['required'],
+                "HT" => ['required'],
+                "TTC" => ['required'],
+                "TAUX_TVA" => ['required'],
+                "MONTANT_TVA" => ['required'],
+            ]);
+            $commande->update($newData);
+            return redirect()->back()->with("success", "reception A été mis à jour avec succès!");
+        } elseif (request()->update === 'depot') {
+            $newData = $request->validate([
+                "STATUT_PAIEMENT" => ['required', 'in:deposee'],
+                "DATE_DEPOT_SC" => ['required'],
+            ], [
+                '*.required' => 'Ce champ est obligatoire'
+            ]);
+            $commande->update($newData);
+            return redirect()->back()->with("success", "Depot A été mis à jour avec succès");
+        } elseif (request()->update === 'livraison') {
+            $newData = $request->validate([
+                "STATUT_LIVRAISON" => ['required', 'in:Livrée'],
+                "DATE_LIVRAISON" => ['required'],
+                "LIEU_LIVRAISON" => ['required'],
+            ], [
+                '*.required' => 'Ce champ est obligatoire'
+            ]);
+            $commande->update($newData);
+            return redirect()->back()->with("success", "livraison A été mis à jour avec succès!");
+        } else {
+            $validData = $request->validate([
+                "AVIS_ACHAT" => ['required'],
+                "TYPE_ACHAT" => ['required'],
+                "TYPE_BUDGET" => ['required'],
+                "OBJET_ACHAT" => ['required'],
+                "rubrique_id" => ['required'],
+                "fournisseur_id" => ['required'],
+                "efp_id" => ['required'],
+                "DELAI_LIVRAISON" => ['required'],
+                "RETENUE_GARANTIE" => $request->GARANTIE == "oui" ? ['required'] : '',
+                "NUM_MARCHE" => ['required'],
+                "EXERCICE" => ['required', 'size:4'],
+                "DATE_COMMANDE" => ['required'],
+                "STATUT_COMMANDE" => '',
+            ], [
+                "*.required" => "Ce champ est obligatoire",
+                "*EXERCICE.size" => "EXERCICE Doit comporter 4 caractères"
+            ]);
+
+            $validData['GARANTIE'] = request()->GARANTIE ?? 'non';
+            if ($validData['GARANTIE'] == 'non') {
+                $validData['RETENUE_GARANTIE'] = NULL;
+            }
+            $commande->update($validData);
+            return redirect()->back()->with('success', 'Commande A été mis à jour avec succès!');
+        }
     }
 
     private function getEnumValues($tableName, $columnName)
