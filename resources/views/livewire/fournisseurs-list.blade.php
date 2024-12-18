@@ -58,8 +58,8 @@
                             class="text-xs text-nowrap text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-4 w-3 py-3"></th>
-                                <th scope="col" class="px-4 w-fit py-3">nom_fournisseur</th>
-                                <th scope="col" class="px-4 w-fit py-3">nombre de commande</th>
+                                <th scope="col" class="px-4 w-fit py-3">fournisseur</th>
+                                <th scope="col" class="px-4 w-fit py-3">Nombre de commandes</th>
                             </tr>
                         </thead>
                         <tbody>

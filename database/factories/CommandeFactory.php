@@ -41,14 +41,15 @@ class CommandeFactory extends Factory
             'STATUT_COMMANDE'  => 'attribuee',
 
             'DATE_LIVRAISON'  => fake()->date(),
-            'STATUT_LIVRAISON'  => 'non livree',
+            'STATUT_LIVRAISON'  => 'livree',
             'oz'  => fake()->randomNumber(),
             'LIEU_LIVRAISON'  => "...",
 
             'DATE_VERIFICATION_RECEPTION'  => fake()->date(),
-            'STATUT_RECEPTION'  => 'non receptionnee',
+            'STATUT_RECEPTION'  => 'receptionnee',
             'DATE_DEPOT_SL'  => fake()->date(),
             'NUM_FACTURE'  => fake()->randomNumber(),
+            'DATE_FACTURE'  => fake()->date(),
             'HT'  => fake()->randomNumber(),
             'TTC'  => fake()->randomNumber(),
             'TAUX_TVA'  => fake()->randomNumber(),

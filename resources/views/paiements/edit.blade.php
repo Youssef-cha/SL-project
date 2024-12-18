@@ -10,7 +10,7 @@
             @csrf
             @method('PUT')
             <x-form-fields-container>
-                <x-form-input :update="$commande" name="oz" label="Numero OZ :" />
+                <x-form-input :update="$commande" name="oz" label="Numero OV :" />
                 <x-form-input :update="$commande" name="DATE_PAIEMENT" type="date" label="Date De Paiement :" />
                 <x-form-input :update="$commande" name="MONTANT_PAYE" type="number" label="Montant Payee :" />
                 <label class="col-span-2 inline-flex items-center cursor-pointer">

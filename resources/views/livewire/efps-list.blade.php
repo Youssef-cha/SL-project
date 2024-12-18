@@ -59,7 +59,7 @@
                             <tr>
                                 <th scope="col" class="px-4 w-3 py-3"></th>
                                 <th scope="col" class="px-4 w-fit py-3">efp</th>
-                                <th scope="col" class="px-4 w-fit py-3">nombre de commande</th>
+                                <th scope="col" class="px-4 w-fit py-3">nombre de commandes</th>
                             </tr>
                         </thead>
                         <tbody>

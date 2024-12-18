@@ -146,7 +146,7 @@
 
                                                 <li>
                                                     <a href="{{ route('commandes.retours.create', $commande->NUM_COMMANDE) }}"
-                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">créer une retour</a>
+                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">créer un retour</a>
                                                 </li>
 
 

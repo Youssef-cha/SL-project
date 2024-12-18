@@ -6,7 +6,7 @@
 
 
     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Créer une Retour</h2>
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Créer un Retour</h2>
         <form method="POST" action="{{ route("commandes.retours.store", $commande->NUM_COMMANDE) }}" class="form-container">
             @csrf
             <x-form-fields-container>

@@ -58,7 +58,7 @@
                             <tr>
                                 <th scope="col" class="px-4 w-3 py-3"></th>
                                 <th scope="col" class="px-4 w-fit py-3">complexes</th>
-                                <th scope="col" class="px-4 w-fit py-3">nombre des efps</th>
+                                <th scope="col" class="px-4 w-fit py-3">nombre d'efps</th>
                             </tr>
                         </thead>
                         <tbody>
