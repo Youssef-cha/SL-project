@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BonCommande;
 use App\Models\Commande;
+use App\Models\Efp;
 use App\Models\Rubrique;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -13,15 +14,19 @@ use App\Models\Responsable;
 
 class BonCommandeController extends Controller
 {
-
+    public function index(){
+        return view('bonCommandes.index');
+    }
     public function create()
     {
         $achatTypes = $this->getEnumValues("commandes", "TYPE_ACHAT");
         $budgetTypes = $this->getEnumValues("commandes", "TYPE_BUDGET");
-        $rubriques = Rubrique::all();
         $fournisseurs = Fournisseur::orderBy('nom_fournisseur')->get();
+        $rubriques = Rubrique::orderBy('REFERENCE_RUBRIQUE')->get();
+        $efps = Efp::orderBy('nom_efp')->get();
 
         return view("boncommandes.create", [
+            "efps" => $efps,
             "achatTypes" => $achatTypes,
             "budgetTypes" => $budgetTypes,
             "rubriques" => $rubriques,
@@ -33,8 +38,9 @@ class BonCommandeController extends Controller
     {
         $validData = $request->validate([
             "AVIS_ACHAT" => ['required'],
-            "TYPE_BUDGET" => ['required'],
             "OBJET_ACHAT" => ['required'],
+            "TYPE_BUDGET" => ['required'],
+            "TYPE_BUDGET" => ['required'],
             "REFERENCE_RUBRIQUE" => ['required'],
             "FOURNISSEUR" => ['required'],
             "DELAI_LIVRAISON" => ['required'],
@@ -42,7 +48,6 @@ class BonCommandeController extends Controller
             "RETENUE_GARANTIE" => $request->GARANTIE == "oui" ? ['required'] : '',
             "EXERCICE" => ['required', 'size:4'],
             "DATE_COMMANDE" => ['required'],
-            "RESPONSABLE_DOSSIER" => ['required'],
         ], [
             "*.required" => "Ce champ est obligatoire",
             "*EXERCICE.size" => "EXERCICE Doit comporter 4 caractères"
