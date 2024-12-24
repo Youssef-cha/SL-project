@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BonCommande;
 use App\Models\Commande;
 use App\Models\Efp;
+use App\Models\Efp;
 use App\Models\Rubrique;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -26,8 +27,11 @@ class BonCommandeController extends Controller
         $efps = Efp::orderBy('nom_efp')->get();
         $rubriques = Rubrique::orderBy('REFERENCE_RUBRIQUE')->get();
         $fournisseurs = Fournisseur::orderBy('nom_fournisseur')->get();
+        $rubriques = Rubrique::orderBy('REFERENCE_RUBRIQUE')->get();
+        $efps = Efp::orderBy('nom_efp')->get();
 
         return view("boncommandes.create", [
+            "efps" => $efps,
             "achatTypes" => $achatTypes,
             "efps" => $efps,
             "budgetTypes" => $budgetTypes,
@@ -40,6 +44,8 @@ class BonCommandeController extends Controller
     {
         $validData = $request->validate([
             "AVIS_ACHAT" => ['required'],
+            "OBJET_ACHAT" => ['required'],
+            "TYPE_BUDGET" => ['required'],
             "TYPE_BUDGET" => ['required'],
             "OBJET_ACHAT" => ['required'],
             "rubrique_id" => ['required'],
