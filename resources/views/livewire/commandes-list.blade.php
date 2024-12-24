@@ -1,3 +1,8 @@
+@php
+    if ($commandes->count()==0) {
+        redirect()->route('commandes.create');
+    }
+@endphp
 <div>
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
@@ -64,8 +69,6 @@
                             <tr>
                                 <th scope="col" class="px-4 w-fit py-3"></th>
                                 <th scope="col" class="px-4 w-fit py-3">Numero de commande</th>
-                                <th scope="col" class="px-4 w-fit py-3">numero d'appel d'offre</th>
-                                <th scope="col" class="px-4 w-fit py-3">Type achat</th>
                                 <th scope="col" class="px-4 w-fit py-3">Type budget</th>
                                 <th scope="col" class="px-4 w-fit py-3">Objet achat</th>
                                 <th scope="col" class="px-4 w-fit py-3">Reference rubrique</th>
@@ -92,6 +95,8 @@
                                 <th scope="col" class="px-4 w-fit py-3">Montant TVA</th>
                                 <th scope="col" class="px-4 w-fit py-3">Date depot SC</th>
                                 <th scope="col" class="px-4 w-fit py-3">Status paiement</th>
+                                <th scope="col" class="px-4 w-fit py-3">ov</th>
+                                <th scope="col" class="px-4 w-fit py-3">op</th>
                                 <th scope="col" class="px-4 w-fit py-3">Montant paye</th>
                                 <th scope="col" class="px-4 w-fit py-3">Date paiement</th>
                             </tr>
@@ -121,24 +126,24 @@
                                                 </li>
                                                 <li>
 
-                                                    <a href="{{ route('livraisons.edit', $commande->NUM_COMMANDE) }}"
+                                                    <a href="{{ route('commandes.edit', ['commande' => $commande->NUM_COMMANDE, 'section' => 'livraison']) }}"
                                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
                                                         livraison</a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{ route('receptions.edit', $commande->NUM_COMMANDE) }}"
+                                                    <a href="{{ route('commandes.edit', ['commande' => $commande->NUM_COMMANDE, 'section' => 'reception']) }}"
                                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
                                                         reception</a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{ route('depots.edit', $commande->NUM_COMMANDE) }}"
+                                                    <a href="{{ route('commandes.edit', ['commande' => $commande->NUM_COMMANDE, 'section' => 'depot']) }}"
                                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
                                                         depot</a>
                                                 </li>
 
                                                 @if ($commande->STATUT_PAIEMENT !== 'non payee')
                                                     <li>
-                                                        <a href="{{ route('paiements.edit', $commande->NUM_COMMANDE) }}"
+                                                        <a href="{{ route('commandes.edit', ['commande' => $commande->NUM_COMMANDE, 'section' => 'paiement']) }}"
                                                             class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
                                                             paiement</a>
                                                     </li>
@@ -146,11 +151,12 @@
 
                                                 <li>
                                                     <a href="{{ route('commandes.retours.create', $commande->NUM_COMMANDE) }}"
-                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">créer un retour</a>
+                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">créer
+                                                        un retour</a>
                                                 </li>
 
 
-                                                @if ($commande->retours->count() > 0) 
+                                                @if ($commande->retours->count() > 0)
                                                     <li>
                                                         <a href="{{ route('commandes.retours.index', $commande->NUM_COMMANDE) }}"
                                                             class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">retours</a>
@@ -163,13 +169,7 @@
 
                                         </div>
                                     </td>
-                                    <th class="px-4 w-auto py-3
-                                    @if ($commande->retours->count() > 0 )
-                                        text-red-500
-                                    @endif
-                                    "> {{ $commande->NUM_COMMANDE }} </td>
-                                    <td class="px-4 w-auto py-3"> {{ $commande->numero_appel_offre }} </td>
-                                    <td class="px-4 w-auto py-3"> {{ $commande->TYPE_ACHAT }} </td>
+                                    <th class="px-4 w-auto py-3"> {{ $commande->NUM_COMMANDE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->TYPE_BUDGET }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->OBJET_ACHAT }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->rubrique->REFERENCE_RUBRIQUE }} </td>
@@ -177,7 +177,6 @@
                                     <td class="px-4 w-auto py-3"> {{ $commande->DELAI_LIVRAISON }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->GARANTIE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->RETENUE_GARANTIE }}</td>
-                                    <td class="px-4 w-auto py-3"> {{ $commande->appelOffre->numero_marche }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->EXERCICE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->DATE_COMMANDE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->user->name }} </td>
@@ -196,6 +195,8 @@
                                     <td class="px-4 w-auto py-3"> {{ $commande->MONTANT_TVA }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->DATE_DEPOT_SC }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->STATUT_PAIEMENT }} </td>
+                                    <td class="px-4 w-auto py-3"> {{ $commande->ov }} </td>
+                                    <td class="px-4 w-auto py-3"> {{ $commande->op }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->MONTANT_PAYE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->DATE_PAIEMENT }} </td>
                                 </tr>

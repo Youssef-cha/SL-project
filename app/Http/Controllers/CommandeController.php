@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Commande;
 use App\Models\Efp;
 use App\Models\Fournisseur;
+use App\Models\Marche;
 use App\Models\Responsable;
 use App\Models\Rubrique;
 use Illuminate\Support\Facades\Auth;
@@ -20,16 +21,14 @@ class CommandeController extends Controller
     }
     public function create()
     {
-        $achatTypes = $this->getEnumValues("commandes", "TYPE_ACHAT");
         $budgetTypes = $this->getEnumValues("commandes", "TYPE_BUDGET");
         $rubriques = Rubrique::all();
         $efps = Efp::orderBy('nom_efp')->get();
         $fournisseurs = Fournisseur::orderBy('nom_fournisseur')->get();
-        $appelOffres = AppelOffre::orderBy('numero_appel_offre')->get();
+        $marches = Marche::with('appelOffre')->orderBy('numero_marche')->get();
 
         return view("commandes.create", [
-            "appelOffres" => $appelOffres,
-            "achatTypes" => $achatTypes,
+            "marches" => $marches,
             "efps" => $efps,
             "budgetTypes" => $budgetTypes,
             "rubriques" => $rubriques,
@@ -40,10 +39,9 @@ class CommandeController extends Controller
     {
         $validData = $request->validate([
             "NUM_COMMANDE" => ['required', 'unique:commandes,NUM_COMMANDE'],
-            "numero_appel_offre" => ['required'],
-            "TYPE_ACHAT" => ['required'],
             "TYPE_BUDGET" => ['required'],
             "OBJET_ACHAT" => ['required'],
+            "marche_id" => ['required'],
             "rubrique_id" => ['required'],
             "fournisseur_id" => ['required'],
             "efp_id" => ['required'],
@@ -91,7 +89,8 @@ class CommandeController extends Controller
             $newData = $request->validate([
                 "DATE_PAIEMENT" => ['required'],
                 "MONTANT_PAYE" => ['required'],
-                "oz" => ['required'],
+                "ov" => ['required'],
+                "op" => ['required'],
                 "STATUT_PAIEMENT" => '',
             ], [
                 '*.required' => 'Ce champ est obligatoire'

@@ -27,7 +27,7 @@ class CommandesList extends Component
     }
     public function queryCommande()
     {
-        $query = Commande::with(['user', 'fournisseur', 'rubrique', 'retours', 'appelOffre']);
+        $query = Commande::with(['user', 'fournisseur', 'rubrique', 'retours']);
         foreach ($this->filters as $name => $value) {
             $query->where($name, 'like', $value . "%");
         }
@@ -57,7 +57,6 @@ class CommandesList extends Component
     }
     public function render()
     {
-        $typeAchat = Commande::select('type_achat')->distinct()->get();
         $typeBudget = Commande::select('TYPE_BUDGET')->distinct()->get();
         $Garantie = Commande::select('Garantie')->distinct()->get();
         $statusCmd = Commande::select('STATUT_COMMANDE')->distinct()->get();
@@ -69,7 +68,6 @@ class CommandesList extends Component
             return view('livewire.commandes-list', [
                 'commandes' => $commandes,
                 'inputFilters' => [
-                    'Type Achat' => $typeAchat,
                     'Type Budget' => $typeBudget,
                     'Garantie' => $Garantie,
                     'Status Commande' => $statusCmd,

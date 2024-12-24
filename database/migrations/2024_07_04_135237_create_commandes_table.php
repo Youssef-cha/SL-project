@@ -3,6 +3,7 @@
 use App\Models\AppelOffre;
 use App\Models\Efp;
 use App\Models\Fournisseur;
+use App\Models\Marche;
 use App\Models\Rubrique;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -20,7 +21,6 @@ return new class extends Migration
         Schema::create('bon_commandes', function (Blueprint $table) {
             $table->string('numero_bon_commandes', 50)->primary();
             $table->string('AVIS_ACHAT', 50);
-            $table->enum('TYPE_ACHAT', ['Marche', 'Marche Cadre', 'Marche Recondictible', 'Contrat/Convention']);
             $table->enum('TYPE_BUDGET', ['Fonctionnement', 'Investissement', 'Compte hors budget']);
             $table->text('OBJET_ACHAT');
             $table->integer('DELAI_LIVRAISON');
@@ -51,7 +51,7 @@ return new class extends Migration
             $table->float('MONTANT_TVA')->nullable();
 
             // paiement
-            $table->string('oz')->nullable();
+            $table->string('ov')->nullable();
             $table->string('op')->nullable();
             $table->enum('STATUT_PAIEMENT', ['payee', 'non payee', 'deposee'])->default('non payee');
             $table->date('DATE_PAIEMENT')->nullable();
@@ -66,8 +66,6 @@ return new class extends Migration
 
         Schema::create('commandes', function (Blueprint $table) {
             $table->string('NUM_COMMANDE', 50)->primary();
-            $table->string('numero_appel_offre', 50);
-            $table->enum('TYPE_ACHAT', ['Marche', 'Marche Cadre', 'Marche Recondictible', 'Contrat/Convention']);
             $table->enum('TYPE_BUDGET', ['Fonctionnement', 'Investissement', 'Compte hors budget']);
             $table->text('OBJET_ACHAT');
             $table->integer('DELAI_LIVRAISON');
@@ -99,13 +97,13 @@ return new class extends Migration
             $table->float('MONTANT_TVA')->nullable();
 
             // paiement
-            $table->string('oz')->nullable();
+            $table->string('ov')->nullable();
             $table->string('op')->nullable();
             $table->enum('STATUT_PAIEMENT', ['payee', 'non payee', 'deposee'])->default('non payee');
             $table->date('DATE_PAIEMENT')->nullable();
             $table->float('MONTANT_PAYE')->nullable();
 
-            $table->foreign('numero_appel_offre')->references('numero_appel_offre')->on('appel_offres');
+            $table->foreignIdFor(Marche::class)->constrained();
             $table->foreignIdFor(Efp::class)->constrained();
             $table->foreignIdFor(Rubrique::class)->constrained();
             $table->foreignIdFor(Fournisseur::class)->constrained();

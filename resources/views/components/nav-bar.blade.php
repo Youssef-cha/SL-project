@@ -1,5 +1,5 @@
 <nav
-    class=" fixed z-40 left-0 right-0 top-0 bg-primary-500 border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700">
+    class=" fixed z-40 left-0 right-0 top-0 bg-primary-500 border-b border-gray-200 px-4 py-2.5  dark:border-gray-700">
     <div class="flex flex-wrap justify-between items-center px-8">
         <div class="flex justify-start items-center">
             <button togglerFor="sidebar"
@@ -8,7 +8,7 @@
             </button>
             <a href="/" class="flex items-center justify-between mr-4">
                 <img src="{{ asset('img/logo.png') }}" class="mr-3 h-11" alt="Flowbite Logo" />
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Service
+                <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">Service
                     Logistique</span>
             </a>
         </div>

@@ -12,7 +12,9 @@ class AppelOffre extends Model
     protected $keyType = 'string';
     public $incrementing = false;
     protected $guarded= [];
-    public function commandes(){
-        return $this->hasMany(Commande::class,'numero_appel_offre');
+    
+    public function marches(){
+        return $this->hasMany(Marche::class,'numero_appel_offre');
     }
+   
 }

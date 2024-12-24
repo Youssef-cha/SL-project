@@ -4,25 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\BonCommande;
 use App\Models\Commande;
+use App\Models\Efp;
 use App\Models\Rubrique;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Fournisseur;
 use App\Models\Responsable;
+use Illuminate\Support\Facades\Auth;
 
 class BonCommandeController extends Controller
 {
-
+    public function index()
+    {
+        return view('bonCommandes.index');
+    }
     public function create()
     {
         $achatTypes = $this->getEnumValues("commandes", "TYPE_ACHAT");
         $budgetTypes = $this->getEnumValues("commandes", "TYPE_BUDGET");
-        $rubriques = Rubrique::all();
+        $efps = Efp::orderBy('nom_efp')->get();
+        $rubriques = Rubrique::orderBy('REFERENCE_RUBRIQUE')->get();
         $fournisseurs = Fournisseur::orderBy('nom_fournisseur')->get();
 
         return view("boncommandes.create", [
             "achatTypes" => $achatTypes,
+            "efps" => $efps,
             "budgetTypes" => $budgetTypes,
             "rubriques" => $rubriques,
             "fournisseurs" => $fournisseurs,
@@ -35,34 +42,25 @@ class BonCommandeController extends Controller
             "AVIS_ACHAT" => ['required'],
             "TYPE_BUDGET" => ['required'],
             "OBJET_ACHAT" => ['required'],
-            "REFERENCE_RUBRIQUE" => ['required'],
-            "FOURNISSEUR" => ['required'],
+            "rubrique_id" => ['required'],
+            "fournisseur_id" => ['required'],
+            "efp_id" => ['required'],
             "DELAI_LIVRAISON" => ['required'],
-            "GARANTIE" => ['required'],
             "RETENUE_GARANTIE" => $request->GARANTIE == "oui" ? ['required'] : '',
             "EXERCICE" => ['required', 'size:4'],
             "DATE_COMMANDE" => ['required'],
-            "RESPONSABLE_DOSSIER" => ['required'],
         ], [
             "*.required" => "Ce champ est obligatoire",
             "*EXERCICE.size" => "EXERCICE Doit comporter 4 caractères"
         ]);
-        $commandeId = $this->generateId();
-        Commande::create([
-            "NUM_COMMANDE" => $commandeId,
-            "AVIS_ACHAT" => $request->AVIS_ACHAT,
-            "TYPE_BUDGET" => $request->TYPE_BUDGET,
-            "OBJET_ACHAT" => $request->OBJET_ACHAT,
-            "REFERENCE_RUBRIQUE" => $request->REFERENCE_RUBRIQUE,
-            "FOURNISSEUR" => $request->FOURNISSEUR,
-            "DELAI_LIVRAISON" => $request->DELAI_LIVRAISON,
-            "GARANTIE" => $request->GARANTIE,
-            "RETENUE_GARANTIE" => $request->RETENUE_GARANTIE,
-            "EXERCICE" => $request->EXERCICE,
-            "DATE_COMMANDE" => $request->DATE_COMMANDE,
-            "RESPONSABLE_DOSSIER" => $request->RESPONSABLE_DOSSIER,
-        ]);
-        return redirect()->back()->with('success', "Bon Commande n°: $commandeId A été ajouté avec succès");
+        $validData['numero_bon_commandes'] = $this->generateId();
+        $validData['user_id'] = Auth::id();
+        $validData['GARANTIE'] = request()->GARANTIE ?? 'non';
+        if ($validData['GARANTIE'] == 'non') {
+            $validData['RETENUE_GARANTIE'] = NULL;
+        }
+        BonCommande::create($validData);
+        return redirect()->back()->with('success', "Bon Commande A été ajouté avec succès");
     }
 
     public function edit($commande)
@@ -172,7 +170,7 @@ class BonCommandeController extends Controller
         $enumValues = explode("','", $matches[1]);
         return $enumValues;
     }
-    
+
     private function generateId()
     {
         $numbers = '';

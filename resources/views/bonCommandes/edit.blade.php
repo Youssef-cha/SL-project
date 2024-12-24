@@ -9,7 +9,6 @@
             @method('PUT')
             <x-form-fields-container>
                 @if (request()->section == 'livraison')
-{{-- livraison --}}
                     <x-form-input value="livraison" name="update" type="hidden" />
                     <x-form-input :update="$commande" value="Livrée" name="STATUT_LIVRAISON" type="hidden" />
                     <x-form-input :update="$commande" name="DATE_LIVRAISON" type="date" label="Date De Livraison" />
@@ -37,9 +36,9 @@
                         label="Date Depot Service Comptabilite :" />
                 @elseif (request()->section == 'paiement')
 {{-- paiement  --}}
+                    <x-form-input :update="$commande" name="oz" label="Numero OV :" />
                     <x-form-input value="paiement" name="update" type="hidden" />
-                    <x-form-input :update="$commande" name="ov" label="Numero OV :" />
-                    <x-form-input :update="$commande" name="op" label="Numero OP :" />
+                    <x-form-input :update="$commande" name="oz" label="Numero OZ :" />
                     <x-form-input :update="$commande" name="DATE_PAIEMENT" type="date" label="Date De Paiement :" />
                     <x-form-input :update="$commande" name="MONTANT_PAYE" type="number" label="Montant Payee :" />
                     <label class="col-span-2 inline-flex items-center cursor-pointer">

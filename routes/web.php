@@ -8,6 +8,7 @@ use App\Http\Controllers\DepotController;
 use App\Http\Controllers\EfpController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\LivraisonController;
+use App\Http\Controllers\MarcheController;
 use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\ReceptionController;
 use App\Http\Controllers\RetourController;
@@ -79,8 +80,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/users',                                       [UserController::class, "store"])->can("add-users")->name("users.store");
 
     // appel offre
-    Route::resource('appelOffres', AppelOffreController::class)->except('show');
+    Route::resource('appelOffres', AppelOffreController::class)->except(['show', 'edit', 'update']);
 
+    // marche
+    Route::get('/appelOffres/{appeloffre}/marches', [MarcheController::class , 'index'])->name('appelOffres.marches.index');
+    Route::get('/appelOffres/{appelOffres}/marches/create', [MarcheController::class , 'create'])->name('appelOffres.marches.create');
+    Route::post('/appelOffres/{appelOffres}/marches', [MarcheController::class , 'store'])->name('appelOffres.marches.store');
+    Route::get('/marches/{marche}/edit', [MarcheController::class , 'edit'])->name('marches.edit');
+    Route::put('/marches/{marche}', [MarcheController::class , 'update'])->name('marches.update');
+    Route::delete('/marches/{marche}', [MarcheController::class , 'destroy'])->name('marches.destroy');
+    
     //views
     Route::view('/', "home")->name('home');
 });

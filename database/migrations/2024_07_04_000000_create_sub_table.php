@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\AppelOffre;
 use App\Models\Complexe;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,8 +14,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('appel_offres', function (Blueprint $table) {
-            $table->string('numero_appel_offre',50)->primary();
-            $table->string('numero_marche');
+            $table->string('numero_appel_offre', 50)->primary();
+            $table->timestamps();
+        });
+        Schema::create('marches', function (Blueprint $table) {
+            $table->id();
+            $table->string('numero_marche', 50);
+            $table->enum('TYPE_ACHAT', ['Marche', 'Marche Cadre', 'Marche Recondictible', 'Contrat/Convention']);
+            $table->string('numero_appel_offre', 50);
+            $table->foreign('numero_appel_offre')->references('numero_appel_offre')->on('appel_offres')->cascadeOnDelete();
             $table->timestamps();
         });
         Schema::create('fournisseurs', function (Blueprint $table) {

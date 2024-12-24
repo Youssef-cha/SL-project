@@ -9,7 +9,7 @@
         <form method="POST" action="{{ route('complexes.store') }}" class="form-container">
             @csrf
             <x-form-fields-container>
-                <x-form-input label="nom complexe" name="nom_complexe" />
+                <x-form-input label="complexe" name="nom_complexe" />
             </x-form-fields-container>
             <x-form-button route="complexes.index">
                 Enregistrer
