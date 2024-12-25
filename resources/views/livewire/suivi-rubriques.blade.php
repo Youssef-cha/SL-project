@@ -64,7 +64,7 @@
                                 <th scope="col" class="px-4 w-fit py-3">annee</th>
                                 <th scope="col" class="px-4 w-fit py-3">BUDGET</th>
                                 <th scope="col" class="px-4 w-fit py-3">total ttc</th>
-                                <th scope="col" class="px-4 w-fit py-3">Nombre de Commande</th>
+                                <th scope="col" class="px-4 w-fit py-3">Nombre de Commandes</th>
                                 <th scope="col" class="px-4 w-fit py-3">reste</th>
                             </tr>
                         </thead>

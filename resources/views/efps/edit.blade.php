@@ -10,7 +10,7 @@
             <x-form-fields-container>
                 <x-form-input :update="$efp" label="nom d'efp" name="nom_efp" />
             </x-form-fields-container>
-            <x-form-button>
+            <x-form-button route="complexes.efps.index" :param="$efp->complexe_id">
                 Enregistrer
             </x-form-button>
         </form>

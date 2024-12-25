@@ -1,3 +1,8 @@
+@php
+    if ($count == 0) {
+        redirect()->route('complexes.create');
+    }
+@endphp
 <div>
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
@@ -58,14 +63,14 @@
                             <tr>
                                 <th scope="col" class="px-4 w-3 py-3"></th>
                                 <th scope="col" class="px-4 w-fit py-3">complexes</th>
-                                <th scope="col" class="px-4 w-fit py-3">nombre des efps</th>
+                                <th scope="col" class="px-4 w-fit py-3">nombre d'efps</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($complexes as $complexe)
                                 <tr class="border-b dark:border-gray-700">
                                     {{-- actions --}}
-                                    <td class="px-2 py-3 flex items-center justify-end border-r border-gray-700">
+                                    <td class="px-2 py-3 flex items-center justify-end border-r dark:border-gray-700">
                                         <button id="{{ $complexe->id }}-button"
                                             class="dropdown-button inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
                                             type="button">

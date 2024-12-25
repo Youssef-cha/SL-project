@@ -15,9 +15,10 @@ class ComplexeController extends Controller
     }
     public function store(Request $request){
         $validData = $request->validate([
-            "nom_complexe" => ['required'],
+            "nom_complexe" => ['required','unique:complexes,nom_complexe'],
         ], [
-            '*.required' => 'Ce champ est obligatoire'
+            "*.required" => "Ce champ est obligatoire",
+            "*.unique" => "existe déjà",
         ]);
         Complexe::create($validData);
         return redirect()->back()->with('success','complexe A été ajouté avec succès');;
@@ -30,7 +31,10 @@ class ComplexeController extends Controller
     public function update(Request $request , $complexe){
         $complexe = Complexe::findOrFail($complexe);
         $validData = $request->validate([
-            'nom_complexe' => 'required'
+            'nom_complexe' => ['required','unique:complexes,nom_complexe']
+        ],[
+            'nom_complexe.required' => 'Le nom du complexe est obligatoire',
+            'nom_complexe.unique' => 'existe déjà',
         ]);
         $complexe->update($validData);
         return redirect()->back()->with('success', 'complexe A été mis à jour avec succès');

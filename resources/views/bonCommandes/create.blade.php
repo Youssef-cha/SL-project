@@ -36,26 +36,18 @@
             </div>
         </div>
     @endsession
-    <!-- numéro de commande -->
 
     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
         <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Créer Une Commande</h2>
-        <form method="post" action="{{ route('commandes.store') }}" class="form-container">
+        <form method="post" action="{{ route('bonCommandes.store') }}" class="form-container">
             @csrf
             <x-form-fields-container>
-                <x-form-input label="Numéro de Commande" name="NUM_COMMANDE" />
-
+                <x-form-input label="Avis Achat" name="AVIS_ACHAT" />
+           
                 <x-form-text-area label="Objet d'achat" name="OBJET_ACHAT" />
-                <x-form-select :half="true" label="Type Budget" name="TYPE_BUDGET">
+                <x-form-select label="Type Budget" name="TYPE_BUDGET">
                     @foreach ($budgetTypes as $budgetType)
                         <option @selected(old('TYPE_BUDGET') == $budgetType) value="{{ $budgetType }}">{{ $budgetType }}</option>
-                    @endforeach
-
-                </x-form-select>
-                <x-form-select :half="true" label="Numéro de marche" name="marche_id">
-                    @foreach ($marches as $marche)
-                        <option @selected(old('marche_id') == $marche->id) value="{{ $marche->id }}">
-                            {{ $marche->numero_marche }} ({{ $marche->appelOffre->numero_appel_offre }})</option>
                     @endforeach
 
                 </x-form-select>
@@ -74,7 +66,7 @@
                 <x-form-select :half="true" label="efp" name="efp_id">
                     @foreach ($efps as $efp)
                         <option @selected(old('efp_id') == $efp->id) value="{{ $efp->id }}">
-                            {{ $efp->nom_efp }} ({{ $efp->complexe->nom_complexe }})</option>
+                            {{ $efp->nom_efp }}</option>
                     @endforeach
                 </x-form-select>
                 <x-form-input :half="true" type="number" min="0" label="Délai de livraison"
@@ -94,10 +86,10 @@
 
                 </div>
                 <x-form-input :half="true" type="number" min="" label="Exercice" name="EXERCICE" />
-                <x-form-input type="date" label="Date commande" name="DATE_COMMANDE" />
+                <x-form-input  type="date" label="Date commande" name="DATE_COMMANDE" />
 
             </x-form-fields-container>
-            <x-form-button route="commandes.index">
+            <x-form-button route="bonCommandes.index">
                 Enregistrer
             </x-form-button>
         </form>

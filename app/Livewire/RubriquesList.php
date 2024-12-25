@@ -39,7 +39,9 @@ class RubriquesList extends Component
     public function render()
     {
         $rubriques = $this->queryCommande();
+        $count = Rubrique::count();
         return view('livewire.rubriques-list', [
+            'count' => $count,
             'rubriques' => $rubriques,
             'inputFilters' => [
               

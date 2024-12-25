@@ -45,7 +45,9 @@ class EfpsList extends Component
     public function render()
     {
         $efps = $this->queryCommande();
+        $count = Efp::where('complexe_id', $this->complexe)->count();
         return view('livewire.efps-list', [
+            'count' => $count,
             'efps' => $efps,
             'inputFilters' => [],
             'sortColumns' => []

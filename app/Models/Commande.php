@@ -16,12 +16,19 @@ class Commande extends Model
     public function rubrique(){
         return $this->belongsTo(Rubrique::class);
     }
+    
 
     public function fournisseur(){
         return $this->belongsTo(Fournisseur::class);
     }
     public function user(){
         return $this->belongsTo(User::class);
+    }
+    public function efp(){
+        return $this->belongsTo(Efp::class);
+    }
+    public function marche(){
+        return $this->belongsTo(Efp::class);
     }
 
     public function retours(){

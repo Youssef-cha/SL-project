@@ -2,13 +2,15 @@
 
 namespace App\Livewire;
 
-use App\Models\Fournisseur;
+use App\Models\AppelOffre;
+use App\Models\Marche;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class FournisseursList extends Component
+class MarchesList extends Component
 {
     use WithPagination;
+    public $appelOffre = '';
     public $perPage = 10;
     public $search = '';
     public $sort = 'created_at';
@@ -21,34 +23,35 @@ class FournisseursList extends Component
             $this->resetPage();
         }
     }
+    public function mount($appelOffre)
+    {
+        $this->appelOffre = $appelOffre;
+    }
     public function filter()
     {
-        // nothing here but it is required
+        return 1;
     }
     public function queryCommande()
     {
-        $query = Fournisseur::with('commandes');
+        $query = Marche::with(['appelOffre', 'commandes'])
+        ->where('numero_appel_offre', $this->appelOffre);
         foreach ($this->filters as $name => $value) {
             $query->where($name, 'like', $value . "%");
         }
         if ($this->search) {
-            $query->where('nom_fournisseur', 'like', $this->search . '%');
+            $query->where('numero_marche', 'like', $this->search . '%');
         }
         return $query->orderBy($this->sort, $this->sortDirection)->paginate($this->perPage);
     }
     public function render()
     {
-        $fournisseurs = $this->queryCommande();
-        $count = Fournisseur::count();
-        return view('livewire.fournisseurs-list', [
+        $marches = $this->queryCommande();
+        $count = Marche::where('numero_appel_offre', $this->appelOffre)->count();
+        return view('livewire.marches-list', [
             'count' => $count,
-            'fournisseurs' => $fournisseurs,
-            'inputFilters' => [
-             
-            ],
-            'sortColumns' => [
-             
-            ]
+            'marches' => $marches,
+            'inputFilters' => [],
+            'sortColumns' => []
         ]);
     }
 }

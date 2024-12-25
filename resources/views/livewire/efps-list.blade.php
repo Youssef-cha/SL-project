@@ -1,3 +1,8 @@
+@php
+    if ($count == 0) {
+        redirect()->route('complexes.index');
+    }
+@endphp
 <div>
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
@@ -40,7 +45,7 @@
                         </div>
 
                         {{-- add button --}}
-                        <a href="{{ route('complexes.efps.create',$complexe) }}"
+                        <a href="{{ route('complexes.efps.create', $complexe) }}"
                             class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                             <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -59,14 +64,14 @@
                             <tr>
                                 <th scope="col" class="px-4 w-3 py-3"></th>
                                 <th scope="col" class="px-4 w-fit py-3">efp</th>
-                                <th scope="col" class="px-4 w-fit py-3">nombre de commande</th>
+                                <th scope="col" class="px-4 w-fit py-3">nombre de commandes</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($efps as $efp)
                                 <tr class="border-b dark:border-gray-700">
                                     {{-- actions --}}
-                                    <td class="px-2 py-3 flex items-center justify-end border-r border-gray-700">
+                                    <td class="px-2 py-3 flex items-center justify-end border-r dark:border-gray-700">
                                         <button id="{{ $efp->id }}-button"
                                             class="dropdown-button inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
                                             type="button">
@@ -81,7 +86,7 @@
                                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
 
                                                 <li>
-                                                    <a href="{{ route("efps.edit",$efp->id) }}"
+                                                    <a href="{{ route('efps.edit', $efp->id) }}"
                                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
                                                         l'efp</a>
                                                 </li>

@@ -2,11 +2,11 @@
 
 namespace App\Livewire;
 
-use App\Models\Fournisseur;
+use App\Models\AppelOffre;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class FournisseursList extends Component
+class AppelOffresList extends Component
 {
     use WithPagination;
     public $perPage = 10;
@@ -27,28 +27,24 @@ class FournisseursList extends Component
     }
     public function queryCommande()
     {
-        $query = Fournisseur::with('commandes');
+        $query = AppelOffre::with([ 'marches']);
         foreach ($this->filters as $name => $value) {
             $query->where($name, 'like', $value . "%");
         }
         if ($this->search) {
-            $query->where('nom_fournisseur', 'like', $this->search . '%');
+            $query->where('numero_appel_offre', 'like', $this->search . '%');
         }
         return $query->orderBy($this->sort, $this->sortDirection)->paginate($this->perPage);
     }
     public function render()
     {
-        $fournisseurs = $this->queryCommande();
-        $count = Fournisseur::count();
-        return view('livewire.fournisseurs-list', [
+        $appelOffres = $this->queryCommande();
+        $count = AppelOffre::count();
+        return view('livewire.appel-offres-list', [
             'count' => $count,
-            'fournisseurs' => $fournisseurs,
-            'inputFilters' => [
-             
-            ],
-            'sortColumns' => [
-             
-            ]
+            'appelOffres' => $appelOffres,
+            'inputFilters' => [],
+            'sortColumns' => []
         ]);
     }
 }

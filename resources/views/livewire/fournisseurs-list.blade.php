@@ -1,3 +1,8 @@
+@php
+    if ($count == 0) {
+        redirect()->route('fournisseurs.create');
+    }
+@endphp
 <div>
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
@@ -58,15 +63,15 @@
                             class="text-xs text-nowrap text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-4 w-3 py-3"></th>
-                                <th scope="col" class="px-4 w-fit py-3">nom_fournisseur</th>
-                                <th scope="col" class="px-4 w-fit py-3">nombre de commande</th>
+                                <th scope="col" class="px-4 w-fit py-3">fournisseur</th>
+                                <th scope="col" class="px-4 w-fit py-3">Nombre de commandes</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($fournisseurs as $fournisseur)
                                 <tr class="border-b dark:border-gray-700">
                                     {{-- actions --}}
-                                    <td class="px-2 py-3 flex items-center justify-end border-r border-gray-700">
+                                    <td class="px-2 py-3 flex items-center justify-end border-r dark:border-gray-700">
                                         <button id="{{ $fournisseur->id }}-button"
                                             class="dropdown-button inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
                                             type="button">
@@ -81,7 +86,7 @@
                                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
 
                                                 <li>
-                                                    <a href="{{ route("fournisseurs.edit",$fournisseur->id) }}"
+                                                    <a href="{{ route('fournisseurs.edit', $fournisseur->id) }}"
                                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
                                                         le fournisseur</a>
                                                 </li>

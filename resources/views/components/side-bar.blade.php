@@ -11,17 +11,19 @@
                 <x-side-link :active="request()->is('suiviRaps')" href="{{ route('suiviRaps.index') }}">Suivi des raps</x-side-link>
             </x-side-group>
             <x-side-group fclass="fa-solid fa-chart-simple" aria="info" title="info">
-                <x-side-link :active="request()->is('commandes')" href="{{ route('commandes.index') }}  ">commandes</x-side-link>
-                <x-side-link :active="request()->is('rubriques')" href="{{ route('rubriques.index') }}  ">rubriques</x-side-link>
-                <x-side-link :active="request()->is('fournisseurs')" href="{{ route('fournisseurs.index') }}  ">fournisseurs</x-side-link>
-                <x-side-link :active="request()->is('complexes')" href="{{ route('complexes.index') }}  ">complexes / efps</x-side-link>
+                <x-side-link :active="request()->is('commandes')" href="{{ route('commandes.index') }}  ">commande</x-side-link>
+                <x-side-link :active="request()->is('bonCommandes')" href="{{ route('bonCommandes.index') }}  ">bon commande</x-side-link>
+                <x-side-link :active="request()->is('appelOffres')" href="{{ route('appelOffres.index') }}  ">appel offre</x-side-link>
+                <x-side-link :active="request()->is('rubriques')" href="{{ route('rubriques.index') }}  ">rubrique</x-side-link>
+                <x-side-link :active="request()->is('fournisseurs')" href="{{ route('fournisseurs.index') }}  ">fournisseur</x-side-link>
+                <x-side-link :active="request()->is('complexes')" href="{{ route('complexes.index') }}  ">complexe / efp</x-side-link>
             </x-side-group>
             
         </ul>
         <div>
             @can('add-users')
                 <a href="{{ route('users.create') }}"
-                    class="dark:text-gray-300 hover:text-primary-500 hover:bg-gray-900 transition-colors duration-300 bg-gray-700 rounded-full mt-3  p-4 flex items-center justify-between ring ring-green-500  ">
+                    class="dark:text-gray-300 hover:text-primary-500 hover:bg-white bg-gray-200 dark:hover:bg-gray-900 dark:bg-gray-700 transition-colors duration-300  rounded-full mt-3  p-4 flex items-center justify-between ring ring-green-500  ">
                     <div class="flex items-center space-x-3 text-md text-inherit">
                         <i class="fa-solid fa-plus"></i>
                         <span class=" font-semibold text-inherit">ajouter un responsable</span>
@@ -35,7 +37,7 @@
                     <span class=" font-semibold ">{{ Auth::user()->name }}</span>
                 </div>
                 <button form="logout" type="submit"
-                    class=" absolute w-16 text-xl right-0 inset-y-0 block text-white bg-gray-700 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-red-300 capitalize  hover:text-primary-500 transition-colors px-5 py-2.5 text-center font-semibold dark:bg-gray-600 dark:hover:bg-gray-900 dark:focus:ring-gray-800">
+                    class=" absolute w-16 text-xl right-0 inset-y-0 block dark:text-white text-gray-900 hover:bg-white bg-gray-200 dark:hover:bg-gray-900 dark:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-red-300 capitalize  hover:text-primary-500 transition-colors px-5 py-2.5 text-center font-semibold dark:bg-gray-600 dark:hover:bg-gray-900 dark:focus:ring-gray-800">
                     <i class="fa-solid fa-arrow-right-from-bracket "></i>
                 </button>
                 <form id="logout" class="hidden" action="{{ route('sessions.destroy') }}" method="POST">

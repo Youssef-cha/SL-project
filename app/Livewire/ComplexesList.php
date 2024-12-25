@@ -40,7 +40,9 @@ class ComplexesList extends Component
     public function render()
     {
         $complexes = $this->queryCommande();
+        $count = Complexe::count();
         return view('livewire.complexes-list', [
+            'count' => $count,
             'complexes' => $complexes,
             'inputFilters' => [],
             'sortColumns' => []

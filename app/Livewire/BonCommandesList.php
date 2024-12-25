@@ -2,11 +2,12 @@
 
 namespace App\Livewire;
 
-use App\Models\Fournisseur;
+use App\Models\AppelOffre;
+use App\Models\BonCommande;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class FournisseursList extends Component
+class BonCommandesList extends Component
 {
     use WithPagination;
     public $perPage = 10;
@@ -27,28 +28,24 @@ class FournisseursList extends Component
     }
     public function queryCommande()
     {
-        $query = Fournisseur::with('commandes');
+        $query = BonCommande::with(['user', 'fournisseur', 'rubrique']);
         foreach ($this->filters as $name => $value) {
             $query->where($name, 'like', $value . "%");
         }
         if ($this->search) {
-            $query->where('nom_fournisseur', 'like', $this->search . '%');
+            $query->where('numero_bon_commandes', 'like', $this->search . '%');
         }
         return $query->orderBy($this->sort, $this->sortDirection)->paginate($this->perPage);
     }
     public function render()
     {
-        $fournisseurs = $this->queryCommande();
-        $count = Fournisseur::count();
-        return view('livewire.fournisseurs-list', [
+        $bonCommandes = $this->queryCommande();
+        $count = BonCommande::count();
+        return view('livewire.bon-commandes-list', [
             'count' => $count,
-            'fournisseurs' => $fournisseurs,
-            'inputFilters' => [
-             
-            ],
-            'sortColumns' => [
-             
-            ]
+            'bonCommandes' => $bonCommandes,
+            'inputFilters' => [],
+            'sortColumns' => []
         ]);
     }
 }
