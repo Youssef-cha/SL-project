@@ -36,7 +36,6 @@
             </div>
         </div>
     @endsession
-    <!-- numéro de commande -->
 
     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
         <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Créer Une Commande</h2>
@@ -45,13 +44,13 @@
             <x-form-fields-container>
                 <x-form-input label="Avis Achat" name="AVIS_ACHAT" />
            
+                <x-form-text-area label="Objet d'achat" name="OBJET_ACHAT" />
                 <x-form-select label="Type Budget" name="TYPE_BUDGET">
                     @foreach ($budgetTypes as $budgetType)
                         <option @selected(old('TYPE_BUDGET') == $budgetType) value="{{ $budgetType }}">{{ $budgetType }}</option>
                     @endforeach
 
                 </x-form-select>
-                <x-form-text-area label="Objet d'achat" name="OBJET_ACHAT" />
                 <x-form-select :half="true" label="Référence Rubrique" name="rubrique_id">
                     @foreach ($rubriques as $rubrique)
                         <option @selected(old('rubrique_id') == $rubrique->id) value="{{ $rubrique->id }}">
@@ -90,7 +89,7 @@
                 <x-form-input  type="date" label="Date commande" name="DATE_COMMANDE" />
 
             </x-form-fields-container>
-            <x-form-button route="commandes.index">
+            <x-form-button route="bonCommandes.index">
                 Enregistrer
             </x-form-button>
         </form>

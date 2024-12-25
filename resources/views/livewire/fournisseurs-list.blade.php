@@ -1,5 +1,5 @@
 @php
-    if ($fournisseurs->count()==0) {
+    if ($count == 0) {
         redirect()->route('fournisseurs.create');
     }
 @endphp
@@ -86,7 +86,7 @@
                                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
 
                                                 <li>
-                                                    <a href="{{ route("fournisseurs.edit",$fournisseur->id) }}"
+                                                    <a href="{{ route('fournisseurs.edit', $fournisseur->id) }}"
                                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
                                                         le fournisseur</a>
                                                 </li>

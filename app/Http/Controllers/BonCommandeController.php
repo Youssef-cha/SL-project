@@ -21,17 +21,13 @@ class BonCommandeController extends Controller
     }
     public function create()
     {
-        $achatTypes = $this->getEnumValues("commandes", "TYPE_ACHAT");
         $budgetTypes = $this->getEnumValues("commandes", "TYPE_BUDGET");
-        $efps = Efp::orderBy('nom_efp')->get();
-        $rubriques = Rubrique::orderBy('REFERENCE_RUBRIQUE')->get();
         $fournisseurs = Fournisseur::orderBy('nom_fournisseur')->get();
         $rubriques = Rubrique::orderBy('REFERENCE_RUBRIQUE')->get();
         $efps = Efp::orderBy('nom_efp')->get();
 
         return view("boncommandes.create", [
             "efps" => $efps,
-            "achatTypes" => $achatTypes,
             "efps" => $efps,
             "budgetTypes" => $budgetTypes,
             "rubriques" => $rubriques,
@@ -44,7 +40,6 @@ class BonCommandeController extends Controller
         $validData = $request->validate([
             "AVIS_ACHAT" => ['required'],
             "OBJET_ACHAT" => ['required'],
-            "TYPE_BUDGET" => ['required'],
             "TYPE_BUDGET" => ['required'],
             "OBJET_ACHAT" => ['required'],
             "rubrique_id" => ['required'],
@@ -62,35 +57,30 @@ class BonCommandeController extends Controller
         $validData['user_id'] = Auth::id();
         $validData['GARANTIE'] = request()->GARANTIE ?? 'non';
         if ($validData['GARANTIE'] == 'non') {
-            $validData['RETENUE_GARANTIE'] = NULL;
+            $validData['RETENUE_GARANTIE'] = null;
         }
         BonCommande::create($validData);
         return redirect()->back()->with('success', "Bon Commande A été ajouté avec succès");
     }
 
-    public function edit($commande)
-    {
-        $commande = base64_decode($commande);
-        $commande = Commande::findOrFail($commande);
-        $statutCommandes = $this->getEnumValues("commandes", "STATUT_COMMANDE");
-        $achatTypes = $this->getEnumValues("commandes", "TYPE_ACHAT");
+    public function edit(BonCommande $bonCommande)
+    { 
         $budgetTypes = $this->getEnumValues("commandes", "TYPE_BUDGET");
-        $rubriques = Rubrique::all();
+        $rubriques = Rubrique::orderBy('REFERENCE_RUBRIQUE')->get();
         $fournisseurs = Fournisseur::orderBy('nom_fournisseur')->get();
-        $responsables = Responsable::orderBy('nom_responsable')->get();
+        $efps = Efp::orderBy('nom_efp')->get();
         return view('boncommandes.edit', [
-            "commande" => $commande,
-            "statutCommandes" => $statutCommandes,
-            "achatTypes" => $achatTypes,
+            "efps" => $efps,
+            "bonCommande" => $bonCommande,
             "budgetTypes" => $budgetTypes,
             "rubriques" => $rubriques,
             "fournisseurs" => $fournisseurs,
-            "responsables" => $responsables,
         ]);
     }
 
-    public function update(Request $request, BonCommande $commande)
+    public function update(Request $request,$commande)
     {
+        $commande = BonCommande::findOrFail($commande);
         if (request()->update === 'paiement') {
             if ($commande->STATUT_PAIEMENT != "payee" && $commande->STATUT_PAIEMENT != "deposee") {
                 return redirect()->route('depots.edit', $commande->NUM_COMMANDE)->with("error", "Vous devez d'abord mettre à jour le dépôt !");
@@ -98,11 +88,16 @@ class BonCommandeController extends Controller
             $newData = $request->validate([
                 "DATE_PAIEMENT" => ['required'],
                 "MONTANT_PAYE" => ['required'],
-                "oz" => ['required'],
-                "STATUT_PAIEMENT" => '',
+                "ov" => ['required'],
+                "op" => ['required'],
             ], [
                 '*.required' => 'Ce champ est obligatoire'
             ]);
+            if(request()->STATUT_PAIEMENT == "payee"){
+                $newData['STATUT_PAIEMENT'] = request()->STATUT_PAIEMENT;
+            }else{
+                $newData['STATUT_PAIEMENT'] = "deposee";
+            }
             $commande->update($newData);
             return redirect()->back()->with("success", "paiement A été mis à jour avec succès!");
         } elseif (request()->update === 'reception') {
@@ -141,7 +136,6 @@ class BonCommandeController extends Controller
         } else {
             $validData = $request->validate([
                 "AVIS_ACHAT" => ['required'],
-                "TYPE_ACHAT" => ['required'],
                 "TYPE_BUDGET" => ['required'],
                 "OBJET_ACHAT" => ['required'],
                 "rubrique_id" => ['required'],
@@ -149,10 +143,8 @@ class BonCommandeController extends Controller
                 "efp_id" => ['required'],
                 "DELAI_LIVRAISON" => ['required'],
                 "RETENUE_GARANTIE" => $request->GARANTIE == "oui" ? ['required'] : '',
-                "NUM_MARCHE" => ['required'],
                 "EXERCICE" => ['required', 'size:4'],
                 "DATE_COMMANDE" => ['required'],
-                "STATUT_COMMANDE" => '',
             ], [
                 "*.required" => "Ce champ est obligatoire",
                 "*EXERCICE.size" => "EXERCICE Doit comporter 4 caractères"
@@ -160,10 +152,10 @@ class BonCommandeController extends Controller
 
             $validData['GARANTIE'] = request()->GARANTIE ?? 'non';
             if ($validData['GARANTIE'] == 'non') {
-                $validData['RETENUE_GARANTIE'] = NULL;
+                $validData['RETENUE_GARANTIE'] = null;
             }
             $commande->update($validData);
-            return redirect()->back()->with('success', 'Commande A été mis à jour avec succès!');
+            return redirect()->back()->with('success', 'Bon Commande A été mis à jour avec succès!');
         }
     }
 

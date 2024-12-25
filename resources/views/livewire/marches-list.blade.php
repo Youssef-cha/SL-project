@@ -1,5 +1,5 @@
 @php
-    if ($marches->count()==0) {
+    if ($count == 0) {
         redirect()->route('appelOffres.index');
     }
 @endphp
@@ -91,7 +91,7 @@
                                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
                                                         le marche</a>
                                                 </li>
-                                            
+
 
                                             </ul>
                                         </div>

@@ -39,7 +39,9 @@ class AppelOffresList extends Component
     public function render()
     {
         $appelOffres = $this->queryCommande();
+        $count = AppelOffre::count();
         return view('livewire.appel-offres-list', [
+            'count' => $count,
             'appelOffres' => $appelOffres,
             'inputFilters' => [],
             'sortColumns' => []

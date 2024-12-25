@@ -58,18 +58,20 @@ class CommandesList extends Component
     public function render()
     {
         $typeBudget = Commande::select('TYPE_BUDGET')->distinct()->get();
-        $Garantie = Commande::select('Garantie')->distinct()->get();
+        $garantie = Commande::select('Garantie')->distinct()->get();
         $statusCmd = Commande::select('STATUT_COMMANDE')->distinct()->get();
         $statusLvr = Commande::select('STATUT_LIVRAISON')->distinct()->get();
         $statusRec = Commande::select('STATUT_RECEPTION')->distinct()->get();
         $statusPai = Commande::select('STATUT_PAIEMENT')->distinct()->get();
         $commandes = $this->queryCommande();
+        $count = Commande::all()->count();
 
             return view('livewire.commandes-list', [
+                'count' => $count,
                 'commandes' => $commandes,
                 'inputFilters' => [
                     'Type Budget' => $typeBudget,
-                    'Garantie' => $Garantie,
+                    'garantie' => $garantie,
                     'Status Commande' => $statusCmd,
                     'Status Livraison' => $statusLvr,
                     'Status Reception' => $statusRec,

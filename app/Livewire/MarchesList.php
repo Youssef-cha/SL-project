@@ -46,7 +46,9 @@ class MarchesList extends Component
     public function render()
     {
         $marches = $this->queryCommande();
+        $count = Marche::where('numero_appel_offre', $this->appelOffre)->count();
         return view('livewire.marches-list', [
+            'count' => $count,
             'marches' => $marches,
             'inputFilters' => [],
             'sortColumns' => []

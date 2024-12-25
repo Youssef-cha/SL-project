@@ -19,7 +19,8 @@ return new class extends Migration
     {
         // commande
         Schema::create('bon_commandes', function (Blueprint $table) {
-            $table->string('numero_bon_commandes', 50)->primary();
+            $table->id();
+            $table->string('numero_bon_commandes', 50);
             $table->string('AVIS_ACHAT', 50);
             $table->enum('TYPE_BUDGET', ['Fonctionnement', 'Investissement', 'Compte hors budget']);
             $table->text('OBJET_ACHAT');

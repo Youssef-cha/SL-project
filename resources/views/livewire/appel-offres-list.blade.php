@@ -1,5 +1,5 @@
 @php
-    if ($appelOffres->count()==0) {
+    if ($count == 0) {
         redirect()->route('appelOffres.create');
     }
 @endphp
@@ -93,12 +93,12 @@
                                                     </a>
                                                 </li>
                                                 @if ($appelOffre->marches->count() > 0)
-                                                <li>
-                                                    <a href="{{ route('appelOffres.marches.index', $appelOffre->marches->count()) }}"
-                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                                        les marches
-                                                    </a>
-                                                </li>
+                                                    <li>
+                                                        <a href="{{ route('appelOffres.marches.index', $appelOffre->marches->count()) }}"
+                                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                            les marches
+                                                        </a>
+                                                    </li>
                                                 @endif
 
                                             </ul>

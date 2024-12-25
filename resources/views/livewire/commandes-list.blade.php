@@ -1,5 +1,5 @@
 @php
-    if ($commandes->count()==0) {
+    if ($count==0) {
         redirect()->route('commandes.create');
     }
 @endphp
@@ -169,7 +169,7 @@
 
                                         </div>
                                     </td>
-                                    <th class="px-4 w-auto py-3"> {{ $commande->NUM_COMMANDE }} </td>
+                                    <td class="px-4 w-auto py-3"> {{ $commande->NUM_COMMANDE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->TYPE_BUDGET }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->OBJET_ACHAT }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->rubrique->REFERENCE_RUBRIQUE }} </td>

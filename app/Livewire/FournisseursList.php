@@ -39,7 +39,9 @@ class FournisseursList extends Component
     public function render()
     {
         $fournisseurs = $this->queryCommande();
+        $count = Fournisseur::count();
         return view('livewire.fournisseurs-list', [
+            'count' => $count,
             'fournisseurs' => $fournisseurs,
             'inputFilters' => [
              

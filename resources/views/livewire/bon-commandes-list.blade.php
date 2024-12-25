@@ -1,3 +1,8 @@
+@php
+    if ($count == 0) {
+        redirect()->route('bonCommandes.create');
+    }
+@endphp
 <div>
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
@@ -7,7 +12,6 @@
                     <div class="w-full md:w-1/2">
                         {{-- search bar --}}
                         <form class="flex items-center">
-                            <label for="simple-search" class="sr-only"></label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                     <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -39,15 +43,13 @@
                         </div>
 
                         {{-- add item button --}}
-                        <a href="{{ route('bonCommandes.create') }}"
-                        <a href="{{ route('bonCommandes.create') }}"
+                        <a href="{{ route('bonCommandes.create') }}" <a href="{{ route('bonCommandes.create') }}"
                             class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                             <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path clip-rule="evenodd" fill-rule="evenodd"
                                     d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                             </svg>
-                            bon commande
                             bon commande
                         </a>
                         <div class="flex items-center space-x-3 w-full md:w-auto">
@@ -67,7 +69,6 @@
                                 <th scope="col" class="px-4 w-fit py-3"></th>
                                 <th scope="col" class="px-4 w-fit py-3">bon commande</th>
                                 <th scope="col" class="px-4 w-fit py-3">Avis achat</th>
-                                <th scope="col" class="px-4 w-fit py-3">Type achat</th>
                                 <th scope="col" class="px-4 w-fit py-3">Type budget</th>
                                 <th scope="col" class="px-4 w-fit py-3">Objet achat</th>
                                 <th scope="col" class="px-4 w-fit py-3">Reference rubrique</th>
@@ -78,12 +79,11 @@
                                 <th scope="col" class="px-4 w-fit py-3">Exercice</th>
                                 <th scope="col" class="px-4 w-fit py-3">Date commande</th>
                                 <th scope="col" class="px-4 w-fit py-3">Responsable dossier</th>
-                                <th scope="col" class="px-4 w-fit py-3">Status commande</th>
                                 <th scope="col" class="px-4 w-fit py-3">Date livraison</th>
                                 <th scope="col" class="px-4 w-fit py-3">Status livraison</th>
                                 <th scope="col" class="px-4 w-fit py-3">Lieu livraison</th>
-                                <th scope="col" class="px-4 w-fit py-3">Date verification reception</th>
                                 <th scope="col" class="px-4 w-fit py-3">Status reception</th>
+                                <th scope="col" class="px-4 w-fit py-3">Date verification reception</th>
                                 <th scope="col" class="px-4 w-fit py-3">Date depot SL</th>
                                 <th scope="col" class="px-4 w-fit py-3">Numero facture</th>
                                 <th scope="col" class="px-4 w-fit py-3">Date facture</th>
@@ -101,11 +101,10 @@
                         </thead>
                         <tbody>
                             @foreach ($bonCommandes as $bonCommande)
-                            @foreach ($bonCommandes as $bonCommande)
                                 <tr class="border-b dark:border-gray-700">
                                     {{-- actions --}}
                                     <td class="px-2 py-3 flex items-center justify-end border-r dark:border-gray-700">
-                                        <button id="{{ $bonCommande->numero_bon_commandes }}-button"
+                                        <button id="{{ $bonCommande->id }}-button"
                                             class="dropdown-button inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
                                             type="button">
                                             <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
@@ -114,47 +113,57 @@
                                                     d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                             </svg>
                                         </button>
-                                        <div id="{{ $bonCommande->numero_bon_commandes }}"
+                                        <div id="{{ $bonCommande->id }}"
                                             class="dropdown-menu absolute translate-y-10 translate-x-44 hidden h-auto z-40 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
 
                                                 <li>
-                                                    <a href="{{ route('bonCommandes.edit', $bonCommande->numero_bon_commandes) }}"
-                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
-                                                        bonCommande</a>
+                                                    <a href="{{ route('bonCommandes.edit', $bonCommande->id) }}"
+                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier bon
+                                                        commande</a>
                                                 </li>
                                                 <li>
 
-                                                    <a href="{{ route('livraisons.edit', $bonCommande->numero_bon_commandes) }}"
+                                                    <a href="{{ route('bonCommandes.edit', ['bonCommande' => $bonCommande->id, 'section' => 'livraison']) }}"
                                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
                                                         livraison</a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{ route('receptions.edit', $bonCommande->numero_bon_commandes) }}"
+                                                    <a href="{{ route('bonCommandes.edit', ['bonCommande' => $bonCommande->id, 'section' => 'reception']) }}"
                                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
                                                         reception</a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{ route('depots.edit', $bonCommande->numero_bon_commandes) }}"
+                                                    <a href="{{ route('bonCommandes.edit', ['bonCommande' => $bonCommande->id, 'section' => 'depot']) }}"
                                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
                                                         depot</a>
                                                 </li>
 
                                                 @if ($bonCommande->STATUT_PAIEMENT !== 'non payee')
-                                                @if ($bonCommande->STATUT_PAIEMENT !== 'non payee')
                                                     <li>
-                                                        <a href="{{ route('paiements.edit', $bonCommande->numero_bon_commandes) }}"
+                                                        <a href="{{ route('bonCommandes.edit', ['bonCommande' => $bonCommande->id, 'section' => 'paiement']) }}"
                                                             class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
                                                             paiement</a>
                                                     </li>
                                                 @endif
+
+                                                <li>
+                                                    <a href="{{ route('commandes.retours.create', $bonCommande->id) }}"
+                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">créer
+                                                        un retour</a>
+                                                </li>
+
+
+                                                
+
+
+
                                             </ul>
 
                                         </div>
                                     </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->numero_bon_commandes }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->AVIS_ACHAT }} </td>
-                                    <td class="px-4 w-auto py-3"> {{ $bonCommande->TYPE_ACHAT }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->TYPE_BUDGET }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->OBJET_ACHAT }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->rubrique->REFERENCE_RUBRIQUE }}
@@ -170,9 +179,9 @@
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->DATE_LIVRAISON }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->STATUT_LIVRAISON }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->LIEU_LIVRAISON }} </td>
+                                    <td class="px-4 w-auto py-3"> {{ $bonCommande->STATUT_RECEPTION }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->DATE_VERIFICATION_RECEPTION }}
                                     </td>
-                                    <td class="px-4 w-auto py-3"> {{ $bonCommande->STATUT_RECEPTION }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->DATE_DEPOT_SL }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->NUM_FACTURE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->DATE_FACTURE }} </td>
@@ -184,7 +193,7 @@
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->STATUT_PAIEMENT }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->ov }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->op }} </td>
-                                    
+
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->MONTANT_PAYE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->DATE_PAIEMENT }} </td>
                                 </tr>
@@ -194,8 +203,6 @@
                     </table>
                 </div>
                 <div class="p-4">
-
-                    {{ $bonCommandes->links('vendor.livewire.tailwind') }}
                     {{ $bonCommandes->links('vendor.livewire.tailwind') }}
                 </div>
 

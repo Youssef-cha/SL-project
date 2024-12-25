@@ -28,19 +28,21 @@ class BonCommandesList extends Component
     }
     public function queryCommande()
     {
-        $query = BonCommande::with(['user', 'fournisseur', 'rubrique', 'retours']);
+        $query = BonCommande::with(['user', 'fournisseur', 'rubrique']);
         foreach ($this->filters as $name => $value) {
             $query->where($name, 'like', $value . "%");
         }
         if ($this->search) {
-            $query->where('numero_bon_commande', 'like', $this->search . '%');
+            $query->where('numero_bon_commandes', 'like', $this->search . '%');
         }
         return $query->orderBy($this->sort, $this->sortDirection)->paginate($this->perPage);
     }
     public function render()
     {
         $bonCommandes = $this->queryCommande();
+        $count = BonCommande::count();
         return view('livewire.bon-commandes-list', [
+            'count' => $count,
             'bonCommandes' => $bonCommandes,
             'inputFilters' => [],
             'sortColumns' => []

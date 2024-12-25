@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AppelOffre;
+use App\Models\BonCommande;
 use Illuminate\Http\Request;
 use App\Models\Commande;
 use App\Models\Efp;
@@ -80,6 +81,7 @@ class CommandeController extends Controller
     }
     public function update(Request $request, Commande $commande)
     {
+
         if (request()->update === 'paiement') {
             if ($commande->STATUT_PAIEMENT != "payee" && $commande->STATUT_PAIEMENT != "deposee") {
                 return redirect()->route('depots.edit', $commande->NUM_COMMANDE)->with("error", "Vous devez d'abord mettre à jour le dépôt !");
@@ -89,10 +91,14 @@ class CommandeController extends Controller
                 "MONTANT_PAYE" => ['required'],
                 "ov" => ['required'],
                 "op" => ['required'],
-                "STATUT_PAIEMENT" => '',
             ], [
                 '*.required' => 'Ce champ est obligatoire'
             ]);
+            if(request()->STATUT_PAIEMENT){
+                $newData['STATUT_PAIEMENT'] = request()->STATUT_PAIEMENT;
+            }else{
+                $newData['STATUT_PAIEMENT'] = "deposee";
+            }
             $commande->update($newData);
             return redirect()->back()->with("success", "paiement A été mis à jour avec succès!");
         } elseif (request()->update === 'reception') {
@@ -151,6 +157,8 @@ class CommandeController extends Controller
             }
             if(request()->STATUT_COMMANDE){
                 $validData['STATUT_COMMANDE'] = request()->STATUT_COMMANDE;
+            }else{
+                $validData['STATUT_COMMANDE'] = "attribuee";
             }
             $commande->update($validData);
             return redirect()->back()->with('success', 'Commande A été mis à jour avec succès!');
