@@ -10,15 +10,17 @@ class Retour extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    
+
     protected $fillable = [
         "NUM_COMMANDE",
         "user_id",
         "motif",
         "date_retour",
-    
+        "STATUT_RETOUR"
+
     ];
-    public function commande(){
-        return $this->belongsTo(Commande::class,"NUM_COMMANDE");
+    public function commande()
+    {
+        return $this->belongsTo(Commande::class, "NUM_COMMANDE");
     }
 }

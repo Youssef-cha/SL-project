@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date("date_retour");
             $table->text("motif");
             $table->string('NUM_COMMANDE', length: 50);
+            $table->enum('STATUT_RETOUR', ['a resoudre', 'resolue'])->default('a resoudre');
             $table->timestamps();
 
             $table->foreign("NUM_COMMANDE")->references("NUM_COMMANDE")->on("commandes");

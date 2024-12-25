@@ -27,6 +27,7 @@ class RetourController extends Controller
         $validDate = request()->validate([
             "motif" => ['required'],
             "date_retour" => ['required'],
+            "STATUT_RETOUR" => ''
         ], [
             "*.required" => 'Ce champ est obligatoire',
         ]);
@@ -46,13 +47,14 @@ class RetourController extends Controller
             "user_id" => Auth::id(),
             "motif" => request()->motif,
             "date_retour" => request()->date_retour,
+            "STATUT_RETOUR" => request()->STATUT_RETOUR
         ]);
         return redirect()->back()->with("success", 'retour A été ajouté avec succès');
     }
-    public function destroy(Retour $retour)
-    {
-        $commandeId = $retour->commande->NUM_COMMANDE;
-        $retour->delete();
-        return redirect()->route('commandes.retours.index', $commandeId);
-    }
+    // public function destroy(Retour $retour)
+    // {
+    //     $commandeId = $retour->commande->NUM_COMMANDE;
+    //     $retour->delete();
+    //     return redirect()->route('commandes.retours.index', $commandeId);
+    // }
 }

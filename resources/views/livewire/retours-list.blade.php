@@ -61,11 +61,15 @@
                                 <th scope="col" class="px-4 w-fit py-3">id</th>
                                 <th scope="col" class="px-4 w-fit py-3">date</th>
                                 <th scope="col" class="px-4 w-fit py-3">motif</th>
+                                <th scope="col" class="px-4 w-fit py-3">statut de retour</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($retours as $retour)
-                                <tr class="border-b dark:border-gray-700">
+                                <tr
+                                    class="border-b dark:border-gray-700 
+                                    @if ($retour->STATUT_RETOUR == 'resolue') text-green-600 dark:text-green-400 
+                                    @else text-red-600 dark:text-red-400 @endif">
                                     {{-- actions --}}
                                     <td class="px-2 py-3 flex items-center justify-end border-r border-gray-700">
                                         <button id="{{ $retour->id }}-button"
@@ -80,20 +84,19 @@
                                         <div id="{{ $retour->id }}"
                                             class="dropdown-menu absolute translate-y-10 translate-x-44 hidden h-auto z-40 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
-
                                                 <li>
-                                                    <a href="{{ route("retours.edit",$retour->id) }}"
-                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">modifier
-                                                        la retour</a>
+                                                    <a href="{{ route('retours.edit', $retour->id) }}"
+                                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                        modifier la retour
+                                                    </a>
                                                 </li>
-
                                             </ul>
                                         </div>
                                     </td>
-                                    <th class="px-4 w-auto py-3"> {{ $retour->id }} </td>
-                                        <td class="px-4 w-auto py-3"> {{ $retour->date_retour }} </td>
+                                    <th class="px-4 w-auto py-3"> {{ $retour->id }} </th>
+                                    <td class="px-4 w-auto py-3"> {{ $retour->date_retour }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $retour->motif }} </td>
-
+                                    <td class="px-4 w-auto py-3"> {{ $retour->STATUT_RETOUR }} </td>
                                 </tr>
                             @endforeach
 

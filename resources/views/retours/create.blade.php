@@ -11,6 +11,7 @@
             @csrf
             <x-form-fields-container>
                 <x-form-text-area label="Motif" name="motif" />
+                <x-form-input value="a resoudre" name="STATUT_RETOUR" type="hidden" />
                 <x-form-input type="date" label="Date retour" name="date_retour" />
             </x-form-fields-container>
             <x-form-button :param="$commande->NUM_COMMANDE" route="commandes.retours.index">

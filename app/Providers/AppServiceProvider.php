@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-         Gate::define('add-users',function($user){
+        Gate::define('add-users',function($user){
             return $user->isAdmin();
         });
         Paginator::useTailwind();
