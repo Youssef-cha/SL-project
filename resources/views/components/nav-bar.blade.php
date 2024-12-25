@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <nav class="fixed z-40 left-0 right-0 top-0 bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700">
     <div class="flex flex-wrap justify-between items-center">
         <div class="flex justify-start items-center">
@@ -31,7 +30,6 @@
         document.documentElement.classList.add('dark');
     }
 </script>
-=======
 <nav
     class=" fixed z-40 left-0 right-0 top-0 bg-primary-500 border-b border-gray-200 px-4 py-2.5  dark:border-gray-700">
     <div class="flex flex-wrap justify-between items-center px-8">
@@ -53,4 +51,3 @@
         </div>
     </div>
 </nav>
->>>>>>> refs/remotes/origin/main
