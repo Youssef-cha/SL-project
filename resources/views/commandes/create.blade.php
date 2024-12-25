@@ -44,14 +44,15 @@
             @csrf
             <x-form-fields-container>
                 <x-form-input label="Numéro de Commande" name="NUM_COMMANDE" />
+
+                <x-form-text-area label="Objet d'achat" name="OBJET_ACHAT" />
                 <x-form-select :half="true" label="Type Budget" name="TYPE_BUDGET">
                     @foreach ($budgetTypes as $budgetType)
                         <option @selected(old('TYPE_BUDGET') == $budgetType) value="{{ $budgetType }}">{{ $budgetType }}</option>
                     @endforeach
 
                 </x-form-select>
-                <x-form-text-area label="Objet d'achat" name="OBJET_ACHAT" />
-                <x-form-select label="Numéro de marche" name="marche_id">
+                <x-form-select :half="true" label="Numéro de marche" name="marche_id">
                     @foreach ($marches as $marche)
                         <option @selected(old('marche_id') == $marche->id) value="{{ $marche->id }}">
                             {{ $marche->numero_marche }} ({{ $marche->appelOffre->numero_appel_offre }})</option>
@@ -93,7 +94,7 @@
 
                 </div>
                 <x-form-input :half="true" type="number" min="" label="Exercice" name="EXERCICE" />
-                <x-form-input  type="date" label="Date commande" name="DATE_COMMANDE" />
+                <x-form-input type="date" label="Date commande" name="DATE_COMMANDE" />
 
             </x-form-fields-container>
             <x-form-button route="commandes.index">

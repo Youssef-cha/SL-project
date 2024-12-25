@@ -63,18 +63,16 @@ class CommandeController extends Controller
     public function edit(Commande $commande)
     {
         $statutCommandes = $this->getEnumValues("commandes", "STATUT_COMMANDE");
-        $achatTypes = $this->getEnumValues("commandes", "TYPE_ACHAT");
         $budgetTypes = $this->getEnumValues("commandes", "TYPE_BUDGET");
         $rubriques = Rubrique::orderBy('REFERENCE_RUBRIQUE')->get();
         $efps = Efp::orderBy('nom_efp')->get();
         $fournisseurs = Fournisseur::orderBy('nom_fournisseur')->get();
-        $appelOffres = AppelOffre::orderBy('numero_appel_offre')->get();
+        $marches = Marche::with('appelOffre')->orderBy('numero_marche')->get();
         return view('commandes.edit', [
-            "appelOffres" => $appelOffres,
+            "marches" => $marches,
             "commande" => $commande,
             "efps" => $efps,
             "statutCommandes" => $statutCommandes,
-            "achatTypes" => $achatTypes,
             "budgetTypes" => $budgetTypes,
             "rubriques" => $rubriques,
             "fournisseurs" => $fournisseurs,
@@ -132,18 +130,16 @@ class CommandeController extends Controller
             return redirect()->back()->with("success", "livraison A été mis à jour avec succès!");
         } else {
             $validData = $request->validate([
-                "numero_appel_offre" => ['required'],
-                "TYPE_ACHAT" => ['required'],
                 "TYPE_BUDGET" => ['required'],
                 "OBJET_ACHAT" => ['required'],
                 "rubrique_id" => ['required'],
                 "fournisseur_id" => ['required'],
+                "marche_id" => ['required'],
                 "efp_id" => ['required'],
                 "DELAI_LIVRAISON" => ['required'],
                 "RETENUE_GARANTIE" => $request->GARANTIE == "oui" ? ['required'] : '',
                 "EXERCICE" => ['required', 'size:4'],
                 "DATE_COMMANDE" => ['required'],
-                "STATUT_COMMANDE" => '',
             ], [
                 "*.required" => "Ce champ est obligatoire",
                 "*EXERCICE.size" => "EXERCICE Doit comporter 4 caractères"
@@ -152,6 +148,9 @@ class CommandeController extends Controller
             $validData['GARANTIE'] = request()->GARANTIE ?? 'non';
             if ($validData['GARANTIE'] == 'non') {
                 $validData['RETENUE_GARANTIE'] = NULL;
+            }
+            if(request()->STATUT_COMMANDE){
+                $validData['STATUT_COMMANDE'] = request()->STATUT_COMMANDE;
             }
             $commande->update($validData);
             return redirect()->back()->with('success', 'Commande A été mis à jour avec succès!');
@@ -162,7 +161,6 @@ class CommandeController extends Controller
 
         $enumValues = DB::select("SHOW COLUMNS FROM $tableName WHERE Field = ?", [$columnName])[0]->Type;
         preg_match("/^enum\(\'(.*)\'\)$/", $enumValues, $matches);
-        $enumValues = explode("','", $matches[1]);
-        return $enumValues;
+        return explode("','", $matches[1]);
     }
 }

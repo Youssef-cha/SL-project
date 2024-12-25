@@ -9,13 +9,13 @@
             @method('PUT')
             <x-form-fields-container>
                 @if (request()->section == 'livraison')
-{{-- livraison --}}
+                    {{-- livraison --}}
                     <x-form-input value="livraison" name="update" type="hidden" />
                     <x-form-input :update="$commande" value="Livrée" name="STATUT_LIVRAISON" type="hidden" />
                     <x-form-input :update="$commande" name="DATE_LIVRAISON" type="date" label="Date De Livraison" />
                     <x-form-text-area :update="$commande" name="LIEU_LIVRAISON" label="Lieu De Livraison" />
                 @elseif (request()->section == 'reception')
-{{-- reception --}}
+                    {{-- reception --}}
                     <x-form-input value="reception" name="update" type="hidden" />
                     <x-form-input :update="$commande" value="réceptionnée" name="STATUT_RECEPTION" type="hidden" />
                     <x-form-input :update="$commande" name="DATE_VERIFICATION_RECEPTION" type="date"
@@ -30,13 +30,13 @@
                     <x-form-input :update="$commande" name="MONTANT_TVA" type="number" min="0"
                         label="Montant TVA :" />
                 @elseif (request()->section == 'depot')
-{{-- depot --}}
+                    {{-- depot --}}
                     <x-form-input value="depot" name="update" type="hidden" />
                     <x-form-input :update="$commande" value="deposee" name="STATUT_PAIEMENT" type="hidden" />
                     <x-form-input :update="$commande" name="DATE_DEPOT_SC" type="date"
                         label="Date Depot Service Comptabilite :" />
                 @elseif (request()->section == 'paiement')
-{{-- paiement  --}}
+                    {{-- paiement  --}}
                     <x-form-input value="paiement" name="update" type="hidden" />
                     <x-form-input :update="$commande" name="ov" label="Numero OV :" />
                     <x-form-input :update="$commande" name="op" label="Numero OP :" />
@@ -51,25 +51,19 @@
                         <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">payee</span>
                     </label>
                 @else
-                    {{-- commandes --}}
-                    <x-form-select :half="true" label="Type Achat" name="TYPE_ACHAT">
-                        @foreach ($achatTypes as $achatType)
-                            <option @selected((old('TYPE_ACHAT') ?? $commande->TYPE_ACHAT) == $achatType) value="{{ $achatType }}">{{ $achatType }}</option>
-                        @endforeach
-                    </x-form-select>
+                    {{-- commande --}}
+                    <x-form-text-area :update="$commande" label="Objet d'achat" name="OBJET_ACHAT" />
                     <x-form-select :half="true" label="Type Budget" name="TYPE_BUDGET">
                         @foreach ($budgetTypes as $budgetType)
                             <option @selected((old('TYPE_BUDGET') ?? $commande->TYPE_BUDGET) == $budgetType) value="{{ $budgetType }}">{{ $budgetType }}</option>
                         @endforeach
 
                     </x-form-select>
-                    <x-form-text-area :update="$commande" label="Objet d'achat" name="OBJET_ACHAT" />
-                    <x-form-select :update="$commande" label="Numéro appel d'offre" name="numero_appel_offre">
-                        @foreach ($appelOffres as $appelOffres)
-                            <option @selected((old('numero_appel_offre') ?? $commande->numero_appel_offre) == $appelOffres->numero_appel_offre) value="{{ $appelOffres->numero_appel_offre }}">
-                                {{ $appelOffres->numero_appel_offre }}</option>
+                    <x-form-select :update="$commande" :half="true" label="Numéro de marche" name="marche_id">
+                        @foreach ($marches as $marche)
+                            <option @selected((old('marche_id') ?? $commande->marche_id) == $marche->id) value="{{ $marche->id }}">
+                                {{ $marche->numero_marche }} ({{ $marche->appelOffre->numero_appel_offre }})</option>
                         @endforeach
-
                     </x-form-select> <x-form-select :half="true" label="Référence Rubrique" name="rubrique_id">
                         @foreach ($rubriques as $rubrique)
                             <option @selected((old('rubrique_id') ?? $commande->rubrique_id) == $rubrique->id) value="{{ $rubrique->id }}">
