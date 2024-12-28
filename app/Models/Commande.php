@@ -28,7 +28,7 @@ class Commande extends Model
         return $this->belongsTo(Efp::class);
     }
     public function marche(){
-        return $this->belongsTo(Efp::class);
+        return $this->belongsTo(Marche::class);
     }
 
     public function retours(){

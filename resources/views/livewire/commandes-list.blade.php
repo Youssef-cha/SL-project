@@ -177,6 +177,7 @@
                                     <td class="px-4 w-auto py-3"> {{ $commande->DELAI_LIVRAISON }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->GARANTIE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->RETENUE_GARANTIE }}</td>
+                                    <td class="px-4 w-auto py-3"> {{ $commande->marche->numero_marche }}</td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->EXERCICE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->DATE_COMMANDE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $commande->user->name }} </td>

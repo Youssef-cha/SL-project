@@ -148,7 +148,7 @@
                                                 @endif
 
                                                 <li>
-                                                    <a href="{{ route('commandes.retours.create', $bonCommande->id) }}"
+                                                    <a href="{{ route('bonCommandes.bonRetours.create', $bonCommande->id) }}"
                                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">créer
                                                         un retour</a>
                                                 </li>
@@ -172,7 +172,7 @@
                                     </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->DELAI_LIVRAISON }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->GARANTIE }} </td>
-                                    <td class="px-4 w-auto py-3"> {{ $bonCommande->RETENUE_GARATIE }}</td>
+                                    <td class="px-4 w-auto py-3"> {{ $bonCommande->RETENUE_GARANTIE }}</td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->EXERCICE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->DATE_COMMANDE }} </td>
                                     <td class="px-4 w-auto py-3"> {{ $bonCommande->user->name }} </td>

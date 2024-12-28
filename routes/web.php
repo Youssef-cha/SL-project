@@ -12,6 +12,7 @@ use App\Http\Controllers\MarcheController;
 use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\ReceptionController;
 use App\Http\Controllers\RetourController;
+use App\Http\Controllers\BonRetourController;
 use App\Http\Controllers\RubriqueController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SuiviCommandeController;
@@ -50,6 +51,13 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/retours/{retour}',                      [RetourController::class, "update"])->name("retours.update");
     Route::delete('/retours/{retour}',                      [RetourController::class, "destroy"])->name("retours.destroy");
 
+    //bon_retour
+    Route::get('/bonCommandes/{bonCommande}/bonRetours',                      [BonRetourController::class, "index"])->name("bonCommandes.bonRetours.index");
+    Route::get('/bonCommandes/{bonCommande}/bonRetours/create',               [BonRetourController::class, "create"])->name("bonCommandes.bonRetours.create");
+    Route::post('/bonCommandes/{bonCommande}/bonRetours',                     [BonRetourController::class, "store"])->name("bonCommandes.bonRetours.store");
+    Route::get('/bonRetours/{bonRetour}/edit',                      [BonRetourController::class, "edit"])->name("bonRetours.edit");
+    Route::put('/bonRetours/{bonRetour}',                      [BonRetourController::class, "update"])->name("bonRetours.update");
+
     // rubrique
     Route::resource('rubriques', RubriqueController::class)->except('show');
 
@@ -83,13 +91,13 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('appelOffres', AppelOffreController::class)->except(['show', 'edit', 'update']);
 
     // marche
-    Route::get('/appelOffres/{appeloffre}/marches', [MarcheController::class , 'index'])->name('appelOffres.marches.index');
-    Route::get('/appelOffres/{appelOffres}/marches/create', [MarcheController::class , 'create'])->name('appelOffres.marches.create');
-    Route::post('/appelOffres/{appelOffres}/marches', [MarcheController::class , 'store'])->name('appelOffres.marches.store');
-    Route::get('/marches/{marche}/edit', [MarcheController::class , 'edit'])->name('marches.edit');
-    Route::put('/marches/{marche}', [MarcheController::class , 'update'])->name('marches.update');
-    Route::delete('/marches/{marche}', [MarcheController::class , 'destroy'])->name('marches.destroy');
-    
+    Route::get('/appelOffres/{appeloffre}/marches', [MarcheController::class, 'index'])->name('appelOffres.marches.index');
+    Route::get('/appelOffres/{appelOffres}/marches/create', [MarcheController::class, 'create'])->name('appelOffres.marches.create');
+    Route::post('/appelOffres/{appelOffres}/marches', [MarcheController::class, 'store'])->name('appelOffres.marches.store');
+    Route::get('/marches/{marche}/edit', [MarcheController::class, 'edit'])->name('marches.edit');
+    Route::put('/marches/{marche}', [MarcheController::class, 'update'])->name('marches.update');
+    Route::delete('/marches/{marche}', [MarcheController::class, 'destroy'])->name('marches.destroy');
+
     //views
     Route::view('/', "home")->name('home');
 });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\BonCommande;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,15 +13,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('retours', function (Blueprint $table) {
+        Schema::create('bon_retours', function (Blueprint $table) {
             $table->id();
             $table->date("date_retour");
             $table->text("motif");
-            $table->string('NUM_COMMANDE', length: 50);
             $table->enum('STATUT_RETOUR', ['a resoudre', 'resolue'])->default('a resoudre');
             $table->timestamps();
-
-            $table->foreign("NUM_COMMANDE")->references("NUM_COMMANDE")->on("commandes");
+            $table->foreignIdFor(BonCommande::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();
         });
     }
@@ -28,7 +27,8 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void{
-        Schema::dropIfExists('retours');
+    public function down(): void
+    {
+        Schema::dropIfExists('bon_retours');
     }
 };

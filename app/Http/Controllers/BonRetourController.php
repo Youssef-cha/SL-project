@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Commande;
-use App\Models\Retour;
-use Illuminate\Http\Request;
+use App\Models\BonCommande;
+use App\Models\bonRetour;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
-class RetourController extends Controller
+class BonRetourController extends Controller
 {
-    public function index(Commande $commande)
+    public function index(BonCommande $bonCommande)
     {
-        return view("retours.index", compact('commande'));
+        return view("bonRetours.index", compact('bonCommande'));
     }
 
-    public function create(Commande $commande)
+    public function create(BonCommande $bonCommande)
     {
-        return view("retours.create", compact("commande"));
+        return view("bonRetours.create", compact("bonCommande"));
     }
-    public function edit(Retour $retour)
+    public function edit(bonRetour $bonRetour)
     {
-        return view('retours.edit', compact('retour'));
+        // dd($bonRetour->bonCommande);
+        return view('bonRetours.edit', compact('bonRetour'));
     }
-    public function update(Retour $retour)
+    public function update(bonRetour $bonRetour)
     {
         $validDate = request()->validate([
             "motif" => ['required'],
@@ -35,10 +36,10 @@ class RetourController extends Controller
         } else {
             $validDate['STATUT_RETOUR'] = 'a resoudre';
         }
-        $retour->update($validDate);
+        $bonRetour->update($validDate);
         return redirect()->back()->with("success", 'retour A été mise a jour avec succès');
     }
-    public function store(Commande $commande)
+    public function store(BonCommande $bonCommande)
     {
         request()->validate([
             "motif" => ['required'],
@@ -46,8 +47,8 @@ class RetourController extends Controller
         ], [
             "*.required" => 'Ce champ est obligatoire',
         ]);
-        Retour::create([
-            "NUM_COMMANDE" => $commande->NUM_COMMANDE,
+        bonRetour::create([
+            "bon_commande_id" => $bonCommande->id,
             "user_id" => Auth::id(),
             "motif" => request()->motif,
             "date_retour" => request()->date_retour,
@@ -55,10 +56,4 @@ class RetourController extends Controller
         ]);
         return redirect()->back()->with("success", 'retour A été ajouté avec succès');
     }
-    // public function destroy(Retour $retour)
-    // {
-    //     $commandeId = $retour->commande->NUM_COMMANDE;
-    //     $retour->delete();
-    //     return redirect()->route('commandes.retours.index', $commandeId);
-    // }
 }
