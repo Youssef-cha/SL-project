@@ -10,7 +10,7 @@
             @csrf
             <x-form-fields-container>
                 <x-form-input label="Référence Rubrique" name="REFERENCE_RUBRIQUE" />
-                <x-form-input label="Année Budgétaire" name="ANNEE_BUDGETAIRE" />
+                <x-form-input label="Année Budgétaire" type="number" min="4" name="ANNEE_BUDGETAIRE" />
                 <x-form-input type="number" label="Budget" name="BUDGET" />
             </x-form-fields-container>
             <x-form-button route="rubriques.index">

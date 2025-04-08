@@ -27,7 +27,7 @@ class CommandesList extends Component
     }
     public function queryCommande()
     {
-        $query = Commande::with(['user', 'fournisseur', 'rubrique', 'retours']);
+        $query = Commande::with(['user', 'fournisseur', 'rubrique', 'retours','marche']);
         foreach ($this->filters as $name => $value) {
             $query->where($name, 'like', $value . "%");
         }

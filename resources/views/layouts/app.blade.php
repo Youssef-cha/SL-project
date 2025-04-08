@@ -16,7 +16,7 @@
 </head>
 
 <body class=" pt-16 relative antialiased min-h-screen bg-gray-50 dark:bg-gray-900">
-    
+
     @auth
         <x-nav-bar></x-nav-bar>
         <x-side-bar></x-side-bar>

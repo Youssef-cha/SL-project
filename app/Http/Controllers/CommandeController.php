@@ -24,7 +24,7 @@ class CommandeController extends Controller
     {
         $budgetTypes = $this->getEnumValues("commandes", "TYPE_BUDGET");
         $rubriques = Rubrique::all();
-        $efps = Efp::orderBy('nom_efp')->get();
+        $efps = Efp::orderBy('nom_efp')->with("complexe")->get();
         $fournisseurs = Fournisseur::orderBy('nom_fournisseur')->get();
         $marches = Marche::with('appelOffre')->orderBy('numero_marche')->get();
 
