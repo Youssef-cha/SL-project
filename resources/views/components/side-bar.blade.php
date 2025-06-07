@@ -1,5 +1,5 @@
 <aside id="sidebar"
-    class="w-64 fixed top-16 border-t transition-transform duration-300 -translate-x-full  z-40 bottom-0 pt-1  bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    class="fixed w-64 md:w-72 z-40 top-[3.5rem] bottom-0 transition-transform duration-300 bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700 lg:translate-x-0 -translate-x-full">
     <div
         class="divide-y divide-slate-700 overflow-y-auto flex flex-col justify-between py-5 px-3 h-full bg-white dark:bg-gray-800">
         <ul class="space-y-2">

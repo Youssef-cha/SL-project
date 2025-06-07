@@ -15,15 +15,18 @@
     <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png">
 </head>
 
-<body class=" pt-16 relative antialiased min-h-screen bg-gray-50 dark:bg-gray-900">
-
+<body class="pt-16 relative antialiased min-h-screen bg-gray-50 dark:bg-gray-900">
     @auth
         <x-nav-bar></x-nav-bar>
         <x-side-bar></x-side-bar>
+        <main class="p-4 pt-2 transition-all duration-300 lg:ml-64">
+            @yield('content')
+        </main>
+    @else
+        <main class="p-4 pt-2 w-full">
+            @yield('content')
+        </main>
     @endauth
-    <main class="p-4 pt-2   w-full">
-        @yield('content')
-    </main>
     <script src="{{ asset('js/script.js') }}"></script>
 </body>
 

@@ -1,33 +1,49 @@
-<nav
-    class="fixed  z-40 left-0 right-0 top-0 dark:bg-emerald-700 border-b border-gray-200 px-4 py-2.5 bg-emerald-700 dark:border-gray-700">
-    <div class="flex flex-wrap justify-between items-center">
-        <div class="flex justify-start items-center">
-            <button togglerFor="sidebar"
-                class="flex items-center rounded-md justify-center p-3 text-xl font-light text-gray-600 dark:hover:text-primary-500 transition-all duration-300 dark:hover:bg-gray-700 w-8 h-7 focus:ring-4 dark:focus:ring-gray-700 mx-4"
-                aria-label="Toggle Sidebar">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            <a href="/" class="flex items-center justify-between mr-4">
-                <img src="{{ asset('img/logo.png') }}" class="mr-3 h-11" alt="Service Logistique Logo" />
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-white">
-                    Service Logistique
-                </span>
-            </a>
+<nav class="fixed z-40 left-0 right-0 top-0 bg-emerald-700 border-b border-gray-200 dark:border-gray-700">
+    <div class="px-3 py-2 lg:px-5 lg:pl-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <button togglerFor="sidebar"
+                    class="inline-flex items-center rounded-lg p-2 text-sm text-white hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 lg:hidden"
+                    aria-label="Toggle Sidebar">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <a href="/" class="flex ml-2 md:ml-4">
+                    <img src="{{ asset('img/logo.png') }}" class="h-8 md:h-10 mr-3" alt="Service Logistique Logo" />
+                    <span class="self-center text-lg md:text-xl lg:text-2xl font-semibold whitespace-nowrap text-white hidden sm:inline-block">
+                        Service Logistique
+                    </span>
+                </a>
+            </div>
+            <div class="flex items-center">
+                <button id="darkModeToggle"
+                    class="p-2 text-white rounded-lg hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    aria-label="Toggle Dark Mode">
+                    <i class="fa-solid fa-sun text-lg dark:hidden"></i>
+                    <i class="fa-solid fa-moon text-lg hidden dark:block"></i>
+                </button>
+            </div>
         </div>
-        <button id="darkModeToggle"
-            class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-            aria-label="Toggle Dark Mode">
-            <i class="fa-solid fa-moon"></i>
-        </button>
     </div>
 </nav>
 <script>
     const darkModeToggle = document.getElementById('darkModeToggle');
+    const setTheme = (isDark) => {
+        if (isDark) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    };
+
     darkModeToggle.addEventListener('click', () => {
-        document.documentElement.classList.toggle('dark');
-        localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        const isDark = !document.documentElement.classList.contains('dark');
+        setTheme(isDark);
     });
-    if (localStorage.getItem('theme') === 'dark') {
-        document.documentElement.classList.add('dark');
+
+    // Check system preference and stored preference
+    if (localStorage.getItem('theme') === 'dark' || 
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        setTheme(true);
     }
 </script>
